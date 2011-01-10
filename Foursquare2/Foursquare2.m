@@ -492,7 +492,7 @@
 +(void)createCheckinAtVenue:(NSString*)venueID
 					  venue:(NSString*)venue
 					  shout:(NSString*)shout
-				  broadcast:(NSString*)broadcast
+				  broadcast:(FoursquareBroadcastType)broadcast
 				   latitude:(NSString*)lat
 				  longitude:(NSString*)lon
 				 accuracyLL:(NSString*)accuracyLL
@@ -523,11 +523,13 @@
 		[dic setObject:accuracyAlt forKey:@"altAcc"];
 	}
 	
-	if ([broadcast length] == 0) {
-		[dic setObject:@"public" forKey:@"broadcast"];
-	}else{
-		[dic setObject:broadcast forKey:@"broadcast"];
-	}
+	[dic setObject:[self broadcastTypeToString:broadcast] forKey:@"broadcast"];
+	
+	//	if ([broadcast length] == 0) {
+	//		[dic setObject:@"public" forKey:@"broadcast"];
+	//	}else{
+	//		[dic setObject:broadcast forKey:@"broadcast"];
+	//	}
 	
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }

@@ -192,7 +192,7 @@ typedef enum {
 +(void)createCheckinAtVenue:(NSString*)venueID
 					  venue:(NSString*)venue
 					  shout:(NSString*)shout
-				  broadcast:(NSString*)broadcast
+				  broadcast:(FoursquareBroadcastType)broadcast
 				   latitude:(NSString*)lat
 				  longitude:(NSString*)lon
 				 accuracyLL:(NSString*)accuracyLL

@@ -54,10 +54,23 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	NSString *url =[[request URL] absoluteString];
 	if ([url rangeOfString:@"code="].length != 0) {
+		
+		NSHTTPCookie *cookie;
+		NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+		for (cookie in [storage cookies]) {
+			if ([[cookie domain]isEqualToString:@"foursquare.com"]) {
+				[storage deleteCookie:cookie];
+			}
+		}
+		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
 		[delegate performSelector:selector withObject:[arr objectAtIndex:1]];
 		[self cancel];
-	}
+	}else if ([url rangeOfString:@"error="].length != 0) {
+		NSArray *arr = [url componentsSeparatedByString:@"="];
+		[delegate performSelector:selector withObject:[arr objectAtIndex:1]];
+		NSLog(@"Foursquare: %@",[arr objectAtIndex:1]);
+	} 
 	return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView{
