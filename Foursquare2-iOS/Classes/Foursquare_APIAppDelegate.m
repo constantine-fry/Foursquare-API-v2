@@ -19,11 +19,11 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; 
     viewController = [[UIViewController alloc]init];
 	viewController.view.frame =CGRectMake(0, 0, 320, 480);
-    // Override point for customization after app launch. 
-	viewController.view.backgroundColor = [UIColor blackColor];
+	viewController.view.backgroundColor = [UIColor grayColor];
     [window addSubview:viewController.view];
 	[viewController viewWillAppear:YES];
     [window makeKeyAndVisible];
