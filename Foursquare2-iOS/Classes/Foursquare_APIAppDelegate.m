@@ -42,12 +42,12 @@
 		}];
 	}else {
 		
-		[Foursquare2  sendFriendRequestToUser:@"2363525"
-									 callback:^(BOOL success, id result){
-									  if (success) {
-										  NSLog(@"%@",result);
-									  }
-								  }];
+		[Foursquare2  getDetailForUser:@"self"
+							  callback:^(BOOL success, id result){
+								  if (success) {
+									  NSLog(@"%@",result);
+								  }
+							  }];
 
 //		[Foursquare2  createCheckinAtVenue:@"6522771"
 //									 venue:nil
@@ -71,7 +71,7 @@ Foursquare2Callback authorizeCallbackDelegate;
 -(void)authorizeWithViewController:(UIViewController*)controller
 						  Callback:(Foursquare2Callback)callback{
 	authorizeCallbackDelegate = callback;
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?display=touch&client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
 	FoursquareWebLogin *loginCon = [[FoursquareWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(setCode:);
