@@ -49,10 +49,11 @@
 								  }
 							  }];
 
+//		Example check-in 
 //		[Foursquare2  createCheckinAtVenue:@"6522771"
 //									 venue:nil
-//									 shout:nil
-//								 broadcast:nil
+//									 shout:@"Testing"
+//								 broadcast:broadcastPublic
 //								  latitude:nil
 //								 longitude:nil
 //								accuracyLL:nil
