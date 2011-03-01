@@ -18,5 +18,6 @@
 -(void)authorizeWithViewController:(UIViewController*)controller
 						  Callback:(Foursquare2Callback)callback;
 -(void)setCode:(NSString*)code;
+-(void)test_method;
 @end
 

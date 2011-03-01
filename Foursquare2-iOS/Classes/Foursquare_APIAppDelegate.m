@@ -28,14 +28,15 @@
 	[viewController viewWillAppear:YES];
     [window makeKeyAndVisible];
 
-	//[Foursquare2 removeAccessToken];
+//	[Foursquare2 removeAccessToken];
 	if ([Foursquare2 isNeedToAuthorize]) {
-		[self authorizeWithViewController:viewController Callback:^(BOOL success,id result){
+		[self authorizeWithViewController:viewController 
+                                 Callback:^(BOOL success,id result){
 			if (success) {
 				[Foursquare2  getDetailForUser:@"self"
 									  callback:^(BOOL success, id result){
 										  if (success) {
-											  NSLog(@"%@",result);
+											  [self test_method];
 										  }
 									  }];
 			}
@@ -45,7 +46,7 @@
 		[Foursquare2  getDetailForUser:@"self"
 							  callback:^(BOOL success, id result){
 								  if (success) {
-									  NSLog(@"%@",result);
+									  [self test_method];
 								  }
 							  }];
 
@@ -68,10 +69,14 @@
 	return YES;
 }
 
+-(void)test_method{
+    NSLog(@"test");
+}
+
 Foursquare2Callback authorizeCallbackDelegate;
 -(void)authorizeWithViewController:(UIViewController*)controller
 						  Callback:(Foursquare2Callback)callback{
-	authorizeCallbackDelegate = callback;
+	authorizeCallbackDelegate = [callback copy];
 	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?display=touch&client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
 	FoursquareWebLogin *loginCon = [[FoursquareWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
@@ -89,6 +94,7 @@ Foursquare2Callback authorizeCallbackDelegate;
 			[Foursquare2 setBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
 			[Foursquare2 setAccessToken:[result objectForKey:@"access_token"]];
 			authorizeCallbackDelegate(YES,result);
+            [authorizeCallbackDelegate release];
 		}
 	}];
 }
