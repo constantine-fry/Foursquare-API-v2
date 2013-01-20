@@ -61,6 +61,7 @@ typedef enum {
 +(void)setAccessToken:(NSString*)token;
 +(void)removeAccessToken;
 +(BOOL)isNeedToAuthorize;
++(BOOL)isAuthorized;
 #pragma mark -
 
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------

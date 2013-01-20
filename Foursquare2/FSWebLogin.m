@@ -35,24 +35,14 @@
 
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-	[super loadView];
+- (void)viewDidLoad{
+    [super viewDidLoad];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
 	
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
-
-	
-	
-	webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
 	[webView loadRequest:request];
-	[webView setDelegate:self];
-	[self.view addSubview:webView];
-
-	
-	
 }
 
 
@@ -60,7 +50,7 @@
 
 -(void)cancel{
     [delegate performSelector:selector withObject:nil afterDelay:0];
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{

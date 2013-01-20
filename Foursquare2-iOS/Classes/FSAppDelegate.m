@@ -6,10 +6,10 @@
 //  Copyright 2010 Home. All rights reserved.
 //
 
-#import "Foursquare_APIAppDelegate.h"
+#import "FSAppDelegate.h"
+#import "NearbyVenuesViewController.h"
 
-
-@implementation Foursquare_APIAppDelegate
+@implementation FSAppDelegate
 
 @synthesize window;
 //@synthesize viewController;
@@ -19,50 +19,14 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; 
-    viewController = [[UIViewController alloc]init];
-	viewController.view.frame =CGRectMake(0, 0, 320, 480);
-	viewController.view.backgroundColor = [UIColor grayColor];
-    window.rootViewController = viewController;
+	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIViewController *c = [[NearbyVenuesViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+    window.rootViewController = nav;
     [window makeKeyAndVisible];
 
-//	[Foursquare2 removeAccessToken];
-	if ([Foursquare2 isNeedToAuthorize]) {
-        [Foursquare2 authorizeWithCallback:^(BOOL success, id result) {
-            if (success) {
-				[Foursquare2  getDetailForUser:@"self"
-									  callback:^(BOOL success, id result){
-										  if (success) {
-											  [self test_method];
-										  }
-									  }];
-			}
-        }];
-	}else {
-		
-		[Foursquare2  getDetailForUser:@"self"
-							  callback:^(BOOL success, id result){
-								  if (success) {
-									  [self test_method];
-								  }
-							  }];
-
 //		Example check-in 
-//		[Foursquare2  createCheckinAtVenue:@"6522771"
-//									 venue:nil
-//									 shout:@"Testing"
-//								 broadcast:broadcastPublic
-//								  latitude:nil
-//								 longitude:nil
-//								accuracyLL:nil
-//								  altitude:nil
-//							   accuracyAlt:nil
-//								  callback:^(BOOL success, id result){
-//								if (success) {
-//									NSLog(@"%@",result);
-//								}
-//							}];
-	}
+//	}
 	return YES;
 }
 

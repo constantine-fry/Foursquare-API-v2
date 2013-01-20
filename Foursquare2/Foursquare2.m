@@ -104,6 +104,10 @@ static NSMutableDictionary *attributes;
 	return ([self classAttributes][@"access_token"] == nil);
 }
 
++(BOOL)isAuthorized{
+    return ([self classAttributes][@"access_token"] != nil);
+}
+
 
 +(NSString*)stringFromArray:(NSArray*)array{
 	if (array.count) {

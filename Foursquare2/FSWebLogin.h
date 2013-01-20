@@ -11,7 +11,7 @@
 
 @interface FSWebLogin : UIViewController<UIWebViewDelegate> {
 	NSString *_url;
-	UIWebView *webView;
+	IBOutlet UIWebView *webView;
 	SEL selector;
 }
 

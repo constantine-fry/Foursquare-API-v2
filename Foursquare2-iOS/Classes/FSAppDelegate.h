@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Foursquare2.h"
 
-@interface Foursquare_APIAppDelegate : NSObject <UIApplicationDelegate> {
+@interface FSAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    UIViewController *viewController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

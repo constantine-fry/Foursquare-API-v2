@@ -11,6 +11,6 @@
 int main(int argc, char *argv[]) {
     
     @autoreleasepool {
-        return  UIApplicationMain(argc, argv, @"UIApplication", @"Foursquare_APIAppDelegate");
+        return  UIApplicationMain(argc, argv, @"UIApplication", @"FSAppDelegate");
     }
 }
