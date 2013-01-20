@@ -1075,6 +1075,7 @@ static Foursquare2 *instance;
 }
 
 
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
 Foursquare2Callback authorizeCallbackDelegate;
 +(void)authorizeWithCallback:(Foursquare2Callback)callback{
@@ -1098,4 +1099,5 @@ Foursquare2Callback authorizeCallbackDelegate;
 		}
 	}];
 }
+#endif
 @end

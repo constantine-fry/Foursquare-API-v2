@@ -1,6 +1,6 @@
 
 
-#import <UIKit/UIKit.h>
+//#import <UIKit/UIKit.h>
 #define TIMEOUT_INTERVAL 45
 
 @class FSTargetCallback;

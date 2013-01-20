@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "FSRequester.h"
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSWebLogin.h"
+#endif
+
 
 
 
