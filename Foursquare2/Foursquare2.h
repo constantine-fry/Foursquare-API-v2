@@ -69,6 +69,7 @@ typedef enum {
 
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
 +(void)authorizeWithCallback:(Foursquare2Callback)callback;
+ 
 // !!!: 1. userID is a valid user ID or "self" 
 +(void)getDetailForUser:(NSString*)userID
 			  callback:(Foursquare2Callback)callback;

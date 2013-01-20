@@ -1,12 +1,20 @@
-#Foursquare API 2.0
+#Foursquare API 2.0 For iOS and MacOS
+
+###Features
+* In-App Authentication
+* This library made with native framworks:
+    * NSJSONSerialization for JSON parsing
+    * NSURLConnection for requests
+* Asynchronous requests with blocks
+* Build-in image uploader for photos
 
 
-how to use it.
+###How To
 
 1. Create Your application here https://foursquare.com/developers/register
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/site.png?raw=true)
 
-2. You should modefy Foursquare2.h
+2. You should modify Foursquare2.h
 
     1. Change OAUTH_KEY and OAUTH_SECRET
     2. Change REDIRECT_URL. It should start with app://
