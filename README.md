@@ -2,11 +2,11 @@
 
 ###Features
 * In-App Authentication
-* This library made with native framworks:
-    * NSJSONSerialization for JSON parsing
-    * NSURLConnection for requests
 * Asynchronous requests with blocks
 * Build-in image uploader for photos
+* Made with native framworks:
+    * NSJSONSerialization for JSON parsing
+    * NSURLConnection for requests
 
 
 ###How To
