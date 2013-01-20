@@ -60,7 +60,6 @@ typedef enum {
 }
 
 + (void)setBaseURL:(NSString *)uri;
-+(void)getAccessTokenForCode:(NSString*)code callback:(Foursquare2Callback)callback;
 +(void)setAccessToken:(NSString*)token;
 +(void)removeAccessToken;
 +(BOOL)isNeedToAuthorize;

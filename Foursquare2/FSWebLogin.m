@@ -55,7 +55,8 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	NSString *url =[[request URL] absoluteString];
-	if ([url rangeOfString:@"code="].length != 0) {
+
+	if ([url rangeOfString:@"access_token="].length != 0) {
 		NSHTTPCookie *cookie;
 		NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 		for (cookie in [storage cookies]) {
@@ -66,8 +67,9 @@
 		}
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-		[delegate performSelector:selector withObject:arr[1]];
-		[self cancel];
+        [Foursquare2 setAccessToken:arr[1]];
+		[delegate performSelector:selector withObject:nil];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
 		[delegate performSelector:selector withObject:arr[1]];

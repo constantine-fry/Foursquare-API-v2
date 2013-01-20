@@ -79,7 +79,7 @@
 										   NSDictionary *dic = result;
 										   NSArray* venues = [dic valueForKeyPath:@"response.venues"];
                                            self.nearbyVenues = venues;
-                                           [self.tableView reloadData];
+                                           [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
                                            [self proccessAnnotations];
 
 									   }
@@ -120,6 +120,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.nearbyVenues.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if (self.nearbyVenues.count) {
+        return 1;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

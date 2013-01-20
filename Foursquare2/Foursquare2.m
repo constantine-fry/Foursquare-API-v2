@@ -56,19 +56,7 @@ static NSMutableDictionary *attributes;
 	}
 }
 
-+(void)getAccessTokenForCode:(NSString*)code callback:(Foursquare2Callback)callback{
-    if (!code) {
-        callback(NO,nil);
-        return;
-    }
-    
-	[self setBaseURL:@"https://foursquare.com/"];
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	dic[@"code"] = code;
-	dic[@"grant_type"] = @"authorization_code";
-	dic[@"redirect_uri"] = REDIRECT_URL;
-	[self get:@"oauth2/access_token" withParams:dic callback:callback];
-}
+
 
 + (void)setBaseURL:(NSString *)uri {
     [self setAttributeValue:uri forKey:@"kBaseUrl"];
@@ -1080,24 +1068,21 @@ static Foursquare2 *instance;
 Foursquare2Callback authorizeCallbackDelegate;
 +(void)authorizeWithCallback:(Foursquare2Callback)callback{
 	authorizeCallbackDelegate = [callback copy];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?display=touch&client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
-	loginCon.selector = @selector(setCode:);
+	loginCon.selector = @selector(done:);
 	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
     navCon.navigationBar.tintColor = [UIColor lightGrayColor];
 	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
 	[mainWindow.rootViewController presentViewController:navCon animated:YES completion:nil];
 }
 
-+(void)setCode:(NSString*)code{
-	[Foursquare2 getAccessTokenForCode:code callback:^(BOOL success,id result){
-		if (success) {
-			[Foursquare2 setBaseURL:kBaseUrl];
-			[Foursquare2 setAccessToken:result[@"access_token"]];
-			authorizeCallbackDelegate(YES,result);
-		}
-	}];
++(void)done:(NSError*)error{
+    if ([Foursquare2 isAuthorized]) {
+        [Foursquare2 setBaseURL:kBaseUrl];
+    }
+    authorizeCallbackDelegate(YES,error);
 }
 #endif
 @end
