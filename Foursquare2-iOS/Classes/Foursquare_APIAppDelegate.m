@@ -7,7 +7,6 @@
 //
 
 #import "Foursquare_APIAppDelegate.h"
-#import "FoursquareWebLogin.h"
 
 
 @implementation Foursquare_APIAppDelegate
@@ -24,15 +23,13 @@
     viewController = [[UIViewController alloc]init];
 	viewController.view.frame =CGRectMake(0, 0, 320, 480);
 	viewController.view.backgroundColor = [UIColor grayColor];
-    [window addSubview:viewController.view];
-	[viewController viewWillAppear:YES];
+    window.rootViewController = viewController;
     [window makeKeyAndVisible];
 
 //	[Foursquare2 removeAccessToken];
 	if ([Foursquare2 isNeedToAuthorize]) {
-		[self authorizeWithViewController:viewController 
-                                 Callback:^(BOOL success,id result){
-			if (success) {
+        [Foursquare2 authorizeWithCallback:^(BOOL success, id result) {
+            if (success) {
 				[Foursquare2  getDetailForUser:@"self"
 									  callback:^(BOOL success, id result){
 										  if (success) {
@@ -40,7 +37,7 @@
 										  }
 									  }];
 			}
-		}];
+        }];
 	}else {
 		
 		[Foursquare2  getDetailForUser:@"self"
@@ -73,31 +70,9 @@
     NSLog(@"test");
 }
 
-Foursquare2Callback authorizeCallbackDelegate;
--(void)authorizeWithViewController:(UIViewController*)controller
-						  Callback:(Foursquare2Callback)callback{
-	authorizeCallbackDelegate = [callback copy];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?display=touch&client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
-	FoursquareWebLogin *loginCon = [[FoursquareWebLogin alloc] initWithUrl:url];
-	loginCon.delegate = self;
-	loginCon.selector = @selector(setCode:);
-	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
-	
-	[controller presentModalViewController:navCon animated:YES];
-	[navCon release];
-	[loginCon release];	
-}
 
--(void)setCode:(NSString*)code{
-	[Foursquare2 getAccessTokenForCode:code callback:^(BOOL success,id result){
-		if (success) {
-			[Foursquare2 setBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
-			[Foursquare2 setAccessToken:[result objectForKey:@"access_token"]];
-			authorizeCallbackDelegate(YES,result);
-            [authorizeCallbackDelegate release];
-		}
-	}];
-}
+
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -133,11 +108,6 @@ Foursquare2Callback authorizeCallbackDelegate;
 }
 
 
-- (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
-}
 
 
 @end

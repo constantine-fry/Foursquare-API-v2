@@ -6,12 +6,12 @@
 //  Copyright 2010 Home. All rights reserved.
 //
 
-#import "FoursquareWebLogin.h"
+#import "FSWebLogin.h"
 #import "Foursquare2.h"
 
 
-@implementation FoursquareWebLogin
-@synthesize delegate,selector;
+@implementation FSWebLogin
+@synthesize selector,delegate;
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -37,40 +37,52 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
 	[super loadView];
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+	
+	self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+
+	
+	
 	webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
 	[webView loadRequest:request];
 	[webView setDelegate:self];
 	[self.view addSubview:webView];
-	[webView release];
-	
 
+	
+	
 }
 
+
+
+
 -(void)cancel{
+    [delegate performSelector:selector withObject:nil afterDelay:0];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	NSString *url =[[request URL] absoluteString];
 	if ([url rangeOfString:@"code="].length != 0) {
-		
 		NSHTTPCookie *cookie;
 		NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 		for (cookie in [storage cookies]) {
+
 			if ([[cookie domain]isEqualToString:@"foursquare.com"]) {
 				[storage deleteCookie:cookie];
 			}
 		}
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-		[delegate performSelector:selector withObject:[arr objectAtIndex:1]];
+		[delegate performSelector:selector withObject:arr[1]];
 		[self cancel];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-		[delegate performSelector:selector withObject:[arr objectAtIndex:1]];
-		NSLog(@"Foursquare: %@",[arr objectAtIndex:1]);
+		[delegate performSelector:selector withObject:arr[1]];
 	} 
+
 	return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView{
@@ -104,14 +116,12 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    webView = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 
-- (void)dealloc {
-    [super dealloc];
-}
 
 
 @end

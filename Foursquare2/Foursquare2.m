@@ -7,6 +7,7 @@
 //
 
 #import "Foursquare2.h"
+#import "FSTargetCallback.h"
 
 
 
@@ -44,55 +45,72 @@
 
 @implementation Foursquare2
 
+static NSMutableDictionary *attributes;
+
 + (void)initialize
 {
-	[self setFormat:HRDataFormatJSON];
-	[self setDelegate:self];
-	[self setBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
+    [self setBaseURL:kBaseUrl];
 	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
-	if ([usDef objectForKey:@"access_token"] != nil) {
-		[[self classAttributes] setObject:[usDef objectForKey:@"access_token"] forKey:@"access_token"];
+	if ([usDef objectForKey:@"access_token2"] != nil) {
+		[self classAttributes][@"access_token"] = [usDef objectForKey:@"access_token2"];
 	}
 }
 
-+(void)getAccessTokenForCode:(NSString*)code callback:(id)callback{
-	[self setBaseURL:[NSURL URLWithString:@"https://foursquare.com"]];
++(void)getAccessTokenForCode:(NSString*)code callback:(Foursquare2Callback)callback{
+    if (!code) {
+        callback(NO,nil);
+        return;
+    }
+    
+	[self setBaseURL:@"https://foursquare.com/"];
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:code forKey:@"code"];
-	[dic setObject:@"authorization_code" forKey:@"grant_type"];
-	[dic setObject:REDIRECT_URL forKey:@"redirect_uri"];
+	dic[@"code"] = code;
+	dic[@"grant_type"] = @"authorization_code";
+	dic[@"redirect_uri"] = REDIRECT_URL;
 	[self get:@"oauth2/access_token" withParams:dic callback:callback];
 }
 
++ (void)setBaseURL:(NSString *)uri {
+    [self setAttributeValue:uri forKey:@"kBaseUrl"];
+}
+
++ (void)setAttributeValue:(id)attr forKey:(NSString *)key {
+    [self classAttributes][key] = attr;
+}
+
++ (NSMutableDictionary *)classAttributes {
+    if(attributes) {
+        return attributes;
+    } else {
+        attributes = [[NSMutableDictionary alloc] init];
+    }
+    
+    return attributes;
+}
+
 +(void)setAccessToken:(NSString*)token{
-	[[self classAttributes] setObject:token forKey:@"access_token"];
-	[[NSUserDefaults standardUserDefaults]setObject:token forKey:@"access_token"];
+	[self classAttributes][@"access_token"] = token;
+	[[NSUserDefaults standardUserDefaults]setObject:token forKey:@"access_token2"];
 	[[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 +(void)removeAccessToken{
 	[[self classAttributes]removeObjectForKey:@"access_token"];
-	[[NSUserDefaults standardUserDefaults]removeObjectForKey:@"access_token"];
+	[[NSUserDefaults standardUserDefaults]removeObjectForKey:@"access_token2"];
 	[[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 +(BOOL)isNeedToAuthorize{
-	return ([[self classAttributes] objectForKey:@"access_token"] == nil);
+	return ([self classAttributes][@"access_token"] == nil);
 }
 
 
 +(NSString*)stringFromArray:(NSArray*)array{
-	NSMutableString * str = [NSMutableString string];
-	if ([array count]!= 0) {
-		for (NSString* p in array) {
-			[str appendFormat:@"%@",p];
-			
-			if (p != [array lastObject]) {
-				[str appendString:@","];
-			}
-		}
-	}
-	return str;
+	if (array.count) {
+        return [array componentsJoinedByString:@","];
+    }
+    return @"";
+	
 }
 #pragma mark -
 #pragma mark Users
@@ -113,15 +131,15 @@
 			  callback:(Foursquare2Callback)callback
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:[self stringFromArray:phones] forKey:@"phone"];
-	[dic setObject:[self stringFromArray:emails] forKey:@"email"];
-	[dic setObject:[self stringFromArray:twitters] forKey:@"twitter"];
+	dic[@"phone"] = [self stringFromArray:phones];
+	dic[@"email"] = [self stringFromArray:emails];
+	dic[@"twitter"] = [self stringFromArray:twitters];
 	if (twitterSource) {
-		[dic setObject:twitterSource forKey:@"twitterSource"];
+		dic[@"twitterSource"] = twitterSource;
 	}
-	[dic setObject:[self stringFromArray:fbid] forKey:@"fbid"];
+	dic[@"fbid"] = [self stringFromArray:fbid];
 	if (name) {
-		[dic setObject:name forKey:@"name"];
+		dic[@"name"] = name;
 	}
 	[self get:@"users/search" withParams:dic callback:callback];
 }
@@ -150,16 +168,16 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		[dic setObject:limit forKey:@"limit"];
+		dic[@"limit"] = limit;
 	}
 	if (offset) {
-		[dic setObject:offset forKey:@"offset"];
+		dic[@"offset"] = offset;
 	}
 	if (afterTimestamp) {
-		[dic setObject:afterTimestamp forKey:@"afterTimestamp"];
+		dic[@"afterTimestamp"] = afterTimestamp;
 	}
 	if (beforeTimestamp) {
-		[dic setObject:beforeTimestamp forKey:@"beforeTimestamp"];
+		dic[@"beforeTimestamp"] = beforeTimestamp;
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/checkins",userID];
 	[self get:path withParams:dic callback:callback];
@@ -183,10 +201,10 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (sort) {
-		[dic setObject:[self sortTypeToString:sort] forKey:@"sort"];
+		dic[@"sort"] = [self sortTypeToString:sort];
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/tips",userID];
 	[self get:path withParams:dic callback:callback];
@@ -205,10 +223,10 @@
 	
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (sort) {
-		[dic setObject:[self sortTypeToString:sort] forKey:@"sort"];
+		dic[@"sort"] = [self sortTypeToString:sort];
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/todos",userID];
 	[self get:path withParams:dic callback:callback];
@@ -257,8 +275,7 @@
 	   callback:(Foursquare2Callback)callback
 {
 	NSString *path = [NSString stringWithFormat:@"users/%@/setpings",userID];
-	NSDictionary *params = [NSDictionary dictionaryWithObject:value?@"true":@"false"
-													   forKey:@"value"];
+	NSDictionary *params = @{@"value":(value?@"true":@"false")};
 	[self post:path withParams:params callback:callback];
 }
 
@@ -288,31 +305,31 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (name) {
-		[dic setObject:name forKey:@"name"];
+		dic[@"name"] = name;
 	}
 	if (address) {
-		[dic setObject:address forKey:@"address"];
+		dic[@"address"] = address;
 	}
 	if (crossStreet) {
-		[dic setObject:crossStreet forKey:@"crossStreet"];
+		dic[@"crossStreet"] = crossStreet;
 	}
 	if (city) {
-		[dic setObject:city forKey:@"city"];
+		dic[@"city"] = city;
 	}
 	if (state) {
-		[dic setObject:state forKey:@"state"];
+		dic[@"state"] = state;
 	}
 	if (zip) {
-		[dic setObject:name forKey:@"zip"];
+		dic[@"zip"] = name;
 	}
 	if (phone) {
-		[dic setObject:name forKey:@"phone"];
+		dic[@"phone"] = name;
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (primaryCategoryId) {
-		[dic setObject:primaryCategoryId forKey:@"primaryCategoryId"];
+		dic[@"primaryCategoryId"] = primaryCategoryId;
 	}
 	[self post:@"venues/add" withParams:dic callback:callback];
 }
@@ -322,37 +339,38 @@
 	[self get:@"venues/categories" withParams:nil callback:callback];
 }
 
-+(void)searchVenuesNearByLatitude:(NSString*)lat
-						longitude:(NSString*)lon
-					   accuracyLL:(NSString*)accuracyLL
-						 altitude:(NSString*)altitude
-					  accuracyAlt:(NSString*)accuracyAlt
++(void)searchVenuesNearByLatitude:(NSNumber*)lat
+						longitude:(NSNumber*)lon
+					   accuracyLL:(NSNumber*)accuracyLL
+						 altitude:(NSNumber*)altitude
+					  accuracyAlt:(NSNumber*)accuracyAlt
 							query:(NSString*)query
-							limit:(NSString*)limit
+							limit:(NSNumber*)limit
 						   intent:(NSString*)intent
+                           radius:(NSNumber*)radius
 						 callback:(Foursquare2Callback)callback
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (accuracyLL) {
-		[dic setObject:accuracyLL forKey:@"llAcc"];
+		dic[@"llAcc"] = accuracyLL.stringValue;
 	}
 	if (altitude) {
-		[dic setObject:altitude forKey:@"alt"];
+		dic[@"alt"] = altitude.stringValue;
 	}
 	if (accuracyAlt) {
-		[dic setObject:accuracyAlt forKey:@"altAcc"];
+		dic[@"altAcc"] = accuracyAlt.stringValue;
 	}
 	if (query) {
-		[dic setObject:query forKey:@"query"];
+		dic[@"query"] = query;
 	}
 	if (limit) {
-		[dic setObject:limit forKey:@"limit"];
+		dic[@"limit"] = limit.stringValue;
 	}
 	if (intent) {
-		[dic setObject:intent forKey:@"intent"];
+		dic[@"intent"] = intent;
 	}
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
@@ -371,13 +389,13 @@
 	
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		[dic setObject:limit forKey:@"limit"];
+		dic[@"limit"] = limit;
 	}
 	if (offset) {
-		[dic setObject:offset forKey:@"offset"];
+		dic[@"offset"] = offset;
 	}
 	if (afterTimestamp) {
-		[dic setObject:afterTimestamp forKey:@"afterTimestamp"];
+		dic[@"afterTimestamp"] = afterTimestamp;
 	}
 	NSString *path = [NSString stringWithFormat:@"venues/%@/herenow",venueID];
 	[self get:path withParams:dic callback:callback];
@@ -392,7 +410,7 @@
 		return;
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:[self sortTypeToString:sort] forKey:@"sort"];
+	dic[@"sort"] = [self sortTypeToString:sort];
 	NSString *path = [NSString stringWithFormat:@"venues/%@/tips",venueID];
 	[self get:path withParams:dic callback:callback];
 }
@@ -408,7 +426,7 @@
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (text) {
-		[dic setObject:text	forKey:@"text"];
+		dic[@"text"] = text;
 	}
 	NSString *path = [NSString stringWithFormat:@"venues/%@/marktodo",venueID];
 	[self post:path withParams:dic callback:callback];
@@ -423,7 +441,7 @@
 		return;
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:[self problemTypeToString:problem]	forKey:@"problem"];
+	dic[@"problem"] = [self problemTypeToString:problem];
 	NSString *path = [NSString stringWithFormat:@"venues/%@/flag",venueID];
 	[self post:path withParams:dic callback:callback];
 }
@@ -448,31 +466,31 @@
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (name) {
-		[dic setObject:name forKey:@"name"];
+		dic[@"name"] = name;
 	}
 	if (address) {
-		[dic setObject:address forKey:@"address"];
+		dic[@"address"] = address;
 	}
 	if (crossStreet) {
-		[dic setObject:crossStreet forKey:@"crossStreet"];
+		dic[@"crossStreet"] = crossStreet;
 	}
 	if (city) {
-		[dic setObject:city forKey:@"city"];
+		dic[@"city"] = city;
 	}
 	if (state) {
-		[dic setObject:state forKey:@"state"];
+		dic[@"state"] = state;
 	}
 	if (zip) {
-		[dic setObject:name forKey:@"zip"];
+		dic[@"zip"] = name;
 	}
 	if (phone) {
-		[dic setObject:name forKey:@"phone"];
+		dic[@"phone"] = name;
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (primaryCategoryId) {
-		[dic setObject:primaryCategoryId forKey:@"primaryCategoryId"];
+		dic[@"primaryCategoryId"] = primaryCategoryId;
 	}
 	NSString *path = [NSString stringWithFormat:@"venues/%@/proposeedit",venueID];
 	[self post:path withParams:dic callback:callback];
@@ -492,6 +510,22 @@
 +(void)createCheckinAtVenue:(NSString*)venueID
 					  venue:(NSString*)venue
 					  shout:(NSString*)shout
+				   callback:(Foursquare2Callback)callback{
+    [Foursquare2 createCheckinAtVenue:venueID
+								venue:venue
+								shout:shout
+							broadcast:broadcastPublic
+							 latitude:nil
+							longitude:nil
+						   accuracyLL:nil
+							 altitude:nil
+						  accuracyAlt:nil
+							 callback:callback];
+}
+
++(void)createCheckinAtVenue:(NSString*)venueID
+					  venue:(NSString*)venue
+					  shout:(NSString*)shout
 				  broadcast:(FoursquareBroadcastType)broadcast
 				   latitude:(NSString*)lat
 				  longitude:(NSString*)lon
@@ -502,34 +536,34 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (venueID) {
-		[dic setObject:venueID forKey:@"venueId"];
+		dic[@"venueId"] = venueID;
 	}
 	if (venue) {
-		[dic setObject:venue forKey:@"venue"];
+		dic[@"venue"] = venue;
 	}
 	if (shout) {
-		[dic setObject:shout forKey:@"shout"];
+		dic[@"shout"] = shout;
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (accuracyLL) {
-		[dic setObject:accuracyLL forKey:@"llAcc"];
+		dic[@"llAcc"] = accuracyLL;
 	}
 	if (altitude) {
-		[dic setObject:altitude forKey:@"alt"];
+		dic[@"alt"] = altitude;
 	}
 	if (accuracyAlt) {
-		[dic setObject:accuracyAlt forKey:@"altAcc"];
+		dic[@"altAcc"] = accuracyAlt;
 	}
 	
-	[dic setObject:[self broadcastTypeToString:broadcast] forKey:@"broadcast"];
+	dic[@"broadcast"] = [self broadcastTypeToString:broadcast];
 	
-	//	if ([broadcast length] == 0) {
-	//		[dic setObject:@"public" forKey:@"broadcast"];
-	//	}else{
-	//		[dic setObject:broadcast forKey:@"broadcast"];
-	//	}
+    //	if ([broadcast length] == 0) {
+    //		[dic setObject:@"public" forKey:@"broadcast"];
+    //	}else{
+    //		[dic setObject:broadcast forKey:@"broadcast"];
+    //	}
 	
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }
@@ -543,16 +577,16 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		[dic setObject:limit forKey:@"limit"];
+		dic[@"limit"] = limit;
 	}
 	if (offset) {
-		[dic setObject:offset forKey:@"offset"];
+		dic[@"offset"] = offset;
 	}
 	if (afterTimestamp) {
-		[dic setObject:afterTimestamp forKey:@"afterTimestamp"];
+		dic[@"afterTimestamp"] = afterTimestamp;
 	}
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	
 	[self get:@"checkins/recent" withParams:dic callback:callback];
@@ -569,7 +603,7 @@
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (text) {
-		[dic setObject:text forKey:@"text"];
+		dic[@"text"] = text;
 	}
 	NSString *path = [NSString stringWithFormat:@"checkins/%@/addcomment",checkinID];
 	[self post:path withParams:dic callback:callback];
@@ -585,7 +619,7 @@
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (commentID) {
-		[dic setObject:commentID forKey:@"commentId"];
+		dic[@"commentId"] = commentID;
 	}
 	NSString *path = [NSString stringWithFormat:@"checkins/%@/deletecomment",checkinID];
 	[self post:path withParams:dic callback:callback];
@@ -613,10 +647,10 @@
 		return;
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:venueID forKey:@"venueId"];
-	[dic setObject:tip forKey:@"text"];
+	dic[@"venueId"] = venueID;
+	dic[@"text"] = tip;
 	if(url)
-		[dic setObject:url forKey:@"url"];
+		dic[@"url"] = url;
 	
 	[self post:@"tips/add" withParams:dic callback:callback];
 }
@@ -631,20 +665,20 @@
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		[dic setObject:limit forKey:@"limit"];
+		dic[@"limit"] = limit;
 	}
 	if (offset) {
-		[dic setObject:offset forKey:@"offset"];
+		dic[@"offset"] = offset;
 	}
 	
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (friendsOnly) {
-		[dic setObject:@"friends" forKey:@"filter"];
+		dic[@"filter"] = @"friends";
 	}
 	if (query) {
-		[dic setObject:query forKey:@"query"];
+		dic[@"query"] = query;
 	}
 	
 	[self get:@"tips/search" withParams:dic callback:callback];
@@ -688,16 +722,36 @@
 #else
 +(void)addPhoto:(UIImage*)photo
 #endif
-	  toCheckin:(NSString*)checkinID
-			tip:(NSString*)tipID
-		  venue:(NSString*)venueID
-	  broadcast:(FoursquareBroadcastType)broadcast
-	   latitude:(NSString*)lat
-	  longitude:(NSString*)lon
-	 accuracyLL:(NSString*)accuracyLL
-	   altitude:(NSString*)altitude
-	accuracyAlt:(NSString*)accuracyAlt
-	   callback:(Foursquare2Callback)callback;
+      toCheckin:(NSString*)checkinID
+       callback:(Foursquare2Callback)callback{
+    [Foursquare2 addPhoto:photo
+                toCheckin:checkinID
+                      tip:nil
+                    venue:nil
+                broadcast:broadcastPublic
+                 latitude:nil
+                longitude:nil
+               accuracyLL:nil
+                 altitude:nil
+              accuracyAlt:nil
+                 callback:callback];
+}
+
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
++(void)addPhoto:(NSImage*)photo
+#else
++(void)addPhoto:(UIImage*)photo
+#endif
+toCheckin:(NSString*)checkinID
+tip:(NSString*)tipID
+venue:(NSString*)venueID
+broadcast:(FoursquareBroadcastType)broadcast
+latitude:(NSString*)lat
+longitude:(NSString*)lon
+accuracyLL:(NSString*)accuracyLL
+altitude:(NSString*)altitude
+accuracyAlt:(NSString*)accuracyAlt
+callback:(Foursquare2Callback)callback;
 {
 	if (!checkinID && !tipID && !venueID) {
 		callback(NO,nil);
@@ -706,27 +760,27 @@
 	
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (lat && lon) {
-		[dic setObject:[NSString stringWithFormat:@"%@,%@",lat,lon] forKey:@"ll"];
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (accuracyLL) {
-		[dic setObject:accuracyLL forKey:@"llAcc"];
+		dic[@"llAcc"] = accuracyLL;
 	}
 	if (altitude) {
-		[dic setObject:altitude forKey:@"alt"];
+		dic[@"alt"] = altitude;
 	}
 	if (accuracyAlt) {
-		[dic setObject:accuracyAlt forKey:@"altAcc"];
+		dic[@"altAcc"] = accuracyAlt;
 	}
 	
-	[dic setObject:[self broadcastTypeToString:broadcast] forKey:@"broadcast"];
+	dic[@"broadcast"] = [self broadcastTypeToString:broadcast];
 	if (checkinID) {
-		[dic setObject:checkinID forKey:@"checkinId"];
+		dic[@"checkinId"] = checkinID;
 	}
 	if (tipID) {
-		[dic setObject:tipID forKey:@"tipId"];
+		dic[@"tipId"] = tipID;
 	}
 	if (venueID) {
-		[dic setObject:venueID forKey:@"venueId"];
+		dic[@"venueId"] = venueID;
 	}
 	[self uploadPhoto:@"photos/add"
 		   withParams:dic
@@ -744,7 +798,7 @@
 			   callback:(Foursquare2Callback)callback;
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:value?@"1":@"0" forKey:@"value"];
+	dic[@"value"] = value?@"1":@"0";
 	[self post:@"settings/sendToTwitter/set" withParams:dic callback:callback];
 }
 
@@ -752,7 +806,7 @@
 				callback:(Foursquare2Callback)callback;
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:value?@"1":@"0" forKey:@"value"];
+	dic[@"value"] = value?@"1":@"0";
 	[self post:@"settings/sendToFacebook/set" withParams:dic callback:callback];
 }
 
@@ -760,7 +814,7 @@
 			  callback:(Foursquare2Callback)callback;
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	[dic setObject:value?@"1":@"0" forKey:@"value"];
+	dic[@"value"] = value?@"1":@"0";
 	[self post:@"settings/receivePings/set" withParams:dic callback:callback];
 }
 #pragma mark -
@@ -771,47 +825,8 @@
 
 
 
-#pragma mark HRRequestOperation Delegates
-+ (void)restConnection:(NSURLConnection *)connection
-	  didFailWithError:(NSError *)error 
-				object:(id)object 
-{
-	Foursquare2Callback callback = (Foursquare2Callback)object;
-    callback(NO, error);
-	[callback release];
-}
 
-+ (void)restConnection:(NSURLConnection *)connection 
-	   didReceiveError:(NSError *)error 
-			  response:(NSHTTPURLResponse *)response 
-				object:(id)object 
-{
-	Foursquare2Callback callback = (Foursquare2Callback)object;
-    callback(NO, error);
-	[callback release];
-}
 
-+ (void)restConnection:(NSURLConnection *)connection
-  didReceiveParseError:(NSError *)error 
-		  responseBody:(NSString *)string
-				object:(id)object
-{
-	Foursquare2Callback callback = (Foursquare2Callback)object;
-    callback(NO, error);
-	[callback release];
-}
-
-+ (void)restConnection:(NSURLConnection *)connection 
-	 didReturnResource:(id)resource 
-				object:(id)object
-{
-	//	NSUInteger code = [response statusCode];
-	//	BOOL success = (code >= 200 && code <= 299);
-	
-	Foursquare2Callback callback = (Foursquare2Callback)object;
-    callback(YES, resource);
-	[callback release];
-}
 
 
 
@@ -891,44 +906,97 @@
 	[self request:methodName withParams:params httpMethod:@"POST" callback:callback];
 }
 
-+(NSDictionary*)generateFinalParamsFor:(NSDictionary *)params 
-{	
-	NSMutableDictionary *dict = [NSMutableDictionary new];
-	[dict setObject:OAUTH_KEY forKey:@"client_id"];
-	[dict setObject:OAUTH_SECRET forKey:@"client_secret"];
-	NSString *accessToken  = [[self classAttributes] objectForKey:@"access_token"];
++ (NSString *)constructRequestUrlForMethod:(NSString *)methodName 
+                                    params:(NSDictionary *)paramMap {
+    NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"kBaseUrl"]];
+    
+    [paramStr appendString:methodName];
+	[paramStr appendFormat:@"?client_id=%@",OAUTH_KEY];
+    [paramStr appendFormat:@"&client_secret=%@",OAUTH_SECRET];
+    [paramStr appendFormat:@"&v=%@",VERSION];
+    NSLocale *locale = [NSLocale currentLocale];
+    NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
+    [paramStr appendFormat:@"&locale=%@",countryCode];
+    
+	NSString *accessToken  = [self classAttributes][@"access_token"];
 	if ([accessToken length] > 0)
-		[dict setObject:accessToken forKey:@"oauth_token"];
+        [paramStr appendFormat:@"&oauth_token=%@",accessToken];
 	
-	if (params) {
-		for (id key in params) {
-			id val = [params objectForKey:key];
-			[dict setObject:val forKey:key];
+	if(paramMap) {
+		NSEnumerator *enumerator = [paramMap keyEnumerator];
+		NSString *key, *value;
+		
+		while ((key = (NSString *)[enumerator nextObject])) {
+			value = (NSString *)paramMap[key];
+			//DLog(@"value: " @"%@", value);
+			
+			NSString *urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];//NSASCIIStringEncoding];
+			
+			if(!urlEncodedValue) {
+				urlEncodedValue = @"";
+			}
+			[paramStr appendFormat:@"&%@=%@",key,urlEncodedValue];
 		}
 	}
 	
-	return dict;
+	return paramStr;
+}
+
+
+
+#pragma -
+
+
+static Foursquare2 *instance;
++(Foursquare2*)sharedInstance{
+    if (!instance) {
+        instance = [[Foursquare2 alloc]init];
+    }
+    return instance;
+    
 }
 
 + (void)    request:(NSString *)methodName 
 	     withParams:(NSDictionary *)params 
 	     httpMethod:(NSString *)httpMethod
-		   callback:(Foursquare2Callback)callback
+		   callback:(Foursquare2Callback)callback{
+    [[Foursquare2 sharedInstance]request:methodName 
+                              withParams:params
+                              httpMethod:httpMethod
+                                callback:callback];   
+}
+
+- (void) callback: (NSDictionary *)d target:(FSTargetCallback *)target {
+    if (d[@"access_token"]) {
+        target.callback(YES,d);
+        return;
+    }
+    NSNumber *code = [d valueForKeyPath:@"meta.code"];
+    if (d!= nil && (code.intValue == 200 || code.intValue == 201)) {
+        target.callback(YES,d);
+    }else{
+        target.callback(NO,[d valueForKeyPath:@"meta.errorDetail"]);
+    }
+}
+
+-(void)    request:(NSString *)methodName 
+        withParams:(NSDictionary *)params 
+        httpMethod:(NSString *)httpMethod
+          callback:(Foursquare2Callback)callback
 {
-	callback = [callback copy];
+    //	callback = [callback copy];
+    NSString *path = [Foursquare2 constructRequestUrlForMethod:methodName
+                                                        params:params];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:path ]];
+    request.HTTPMethod = httpMethod;
 	
-	NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    FSTargetCallback *target = [[FSTargetCallback alloc] initWithCallback:callback
+                                                       resultCallback:@selector(callback:target:)
+                                                           requestUrl: path
+                                                             numTries: 2];
 	
-	NSString *path = [NSString stringWithFormat:@"/%@", methodName];
-	[options setValue:[NSNumber numberWithInt:HRDataFormatJSON] forKey:kHRClassAttributesFormatKey];
-	NSDictionary *finalParams = [self generateFinalParamsFor:params];
-	
-	[options setObject:finalParams forKey:kHRClassAttributesParamsKey];
-	
-	if ([httpMethod isEqualToString:@"GET"])
-		[self getPath:path withOptions:options object:callback];
-	else
-		[self postPath:path withOptions:options object:callback];
+	[self makeAsyncRequestWithRequest:request 
+                               target:target];
 }
 
 
@@ -939,33 +1007,91 @@
 #else
 			  withImage:(UIImage*)image
 #endif
+			   callback:(Foursquare2Callback)callback{
+    [[Foursquare2 sharedInstance]uploadPhoto:methodName
+                                  withParams:params 
+                                   withImage:image
+                                    callback:callback];
+}
+
+
+- (void)    uploadPhoto:(NSString *)methodName 
+			 withParams:(NSDictionary *)params 
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
+			  withImage:(NSImage*)image
+#else
+			  withImage:(UIImage*)image
+#endif
 			   callback:(Foursquare2Callback)callback
 {
-	callback = [callback copy];
-	NSMutableDictionary *options = [NSMutableDictionary dictionary];
-	NSString *path = [NSString stringWithFormat:@"/%@", methodName];
-	[options setValue:[NSNumber numberWithInt:33] forKey:kHRClassAttributesFormatKey];
-	NSDictionary *finalParams = [self generateFinalParamsFor:params];
+    
 	
-	[options setObject:finalParams forKey:kHRClassAttributesParamsKey];
-	
-	NSMutableData *postBody = [NSMutableData data];
+    NSString *finalURL = [Foursquare2 constructRequestUrlForMethod:methodName 
+                                                            params:params];
+    
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
 	NSArray *reps = [image representations];
 	NSData *data = [NSBitmapImageRep representationOfImageRepsInArray:reps 
-																 usingType:NSJPEGFileType
-																properties:nil];
+                                                            usingType:NSJPEGFileType
+                                                           properties:nil];
 #else
 	NSData *data = UIImageJPEGRepresentation(image,1.0);
 #endif
-	 
-	[postBody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",@"0xKhTmLbOuNdArY"] dataUsingEncoding:NSUTF8StringEncoding]];
-	[postBody appendData:[[NSString stringWithString:@"Content-Disposition: form-data; name=\"data\"; filename=\"photo.jpeg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-	[postBody appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-	[postBody appendData:[NSData dataWithData:data]];
-	[postBody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",@"0xKhTmLbOuNdArY"] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    
+    
+    NSURL *url = [NSURL URLWithString:finalURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url] ;
+    request.HTTPMethod = @"POST";
+    
+    
+	NSString *boundary = @"0xKhTmLbOuNdArY";  
+	NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil];
+	[request addValue:contentType forHTTPHeaderField:@"Content-Type"];
 	
-	[options setObject:postBody forKey:kHRClassAttributesBodyKey];
-	[self postPath:path withOptions:options object:callback];
+	
+	NSMutableData *body = [NSMutableData data];
+	[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+	[body appendData:[@"Content-Disposition: form-data; name=\"userfile\"; filename=\"soundtracker_radio_artwork.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[body appendData:data];
+	[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+	[request setHTTPBody:body];
+    
+    
+    
+    
+    FSTargetCallback *target = [[FSTargetCallback alloc] initWithCallback:callback
+                                                       resultCallback:@selector(callback:target:)
+                                                           requestUrl: finalURL
+                                                             numTries: 2];
+    
+    [self makeAsyncRequestWithRequest:request
+                               target:target];
+}
+
+
+
+Foursquare2Callback authorizeCallbackDelegate;
++(void)authorizeWithCallback:(Foursquare2Callback)callback{
+	authorizeCallbackDelegate = [callback copy];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?display=touch&client_id=%@&response_type=code&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
+	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
+	loginCon.delegate = self;
+	loginCon.selector = @selector(setCode:);
+	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
+    navCon.navigationBar.tintColor = [UIColor lightGrayColor];
+	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
+	[mainWindow.rootViewController presentViewController:navCon animated:YES completion:nil];
+}
+
++(void)setCode:(NSString*)code{
+	[Foursquare2 getAccessTokenForCode:code callback:^(BOOL success,id result){
+		if (success) {
+			[Foursquare2 setBaseURL:kBaseUrl];
+			[Foursquare2 setAccessToken:result[@"access_token"]];
+			authorizeCallbackDelegate(YES,result);
+		}
+	}];
 }
 @end

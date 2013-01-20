@@ -7,8 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Constants.h"
-#import "HTTPRiot.h"
+#import "FSRequester.h"
+#import "FSWebLogin.h"
+
+
+
+//1
+#define OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
+#define OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
+
+//2, don't forget to added app url in your info plist file CFBundleURLSchemes
+#define REDIRECT_URL @"app://testapp123"
+
+//3 update this date to use up-to-date Foursquare API
+#define VERSION (@"20130117")
+
+
+
+
+#define kBaseUrl @"https://api.foursquare.com/v2/"
+
+
 
 typedef void(^Foursquare2Callback)(BOOL success, id result);
 
@@ -33,18 +52,19 @@ typedef enum {
 } FoursquareBroadcastType;
 
 
-@interface Foursquare2 : HRRestModel {
+@interface Foursquare2 : FSRequester {
 	
 }
 
-
-+(void)getAccessTokenForCode:(NSString*)code callback:(id)callback;
++ (void)setBaseURL:(NSString *)uri;
++(void)getAccessTokenForCode:(NSString*)code callback:(Foursquare2Callback)callback;
 +(void)setAccessToken:(NSString*)token;
 +(void)removeAccessToken;
 +(BOOL)isNeedToAuthorize;
 #pragma mark -
 
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
++(void)authorizeWithCallback:(Foursquare2Callback)callback;
 // !!!: 1. userID is a valid user ID or "self" 
 +(void)getDetailForUser:(NSString*)userID
 			  callback:(Foursquare2Callback)callback;
@@ -135,14 +155,15 @@ typedef enum {
 
 +(void)getVenueCategoriesCallback:(Foursquare2Callback)callback;
 
-+(void)searchVenuesNearByLatitude:(NSString*) lat
-						longitude:(NSString*)lon
-					   accuracyLL:(NSString*)accuracyLL
-						 altitude:(NSString*)altitude
-					  accuracyAlt:(NSString*)accuracyAlt
++(void)searchVenuesNearByLatitude:(NSNumber*) lat
+						longitude:(NSNumber*)lon
+					   accuracyLL:(NSNumber*)accuracyLL
+						 altitude:(NSNumber*)altitude
+					  accuracyAlt:(NSNumber*)accuracyAlt
 							query:(NSString*)query
-							limit:(NSString*)limit
+							limit:(NSNumber*)limit
 						   intent:(NSString*)intent
+                           radius:(NSNumber*)radius
 						 callback:(Foursquare2Callback)callback;
 #pragma mark Aspects
 // !!!: please read comment
@@ -188,6 +209,13 @@ typedef enum {
 
 +(void)getDetailForCheckin:(NSString*)checkinID
 			   callback:(Foursquare2Callback)callback;
+
+
++(void)createCheckinAtVenue:(NSString*)venueID
+					  venue:(NSString*)venue
+					  shout:(NSString*)shout
+				   callback:(Foursquare2Callback)callback;
+
 
 +(void)createCheckinAtVenue:(NSString*)venueID
 					  venue:(NSString*)venue
@@ -252,6 +280,15 @@ typedef enum {
 
 +(void)getDetailForPhoto:(NSString*)photoID
 			callback:(Foursquare2Callback)callback;
+
+
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
++(void)addPhoto:(NSImage*)photo
+#else
++(void)addPhoto:(UIImage*)photo
+#endif
+      toCheckin:(NSString*)checkinID
+       callback:(Foursquare2Callback)callback;
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
 +(void)addPhoto:(NSImage*)photo
