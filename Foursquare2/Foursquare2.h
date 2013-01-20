@@ -19,7 +19,7 @@
 #define OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
 #define OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
 
-//2, don't forget to added app url in your info plist file CFBundleURLSchemes
+//2, don't forget to added app url in your info plist file CFBundleURLTypes
 #define REDIRECT_URL @"app://testapp123"
 
 //3 update this date to use up-to-date Foursquare API

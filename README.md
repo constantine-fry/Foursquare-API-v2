@@ -1,13 +1,22 @@
-#My Personal WebPage
+#Foursquare API 2.0
 
-http://appledeveloper.me
+
+how to use it.
+
+1. Create Your application here https://foursquare.com/developers/register
+
+2. You should modefy Foursquare2.h
+
+    1. Change OAUTH_KEY and OAUTH_SECRET
+    2. Change REDIRECT_URL. It should start with app://
+    3. Change VERSION to your current date, so you will use latest API/
+
+3. You need to make sure you set up the URL scheme in your info.plist properly
+CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 ###Screnshots
-
-![](https://raw.github.com/Constantine-Fry/constantine-fry.github.com/master/screenshots/1.png)
-![](https://raw.github.com/Constantine-Fry/constantine-fry.github.com/master/screenshots/2.png)
-![](https://raw.github.com/Constantine-Fry/constantine-fry.github.com/master/screenshots/3.png)
-![](https://raw.github.com/Constantine-Fry/constantine-fry.github.com/master/screenshots/4.png)
+![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%201.PNG?raw=true)
+![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true)
 
 
 
