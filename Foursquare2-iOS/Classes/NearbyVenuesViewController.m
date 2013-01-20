@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Nearby";
     self.tableView.tableHeaderView = self.mapView;
     self.tableView.tableFooterView = self.footer;
     _locationManager = [[CLLocationManager alloc]init];

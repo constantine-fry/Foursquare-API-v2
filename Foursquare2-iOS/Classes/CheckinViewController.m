@@ -19,6 +19,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.title = @"Checkin";
     self.venueName.text = self.venue[@"name"];
 }
 

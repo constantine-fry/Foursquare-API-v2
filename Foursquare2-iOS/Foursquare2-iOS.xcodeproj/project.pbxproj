@@ -29,8 +29,7 @@
 		4779884C16AC686700038756 /* poweredByFoursquare_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779884A16AC686700038756 /* poweredByFoursquare_gray.png */; };
 		4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */; };
 		4779884F16AC697200038756 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884E16AC697200038756 /* FSWebLogin.xib */; };
-		47A08CCF12D893E300B41063 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A08CCE12D893E300B41063 /* test.png */; };
-		47A08CED12D89A4700B41063 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 47A08CEC12D89A4700B41063 /* test.jpg */; };
+		4779886416AC6E2900038756 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4779886316AC6E2900038756 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,8 +66,7 @@
 		4779884A16AC686700038756 /* poweredByFoursquare_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poweredByFoursquare_gray.png; sourceTree = "<group>"; };
 		4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poweredByFoursquare_gray@2x.png"; sourceTree = "<group>"; };
 		4779884E16AC697200038756 /* FSWebLogin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
-		47A08CCE12D893E300B41063 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
-		47A08CEC12D89A4700B41063 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
+		4779886316AC6E2900038756 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Foursquare_API-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Foursquare_API-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,6 +117,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				4779886316AC6E2900038756 /* README.md */,
 				4779881E16AC248800038756 /* Foursquare2 */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -142,8 +141,6 @@
 			isa = PBXGroup;
 			children = (
 				4779882B16AC25DF00038756 /* Default-568h@2x.png */,
-				47A08CEC12D89A4700B41063 /* test.jpg */,
-				47A08CCE12D893E300B41063 /* test.png */,
 				8D1107310486CEB800E47090 /* Foursquare_API-Info.plist */,
 			);
 			name = Resources;
@@ -229,8 +226,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47A08CCF12D893E300B41063 /* test.png in Resources */,
-				47A08CED12D89A4700B41063 /* test.jpg in Resources */,
 				4779882C16AC25DF00038756 /* Default-568h@2x.png in Resources */,
 				4779883216AC536E00038756 /* NearbyVenuesViewController.xib in Resources */,
 				4779884416AC623600038756 /* CheckinViewController.xib in Resources */,
@@ -238,6 +233,7 @@
 				4779884C16AC686700038756 /* poweredByFoursquare_gray.png in Resources */,
 				4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */,
 				4779884F16AC697200038756 /* FSWebLogin.xib in Resources */,
+				4779886416AC6E2900038756 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
