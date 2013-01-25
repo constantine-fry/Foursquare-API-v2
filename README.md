@@ -3,7 +3,8 @@
 ###Features
 * In-App Authentication
 * Asynchronous requests with blocks
-* Build-in image uploader for photos
+* Build-in image uploader for photos.
+    *You can use [CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) for downloading images.
 * Made with native framworks:
     * NSJSONSerialization for JSON parsing
     * NSURLConnection for requests
@@ -39,7 +40,8 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true)
 
-
+##My other usefull libs
+[CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) - is simple subclass of UIImageView for async downloading image. Very simple and powerfull. No extra code. I use native NSCache class for in-memory image caching.
 
 
 

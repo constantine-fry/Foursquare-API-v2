@@ -180,9 +180,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Foursquare2-iOS */ = {
+		1D6058900D05DD3D006BFB54 /* Foursquare2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Foursquare2-iOS" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Foursquare2" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -192,7 +192,7 @@
 			);
 			dependencies = (
 			);
-			name = "Foursquare2-iOS";
+			name = Foursquare2;
 			productName = "Foursquare API";
 			productReference = 1D6058910D05DD3D006BFB54 /* Foursquare2-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -216,7 +216,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Foursquare2-iOS */,
+				1D6058900D05DD3D006BFB54 /* Foursquare2 */,
 			);
 		};
 /* End PBXProject section */
@@ -328,7 +328,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Foursquare2-iOS" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Foursquare2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
