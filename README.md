@@ -4,7 +4,7 @@
 * In-App Authentication
 * Asynchronous requests with blocks
 * Build-in image uploader for photos.
-    *You can use [CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) for downloading images.
+    * You can use [CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) for downloading images.
 * Made with native framworks:
     * NSJSONSerialization for JSON parsing
     * NSURLConnection for requests
