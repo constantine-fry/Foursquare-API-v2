@@ -1098,8 +1098,11 @@ Foursquare2Callback authorizeCallbackDelegate;
 +(void)done:(NSError*)error{
     if ([Foursquare2 isAuthorized]) {
         [Foursquare2 setBaseURL:kBaseUrl];
+        authorizeCallbackDelegate(YES,error);
+    }else{
+        authorizeCallbackDelegate(NO,error);
     }
-    authorizeCallbackDelegate(YES,error);
+    
 }
 #endif
 @end
