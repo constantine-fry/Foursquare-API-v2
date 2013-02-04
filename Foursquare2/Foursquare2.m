@@ -1075,7 +1075,24 @@ Foursquare2Callback authorizeCallbackDelegate;
 	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
     navCon.navigationBar.tintColor = [UIColor lightGrayColor];
 	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
-	[mainWindow.rootViewController presentViewController:navCon animated:YES completion:nil];
+    UIViewController *controller = [self topViewController:mainWindow.rootViewController];
+	[controller presentViewController:navCon animated:YES completion:nil];
+}
+
++ (UIViewController *)topViewController:(UIViewController *)rootViewController
+{
+    if (rootViewController.presentedViewController == nil) {
+        return rootViewController;
+    }
+    
+    if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
+        return [self topViewController:lastViewController];
+    }
+    
+    UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
+    return [self topViewController:presentedViewController];
 }
 
 +(void)done:(NSError*)error{
