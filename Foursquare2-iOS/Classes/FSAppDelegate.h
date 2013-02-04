@@ -13,8 +13,6 @@
     UIWindow *window;
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-
--(void)test_method;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
 @end
 
