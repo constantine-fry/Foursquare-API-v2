@@ -29,7 +29,9 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 
 
-
+PS:
+I got blue pin here.
+![](http://graphicclouds.com/map-pin-icons/)
 
 
 

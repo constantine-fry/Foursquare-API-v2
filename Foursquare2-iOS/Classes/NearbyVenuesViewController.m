@@ -71,7 +71,7 @@
 								   altitude:nil
 								accuracyAlt:nil
 									  query:nil
-									  limit:@(10)
+									  limit:nil
 									 intent:intentCheckin
                                      radius:@(500)
 								   callback:^(BOOL success, id result){
@@ -141,7 +141,16 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.nearbyVenues[indexPath.row][@"name"];
-    cell.detailTextLabel.text = self.nearbyVenues[indexPath.row][@"location"][@"address"];
+    NSDictionary *location = self.nearbyVenues[indexPath.row][@"location"];
+    if (location[@"address"]) {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m, %@",
+                                     location[@"distance"],
+                                     location[@"address"]];
+    }else{
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m",
+                                     location[@"distance"]];
+    }
+
     return cell;
 }
 
@@ -155,12 +164,7 @@
     [self.navigationController pushViewController:checkin animated:YES];
 }
 
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selected = self.nearbyVenues[indexPath.row];
+-(void)userDidSelectVenue{
     if ([Foursquare2 isAuthorized]) {
         [self checkin];
 	}else{
@@ -178,6 +182,13 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.selected = self.nearbyVenues[indexPath.row];
+    [self userDidSelectVenue];
+}
+
 - (void)viewDidUnload {
     [self setUsernameLabel:nil];
     [self setLogoutButton:nil];
@@ -185,5 +196,29 @@
     [super viewDidUnload];
 }
 
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation{
+    if (annotation == mapView.userLocation)
+        return nil;
+    
+    static NSString *s = @"ann";
+    MKAnnotationView *pin = [mapView dequeueReusableAnnotationViewWithIdentifier:s];
+    if (!pin) {
+        pin = [[MKPinAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:s];
+        pin.canShowCallout = YES;
+        pin.image = [UIImage imageNamed:@"pin.png"];
+        pin.calloutOffset = CGPointMake(0, 0);
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [button addTarget:self
+                   action:@selector(checkinButton) forControlEvents:UIControlEventTouchUpInside];
+        pin.rightCalloutAccessoryView = button;
+        
+    }
+    return pin;
+}
+
+-(void)checkinButton{
+    self.selected = self.mapView.selectedAnnotations.lastObject;
+    [self userDidSelectVenue];
+}
 
 @end
