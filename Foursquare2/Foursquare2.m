@@ -338,7 +338,7 @@ static NSMutableDictionary *attributes;
 					  accuracyAlt:(NSNumber*)accuracyAlt
 							query:(NSString*)query
 							limit:(NSNumber*)limit
-						   intent:(NSString*)intent
+						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
 						 callback:(Foursquare2Callback)callback
 {
@@ -362,7 +362,10 @@ static NSMutableDictionary *attributes;
 		dic[@"limit"] = limit.stringValue;
 	}
 	if (intent) {
-		dic[@"intent"] = intent;
+		dic[@"intent"] = [self inentTypeToString:intent];
+	}
+    if (radius) {
+		dic[@"radius"] = radius.stringValue;
 	}
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
@@ -823,6 +826,28 @@ callback:(Foursquare2Callback)callback;
 
 
 #pragma mark Private methods
+
++(NSString*)inentTypeToString:(FoursquareIntentType)broadcast{
+	switch (broadcast) {
+		case intentBrowse:
+			return @"browse";
+			break;
+		case intentCheckin:
+			return @"checkin";
+			break;
+		case intentGlobal:
+			return @"global";
+			break;
+		case intentMatch:
+			return @"match";
+			break;
+		default:
+			return nil;
+			break;
+	}
+	
+}
+
 
 +(NSString*)broadcastTypeToString:(FoursquareBroadcastType)broadcast{
 	switch (broadcast) {

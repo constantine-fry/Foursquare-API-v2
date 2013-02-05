@@ -54,6 +54,12 @@ typedef enum {
 	broadcastBoth
 } FoursquareBroadcastType;
 
+typedef enum {
+	intentCheckin,
+	intentBrowse,
+	intentGlobal,
+	intentMatch
+} FoursquareIntentType;
 
 @interface Foursquare2 : FSRequester {
 	
@@ -166,7 +172,7 @@ typedef enum {
 					  accuracyAlt:(NSNumber*)accuracyAlt
 							query:(NSString*)query
 							limit:(NSNumber*)limit
-						   intent:(NSString*)intent
+						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
 						 callback:(Foursquare2Callback)callback;
 #pragma mark Aspects

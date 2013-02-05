@@ -72,7 +72,7 @@
 								accuracyAlt:nil
 									  query:nil
 									  limit:@(10)
-									 intent:nil
+									 intent:intentCheckin
                                      radius:@(500)
 								   callback:^(BOOL success, id result){
 									   if (success) {
