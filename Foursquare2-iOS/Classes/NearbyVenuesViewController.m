@@ -8,10 +8,10 @@
 
 #import "NearbyVenuesViewController.h"
 #import "Foursquare2.h"
-#import "VenueAnnotation.h"
+#import "FSVenue.h"
 #import "CheckinViewController.h"
 #import "SettingsViewController.h"
-
+#import "FSConverter.h"
 
 @interface NearbyVenuesViewController ()
 
@@ -51,18 +51,32 @@
     }
 }
 
--(void)proccessAnnotations{
-    NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:self.nearbyVenues.count];
-    for (NSDictionary *v  in self.nearbyVenues) {
-        VenueAnnotation *ann = [[VenueAnnotation alloc]init];
-        ann.title = v[@"name"];
-        [ann setCoordinate:CLLocationCoordinate2DMake([v[@"location"][@"lat"] doubleValue],
-                                                      [v[@"location"][@"lng"] doubleValue])];
-        [annotations addObject:ann];
+-(void)removeAllAnnotationExceptOfCurrentUser
+{
+    NSMutableArray *annForRemove = [[NSMutableArray alloc] initWithArray:self.mapView.annotations];
+    if ([self.mapView.annotations.lastObject isKindOfClass:[MKUserLocation class]]) {
+        [annForRemove removeObject:self.mapView.annotations.lastObject];
+    }else{
+        for (id <MKAnnotation> annot_ in self.mapView.annotations)
+        {
+            if ([annot_ isKindOfClass:[MKUserLocation class]] ) {
+                [annForRemove removeObject:annot_];
+                break;
+            }
+        }
     }
-    [self.mapView addAnnotations:annotations];
+    
+    
+    [self.mapView removeAnnotations:annForRemove];
+}
+
+-(void)proccessAnnotations{
+    [self removeAllAnnotationExceptOfCurrentUser];
+    [self.mapView addAnnotations:self.nearbyVenues];
     
 }
+
+
 
 -(void)getVenuesForLocation:(CLLocation*)location{
     [Foursquare2 searchVenuesNearByLatitude:@(location.coordinate.latitude)
@@ -78,7 +92,8 @@
 									   if (success) {
 										   NSDictionary *dic = result;
 										   NSArray* venues = [dic valueForKeyPath:@"response.venues"];
-                                           self.nearbyVenues = venues;
+                                           FSConverter *converter = [[FSConverter alloc]init];
+                                           self.nearbyVenues = [converter convertToObjects:venues];
                                            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
                                            [self proccessAnnotations];
 
@@ -140,15 +155,15 @@
         cell.detailTextLabel.textColor = [UIColor lightGrayColor];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = self.nearbyVenues[indexPath.row][@"name"];
-    NSDictionary *location = self.nearbyVenues[indexPath.row][@"location"];
-    if (location[@"address"]) {
+    cell.textLabel.text = [self.nearbyVenues[indexPath.row] name];
+    FSVenue *venue = self.nearbyVenues[indexPath.row];
+    if (venue.location.address) {
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m, %@",
-                                     location[@"distance"],
-                                     location[@"address"]];
+                                     venue.location.distance,
+                                     venue.location.address];
     }else{
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m",
-                                     location[@"distance"]];
+                                     venue.location.distance];
     }
 
     return cell;

@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+@class FSVenue;
 @interface NearbyVenuesViewController :UIViewController<CLLocationManagerDelegate>{
     CLLocationManager *_locationManager;
 }
@@ -21,10 +22,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *logoutButton;
 
 
-@property (strong,nonatomic)NSDictionary* selected;
+@property (strong,nonatomic)FSVenue* selected;
 @property (strong,nonatomic)NSArray* nearbyVenues;
 
 
-- (IBAction)logout:(id)sender;
 
 @end

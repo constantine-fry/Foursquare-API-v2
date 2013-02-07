@@ -23,7 +23,7 @@
 		4779883216AC536E00038756 /* NearbyVenuesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779883016AC536E00038756 /* NearbyVenuesViewController.xib */; };
 		4779883416AC53D600038756 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4779883316AC53D600038756 /* CoreLocation.framework */; };
 		4779883C16AC583900038756 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4779883B16AC583800038756 /* MapKit.framework */; };
-		4779883F16AC5A3900038756 /* VenueAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779883E16AC5A3900038756 /* VenueAnnotation.m */; };
+		4779883F16AC5A3900038756 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779883E16AC5A3900038756 /* FSVenue.m */; };
 		4779884316AC623600038756 /* CheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779884116AC623600038756 /* CheckinViewController.m */; };
 		4779884416AC623600038756 /* CheckinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884216AC623600038756 /* CheckinViewController.xib */; };
 		4779884816AC64CF00038756 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779884616AC64CF00038756 /* SettingsViewController.m */; };
@@ -32,6 +32,7 @@
 		4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */; };
 		4779884F16AC697200038756 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884E16AC697200038756 /* FSWebLogin.xib */; };
 		4779886416AC6E2900038756 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4779886316AC6E2900038756 /* README.md */; };
+		47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 47ADFAC816C3C6D700891DCD /* FSConverter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,8 +60,8 @@
 		4779883016AC536E00038756 /* NearbyVenuesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearbyVenuesViewController.xib; sourceTree = "<group>"; };
 		4779883316AC53D600038756 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4779883B16AC583800038756 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		4779883D16AC5A3900038756 /* VenueAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueAnnotation.h; sourceTree = "<group>"; };
-		4779883E16AC5A3900038756 /* VenueAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueAnnotation.m; sourceTree = "<group>"; };
+		4779883D16AC5A3900038756 /* FSVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVenue.h; sourceTree = "<group>"; };
+		4779883E16AC5A3900038756 /* FSVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVenue.m; sourceTree = "<group>"; };
 		4779884016AC623600038756 /* CheckinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckinViewController.h; sourceTree = "<group>"; };
 		4779884116AC623600038756 /* CheckinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckinViewController.m; sourceTree = "<group>"; };
 		4779884216AC623600038756 /* CheckinViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckinViewController.xib; sourceTree = "<group>"; };
@@ -71,6 +72,8 @@
 		4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poweredByFoursquare_gray@2x.png"; sourceTree = "<group>"; };
 		4779884E16AC697200038756 /* FSWebLogin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		4779886316AC6E2900038756 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		47ADFAC716C3C6D700891DCD /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
+		47ADFAC816C3C6D700891DCD /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSConverter.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Foursquare_API-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Foursquare_API-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,10 +96,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				47ADFAC616C3C68A00891DCD /* Objects */,
 				1D3623240D0F684500981E51 /* FSAppDelegate.h */,
 				1D3623250D0F684500981E51 /* FSAppDelegate.m */,
-				4779883D16AC5A3900038756 /* VenueAnnotation.h */,
-				4779883E16AC5A3900038756 /* VenueAnnotation.m */,
 				4779882E16AC536E00038756 /* NearbyVenuesViewController.h */,
 				4779882F16AC536E00038756 /* NearbyVenuesViewController.m */,
 				4779883016AC536E00038756 /* NearbyVenuesViewController.xib */,
@@ -183,6 +185,17 @@
 			path = ../Foursquare2;
 			sourceTree = "<group>";
 		};
+		47ADFAC616C3C68A00891DCD /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				4779883D16AC5A3900038756 /* FSVenue.h */,
+				4779883E16AC5A3900038756 /* FSVenue.m */,
+				47ADFAC716C3C6D700891DCD /* FSConverter.h */,
+				47ADFAC816C3C6D700891DCD /* FSConverter.m */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -259,9 +272,10 @@
 				4779882916AC248800038756 /* FSTargetCallback.m in Sources */,
 				4779882A16AC248800038756 /* FSWebLogin.m in Sources */,
 				4779883116AC536E00038756 /* NearbyVenuesViewController.m in Sources */,
-				4779883F16AC5A3900038756 /* VenueAnnotation.m in Sources */,
+				4779883F16AC5A3900038756 /* FSVenue.m in Sources */,
 				4779884316AC623600038756 /* CheckinViewController.m in Sources */,
 				4779884816AC64CF00038756 /* SettingsViewController.m in Sources */,
+				47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
