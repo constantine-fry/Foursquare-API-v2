@@ -182,7 +182,6 @@ typedef enum {
                                        e:(NSNumber*)e
                                    query:(NSString*)query
                                    limit:(NSNumber*)limit
-                                  intent:(FoursquareIntentType)intent
                                 callback:(Foursquare2Callback)callback;
 #pragma mark Aspects
 // !!!: please read comment

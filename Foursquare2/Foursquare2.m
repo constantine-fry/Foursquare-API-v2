@@ -370,13 +370,14 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
+
+
 +(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
                                        w:(NSNumber*)w
                                        n:(NSNumber*)n
                                        e:(NSNumber*)e
                                    query:(NSString*)query
                                    limit:(NSNumber*)limit
-                                  intent:(FoursquareIntentType)intent
                                 callback:(Foursquare2Callback)callback
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -390,9 +391,7 @@ static NSMutableDictionary *attributes;
 	if (limit) {
 		dic[@"limit"] = limit.stringValue;
 	}
-	if (intent) {
-		dic[@"intent"] = [self inentTypeToString:intent];
-	}
+    dic[@"intent"] = [self inentTypeToString:intentBrowse];
     
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
