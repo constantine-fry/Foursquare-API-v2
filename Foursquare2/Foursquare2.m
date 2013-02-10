@@ -370,8 +370,6 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
-
-
 +(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
                                        w:(NSNumber*)w
                                        n:(NSNumber*)n

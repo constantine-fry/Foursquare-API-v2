@@ -28,9 +28,23 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
 
 
+###Usefull tips
+1. How to get sw and ne from MKMapView?
 
-PS:
-I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
+    CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
+    CGPoint nePoint = CGPointMake((mapView.bounds.origin.x + mapView.bounds.size.width), (mapView.bounds.origin.y));
+    
+    //Then transform those point into lat,lng values
+    CLLocationCoordinate2D swCoord;
+    swCoord = [mapView convertPoint:swPoint toCoordinateFromView:mapView];
+    
+    CLLocationCoordinate2D neCoord;
+    neCoord = [mapView convertPoint:nePoint toCoordinateFromView:mapView];
+
+
+
+
+
 
 
 
@@ -46,4 +60,5 @@ I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
 
 
 
+I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
 
