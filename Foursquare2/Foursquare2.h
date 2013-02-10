@@ -175,6 +175,15 @@ typedef enum {
 						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
 						 callback:(Foursquare2Callback)callback;
+
++(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
+                                       w:(NSNumber*)w
+                                       n:(NSNumber*)n
+                                       e:(NSNumber*)e
+                                   query:(NSString*)query
+                                   limit:(NSNumber*)limit
+                                  intent:(FoursquareIntentType)intent
+                                callback:(Foursquare2Callback)callback;
 #pragma mark Aspects
 // !!!: please read comment
 //This is an experimental API. We're excited about the innovation we think it enables as a 

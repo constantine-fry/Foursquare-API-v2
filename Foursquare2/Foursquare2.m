@@ -370,6 +370,33 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
++(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
+                                       w:(NSNumber*)w
+                                       n:(NSNumber*)n
+                                       e:(NSNumber*)e
+                                   query:(NSString*)query
+                                   limit:(NSNumber*)limit
+                                  intent:(FoursquareIntentType)intent
+                                callback:(Foursquare2Callback)callback
+{
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (s && w && n && e) {
+		dic[@"sw"] = [NSString stringWithFormat:@"%@,%@",s,w];
+        dic[@"ne"] = [NSString stringWithFormat:@"%@,%@",n,e];
+	}
+	if (query) {
+		dic[@"query"] = query;
+	}
+	if (limit) {
+		dic[@"limit"] = limit.stringValue;
+	}
+	if (intent) {
+		dic[@"intent"] = [self inentTypeToString:intent];
+	}
+    
+	[self get:@"venues/search" withParams:dic callback:callback];
+}
+
 #pragma mark Aspects
 +(void)getVenueHereNow:(NSString*)venueID
 				 limit:(NSString*)limit
@@ -517,6 +544,8 @@ static NSMutableDictionary *attributes;
 						  accuracyAlt:nil
 							 callback:callback];
 }
+
+
 
 +(void)createCheckinAtVenue:(NSString*)venueID
 					  venue:(NSString*)venue
