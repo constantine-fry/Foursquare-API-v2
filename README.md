@@ -31,15 +31,15 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 ###Usefull tips
 1. How to get sw and ne from MKMapView?
 
-    CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
-    CGPoint nePoint = CGPointMake((mapView.bounds.origin.x + mapView.bounds.size.width), (mapView.bounds.origin.y));
+        CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
+        CGPoint nePoint = CGPointMake((mapView.bounds.origin.x + mapView.bounds.size.width), (mapView.bounds.origin.y));
     
-    //Then transform those point into lat,lng values
-    CLLocationCoordinate2D swCoord;
-    swCoord = [mapView convertPoint:swPoint toCoordinateFromView:mapView];
+        //Then transform those point into lat,lng values
+        CLLocationCoordinate2D swCoord;
+        swCoord = [mapView convertPoint:swPoint toCoordinateFromView:mapView];
     
-    CLLocationCoordinate2D neCoord;
-    neCoord = [mapView convertPoint:nePoint toCoordinateFromView:mapView];
+        CLLocationCoordinate2D neCoord;
+        neCoord = [mapView convertPoint:nePoint toCoordinateFromView:mapView];
 
 
 
