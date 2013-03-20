@@ -72,11 +72,18 @@
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
         [Foursquare2 setAccessToken:arr[1]];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[delegate performSelector:selector withObject:nil];
+#pragma clang diagnostic pop
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[delegate performSelector:selector withObject:arr[1]];
+#pragma clang diagnostic pop
+        
 	} 
 
 	return YES;
