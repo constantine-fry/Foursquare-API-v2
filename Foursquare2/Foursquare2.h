@@ -12,25 +12,27 @@
 #import "FSWebLogin.h"
 #endif
 
-
-
-
 //1
-#define OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
-#define OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
+#ifndef FS2_OAUTH_KEY
+#define FS2_OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
+#endif
+
+#ifndef FS2_OAUTH_SECRET
+#define FS2_OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
+#endif
 
 //2, don't forget to added app url in your info plist file CFBundleURLTypes
-#define REDIRECT_URL @"app://testapp123"
+#ifndef FS2_REDIRECT_URL
+#define FS2_REDIRECT_URL @"app://testapp123"
+#endif
 
 //3 update this date to use up-to-date Foursquare API
-#define VERSION (@"20130117")
+#ifndef FS2_API_VERSION
+#define FS2_API_VERSION (@"20130117")
+#endif
 
 
-
-
-#define kBaseUrl @"https://api.foursquare.com/v2/"
-
-
+#define FS2_API_BaseUrl @"https://api.foursquare.com/v2/"
 
 typedef void(^Foursquare2Callback)(BOOL success, id result);
 
