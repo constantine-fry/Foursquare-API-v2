@@ -49,7 +49,7 @@ static NSMutableDictionary *attributes;
 
 + (void)initialize
 {
-    [self setBaseURL:kBaseUrl];
+    [self setBaseURL:FS2_API_BaseUrl];
 	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
 	if ([usDef objectForKey:@"access_token2"] != nil) {
 		[self classAttributes][@"access_token"] = [usDef objectForKey:@"access_token2"];
@@ -59,7 +59,7 @@ static NSMutableDictionary *attributes;
 
 
 + (void)setBaseURL:(NSString *)uri {
-    [self setAttributeValue:uri forKey:@"kBaseUrl"];
+    [self setAttributeValue:uri forKey:@"FS2_API_BaseUrl"];
 }
 
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key {
@@ -585,7 +585,8 @@ static NSMutableDictionary *attributes;
     //	}else{
     //		[dic setObject:broadcast forKey:@"broadcast"];
     //	}
-	
+	NSLog(@"Checking in with details: %@",dic);
+    
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }
 
@@ -951,12 +952,12 @@ callback:(Foursquare2Callback)callback;
 
 + (NSString *)constructRequestUrlForMethod:(NSString *)methodName 
                                     params:(NSDictionary *)paramMap {
-    NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"kBaseUrl"]];
+    NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"FS2_API_BaseUrl"]];
     
     [paramStr appendString:methodName];
-	[paramStr appendFormat:@"?client_id=%@",OAUTH_KEY];
-    [paramStr appendFormat:@"&client_secret=%@",OAUTH_SECRET];
-    [paramStr appendFormat:@"&v=%@",VERSION];
+	[paramStr appendFormat:@"?client_id=%@",FS2_OAUTH_KEY];
+    [paramStr appendFormat:@"&client_secret=%@",FS2_OAUTH_SECRET];
+    [paramStr appendFormat:@"&v=%@",FS2_API_VERSION];
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
     [paramStr appendFormat:@"&locale=%@",countryCode];
@@ -1119,7 +1120,7 @@ static Foursquare2 *instance;
 Foursquare2Callback authorizeCallbackDelegate;
 +(void)authorizeWithCallback:(Foursquare2Callback)callback{
 	authorizeCallbackDelegate = [callback copy];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",OAUTH_KEY,REDIRECT_URL];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",FS2_OAUTH_KEY,FS2_REDIRECT_URL];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);
@@ -1148,7 +1149,7 @@ Foursquare2Callback authorizeCallbackDelegate;
 
 +(void)done:(NSError*)error{
     if ([Foursquare2 isAuthorized]) {
-        [Foursquare2 setBaseURL:kBaseUrl];
+        [Foursquare2 setBaseURL:FS2_API_BaseUrl];
         authorizeCallbackDelegate(YES,error);
     }else{
         authorizeCallbackDelegate(NO,error);

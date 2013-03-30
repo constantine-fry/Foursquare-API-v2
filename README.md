@@ -17,9 +17,9 @@
 
 2. You should modify Foursquare2.h
 
-    1. Change OAUTH_KEY and OAUTH_SECRET
-    2. Change REDIRECT_URL. It should start with app://
-    3. Change VERSION to your current date, so you will use latest API/
+    1. Change FS2_OAUTH_KEY and FS2_OAUTH_SECRET
+    2. Change FS2_REDIRECT_URL. It should start with app://
+    3. Change FS2_API_VERSION to your current date, so you will use latest API/
 
 3. You need to make sure you set up the URL scheme in your info.plist properly
 

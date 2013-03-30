@@ -51,7 +51,11 @@
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo:dict];
 		
 		[self handleConnectionError: error];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
+#pragma clang diagnostic pop
+        
 	}
 	
 }
@@ -84,7 +88,11 @@
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo: dict];
 		
 		[self handleConnectionError: error];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
+#pragma clang diagnostic pop
+        
 	}
 	
 
@@ -139,7 +147,11 @@
                                              options:0
                                                error:nil];
 	if (target.resultCallback) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [self performSelector:target.resultCallback withObject:result withObject:target];
+#pragma clang diagnostic pop
+        
     }
 	
 	
@@ -152,8 +164,11 @@
 	
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 
-	
-	[target.targetObject performSelector:target.targetCallback withObject:nil withObject:error];	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+	[target.targetObject performSelector:target.targetCallback withObject:nil withObject:error];
+#pragma clang diagnostic pop
+    
     
 	[self disconnettargetWithConnection:aConnection];
 }
