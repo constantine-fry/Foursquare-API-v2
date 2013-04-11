@@ -56,7 +56,53 @@ static NSMutableDictionary *attributes;
 	}
 }
 
++(void)setOAuthKey:(NSString *)OAuthKey{
+    fs2_oauthKey = OAuthKey;
+}
 
++(NSString *)oauthKey{
+    if (!fs2_oauthKey) {
+        NSBundle* bundle = [NSBundle mainBundle];
+        fs2_oauthKey = [bundle objectForInfoDictionaryKey:@"FS2_OAUTH_KEY"];
+    }
+    return fs2_oauthKey;
+}
+
++(void)setOAuthSecret:(NSString *)OAuthSecret{
+    fs2_oauthSecret = OAuthSecret;
+}
+
++(NSString *)oauthSecret{
+    if (!fs2_oauthSecret) {
+        NSBundle* bundle = [NSBundle mainBundle];
+        fs2_oauthSecret = [bundle objectForInfoDictionaryKey:@"FS2_OAUTH_SECRET"];
+    }
+    return fs2_oauthSecret;
+}
+
++(void)setAPIVersion:(NSString *)apiVersion{
+    fs2_apiVersion = apiVersion;
+}
+
++(NSString *)apiVersion{
+    if (!fs2_apiVersion) {
+        NSBundle* bundle = [NSBundle mainBundle];
+        fs2_apiVersion = [bundle objectForInfoDictionaryKey:@"FS2_API_VERSION"];
+    }
+    return fs2_apiVersion;
+}
+
++(void)setURLScheme:(NSString *)URLScheme{
+    fs2_urlScheme = URLScheme;
+}
+
++(NSString *)urlScheme{
+    if (!fs2_urlScheme) {
+        NSBundle* bundle = [NSBundle mainBundle];
+        fs2_urlScheme = [bundle objectForInfoDictionaryKey:@"FS2_URL_SCHEME"];
+    }
+    return fs2_urlScheme;
+}
 
 + (void)setBaseURL:(NSString *)uri {
     [self setAttributeValue:uri forKey:@"FS2_API_BaseUrl"];
@@ -955,9 +1001,9 @@ callback:(Foursquare2Callback)callback;
     NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"FS2_API_BaseUrl"]];
     
     [paramStr appendString:methodName];
-	[paramStr appendFormat:@"?client_id=%@",FS2_OAUTH_KEY];
-    [paramStr appendFormat:@"&client_secret=%@",FS2_OAUTH_SECRET];
-    [paramStr appendFormat:@"&v=%@",FS2_API_VERSION];
+	[paramStr appendFormat:@"?client_id=%@",[self oauthKey]];
+    [paramStr appendFormat:@"&client_secret=%@",[self oauthSecret]];
+    [paramStr appendFormat:@"&v=%@",[self apiVersion]];
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
     [paramStr appendFormat:@"&locale=%@",countryCode];
@@ -1120,7 +1166,7 @@ static Foursquare2 *instance;
 Foursquare2Callback authorizeCallbackDelegate;
 +(void)authorizeWithCallback:(Foursquare2Callback)callback{
 	authorizeCallbackDelegate = [callback copy];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",FS2_OAUTH_KEY,FS2_REDIRECT_URL];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",[self oauthKey], [self urlScheme]];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);

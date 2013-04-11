@@ -13,23 +13,10 @@
 #endif
 
 //1
-#ifndef FS2_OAUTH_KEY
-#define FS2_OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
-#endif
-
-#ifndef FS2_OAUTH_SECRET
-#define FS2_OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
-#endif
-
-//2, don't forget to added app url in your info plist file CFBundleURLTypes
-#ifndef FS2_REDIRECT_URL
-#define FS2_REDIRECT_URL @"app://testapp123"
-#endif
-
-//3 update this date to use up-to-date Foursquare API
-#ifndef FS2_API_VERSION
-#define FS2_API_VERSION (@"20130117")
-#endif
+static NSString *fs2_oauthKey = nil;
+static NSString *fs2_oauthSecret = nil;
+static NSString *fs2_apiVersion = nil;
+static NSString *fs2_urlScheme = nil;
 
 
 #define FS2_API_BaseUrl @"https://api.foursquare.com/v2/"
@@ -67,7 +54,16 @@ typedef enum {
 	
 }
 
-+ (void)setBaseURL:(NSString *)uri;
++(void)setOAuthKey:(NSString *)OAuthKey;
++(NSString *)oauthKey;
++(void)setOAuthSecret:(NSString *)OAuthSecret;
++(NSString *)oauthSecret;
++(void)setAPIVersion:(NSString *)apiVersion;
++(NSString *)apiVersion;
++(void)setURLScheme:(NSString *)URLScheme;
++(NSString *)urlScheme;
+
++(void)setBaseURL:(NSString *)uri;
 +(void)setAccessToken:(NSString*)token;
 +(void)removeAccessToken;
 +(BOOL)isNeedToAuthorize;
