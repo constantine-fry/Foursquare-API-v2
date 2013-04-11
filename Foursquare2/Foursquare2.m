@@ -45,6 +45,11 @@
 
 @implementation Foursquare2
 
+static NSString *fs2_oauthKey = nil;
+static NSString *fs2_oauthSecret = nil;
+static NSString *fs2_apiVersion = nil;
+static NSString *fs2_urlScheme = nil;
+
 static NSMutableDictionary *attributes;
 
 + (void)initialize

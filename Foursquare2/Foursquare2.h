@@ -12,12 +12,6 @@
 #import "FSWebLogin.h"
 #endif
 
-//1
-static NSString *fs2_oauthKey = nil;
-static NSString *fs2_oauthSecret = nil;
-static NSString *fs2_apiVersion = nil;
-static NSString *fs2_urlScheme = nil;
-
 
 #define FS2_API_BaseUrl @"https://api.foursquare.com/v2/"
 
@@ -71,7 +65,10 @@ typedef enum {
 #pragma mark -
 
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
+
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 +(void)authorizeWithCallback:(Foursquare2Callback)callback;
+#endif
  
 // !!!: 1. userID is a valid user ID or "self" 
 +(void)getDetailForUser:(NSString*)userID
