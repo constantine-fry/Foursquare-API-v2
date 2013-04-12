@@ -45,6 +45,9 @@
                                     action:@selector(cancel)];
 	
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, [UIScreen mainScreen].bounds.size.height)];
+    [self.view addSubview:webView];
+    
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
 	[webView loadRequest:request];
 }
