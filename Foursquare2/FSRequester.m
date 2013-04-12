@@ -61,15 +61,15 @@
 }
 
 -(void)connectTarget:(FSTargetCallback*)target andConnection:(NSURLConnection*)connection{
-   [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%d", [connection hash]]];
+   [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%ld", (unsigned long)[connection hash]]];
 }
 
 -(void)disconnettargetWithConnection:(NSURLConnection*)connection{
-    [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%d", [connection hash]]];
+    [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%ld", (unsigned long)[connection hash]]];
 }
 
 -(FSTargetCallback*)targetForConnection:(NSURLConnection*)connection{
-    return asyncConnDict[[NSString stringWithFormat: @"%d", [connection hash]]];
+    return asyncConnDict[[NSString stringWithFormat: @"%ld", (unsigned long)[connection hash]]];
 }
 
 

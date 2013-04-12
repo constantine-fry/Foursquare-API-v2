@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FS2_URL_SCHEME</key>
+	<string>app://testapp123</string>
+	<key>FS2_API_VERSION</key>
+	<string>20130117</string>
+	<key>FS2_OAUTH_SECRET</key>
+	<string>UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR</string>
+	<key>FS2_OAUTH_KEY</key>
+	<string>5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>

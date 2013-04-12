@@ -48,6 +48,11 @@
         [self addRightButton];
     }else{
         self.navigationItem.rightBarButtonItem = nil;
+        [Foursquare2 authorizeWithCallback:^(BOOL success, NSError * error){
+            if (success) {
+                [self addRightButton];
+            }
+        } fromViewController:self];
     }
 }
 
@@ -85,7 +90,7 @@
 								   altitude:nil
 								accuracyAlt:nil
 									  query:nil
-									  limit:nil
+									  limit:@(10)
 									 intent:intentCheckin
                                      radius:@(500)
 								   callback:^(BOOL success, id result){
@@ -193,7 +198,7 @@
 										  }
 									  }];
 			}
-        }];
+        } fromViewController:self];
     }
 }
 
