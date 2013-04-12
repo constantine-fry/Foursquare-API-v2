@@ -1169,7 +1169,7 @@ static Foursquare2 *instance;
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
 Foursquare2Callback authorizeCallbackDelegate;
-+(void)authorizeWithCallback:(Foursquare2Callback)callback{
++(void)authorizeWithCallback:(Foursquare2Callback)callback fromViewController:(UIViewController *)viewController{
 	authorizeCallbackDelegate = [callback copy];
 	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",[self oauthKey], [self urlScheme]];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
@@ -1177,25 +1177,8 @@ Foursquare2Callback authorizeCallbackDelegate;
 	loginCon.selector = @selector(done:);
 	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
     navCon.navigationBar.tintColor = [UIColor lightGrayColor];
-	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
-    UIViewController *controller = [self topViewController:mainWindow.rootViewController];
-	[controller presentViewController:navCon animated:YES completion:nil];
-}
 
-+ (UIViewController *)topViewController:(UIViewController *)rootViewController
-{
-    if (rootViewController.presentedViewController == nil) {
-        return rootViewController;
-    }
-    
-    if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
-        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
-        UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
-        return [self topViewController:lastViewController];
-    }
-    
-    UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
-    return [self topViewController:presentedViewController];
+	[viewController presentViewController:navCon animated:YES completion:nil];
 }
 
 +(void)done:(NSError*)error{

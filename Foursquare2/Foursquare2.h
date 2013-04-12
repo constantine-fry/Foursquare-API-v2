@@ -67,7 +67,7 @@ typedef enum {
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
 
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
-+(void)authorizeWithCallback:(Foursquare2Callback)callback;
++(void)authorizeWithCallback:(Foursquare2Callback)callback fromViewController:(UIViewController *)viewController;
 #endif
  
 // !!!: 1. userID is a valid user ID or "self" 

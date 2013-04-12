@@ -52,7 +52,7 @@
             if (success) {
                 [self addRightButton];
             }
-        }];
+        } fromViewController:self];
     }
 }
 
@@ -198,7 +198,7 @@
 										  }
 									  }];
 			}
-        }];
+        } fromViewController:self];
     }
 }
 
