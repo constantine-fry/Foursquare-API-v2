@@ -30,8 +30,8 @@
 		4779884916AC64CF00038756 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884716AC64CF00038756 /* SettingsViewController.xib */; };
 		4779884C16AC686700038756 /* poweredByFoursquare_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779884A16AC686700038756 /* poweredByFoursquare_gray.png */; };
 		4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */; };
-		4779884F16AC697200038756 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884E16AC697200038756 /* FSWebLogin.xib */; };
 		4779886416AC6E2900038756 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4779886316AC6E2900038756 /* README.md */; };
+		478EA5111719335900062636 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884E16AC697200038756 /* FSWebLogin.xib */; };
 		47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 47ADFAC816C3C6D700891DCD /* FSConverter.m */; };
 /* End PBXBuildFile section */
 
@@ -254,10 +254,10 @@
 				4779884916AC64CF00038756 /* SettingsViewController.xib in Resources */,
 				4779884C16AC686700038756 /* poweredByFoursquare_gray.png in Resources */,
 				4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */,
-				4779884F16AC697200038756 /* FSWebLogin.xib in Resources */,
 				4779886416AC6E2900038756 /* README.md in Resources */,
 				471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */,
 				471EAC6916C0F41C009F88F9 /* pin.png in Resources */,
+				478EA5111719335900062636 /* FSWebLogin.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
