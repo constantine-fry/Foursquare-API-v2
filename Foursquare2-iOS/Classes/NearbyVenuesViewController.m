@@ -88,6 +88,7 @@
 									  limit:nil
 									 intent:intentCheckin
                                      radius:@(500)
+                                 categoryId:nil
 								   callback:^(BOOL success, id result){
 									   if (success) {
 										   NSDictionary *dic = result;
