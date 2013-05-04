@@ -176,6 +176,7 @@ typedef enum {
 							limit:(NSNumber*)limit
 						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
+                       categoryId:(NSString*)categoryId
 						 callback:(Foursquare2Callback)callback;
 
 +(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
