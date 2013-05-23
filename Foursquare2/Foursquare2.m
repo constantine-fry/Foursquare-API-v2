@@ -340,6 +340,7 @@ static NSMutableDictionary *attributes;
 							limit:(NSNumber*)limit
 						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
+                       categoryId:(NSString*)categoryId
 						 callback:(Foursquare2Callback)callback
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -367,6 +368,9 @@ static NSMutableDictionary *attributes;
     if (radius) {
 		dic[@"radius"] = radius.stringValue;
 	}
+    if (categoryId) {
+        dic[@"categoryId"] = categoryId;
+    }
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
