@@ -327,6 +327,11 @@ typedef enum {
 	accuracyAlt:(NSString*)accuracyAlt
 	   callback:(Foursquare2Callback)callback;
 
++(void)getPhotosForVenue:(NSString *)venueID
+                     limit:(NSNumber *)limit
+                    offset:(NSNumber *)offset
+                  callback:(Foursquare2Callback)callback;
+
 #pragma mark -
 
 #pragma mark ---------------------------- Settings ------------------------------------------------------------------------
