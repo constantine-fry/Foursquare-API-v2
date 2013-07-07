@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.author       = { "Constantine Fry" => "constantine.fry@gmail.com" }
   s.source       = { :git => "https://github.com/Constantine-Fry/Foursquare-API-v2.git", :tag => "1.2.1" }
   s.platform     = :ios, '5.0'
-  s.source_files = 'Classes', 'Foursquare2/**/*.{h,m,xib}'
+  s.source_files = 'Classes', 'Foursquare2/**/*.{h,m}'
   s.exclude_files = 'Classes/Exclude'
-  s.resources = "Foursquare2/*.png"
+  s.resources = 'Foursquare2/*.png', 'Foursquare2/**/*.{xib}'
   s.requires_arc = true
 end

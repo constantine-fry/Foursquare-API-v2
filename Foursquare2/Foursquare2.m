@@ -340,6 +340,7 @@ static NSMutableDictionary *attributes;
 							limit:(NSNumber*)limit
 						   intent:(FoursquareIntentType)intent
                            radius:(NSNumber*)radius
+                       categoryId:(NSString*)categoryId
 						 callback:(Foursquare2Callback)callback
 {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -367,6 +368,9 @@ static NSMutableDictionary *attributes;
     if (radius) {
 		dic[@"radius"] = radius.stringValue;
 	}
+    if (categoryId) {
+        dic[@"categoryId"] = categoryId;
+    }
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
@@ -809,6 +813,28 @@ callback:(Foursquare2Callback)callback;
 			withImage:photo
 			 callback:callback];
 }
+
++(void)getPhotosForVenue:(NSString *)venueID
+                   limit:(NSNumber *)limit
+                  offset:(NSNumber *)offset
+                callback:(Foursquare2Callback)callback
+{
+    if (!venueID) {
+		callback(NO,nil);
+		return;
+	}
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (limit) {
+        dic[@"limit"] = limit.stringValue;
+    }
+    if (offset) {
+        dic[@"offset"] = offset.stringValue;
+    }
+    NSString *path = [NSString stringWithFormat:@"venues/%@/photos", venueID];
+	[self get:path withParams:dic callback:callback];
+}
+
 #pragma mark -
 
 #pragma mark Settings
