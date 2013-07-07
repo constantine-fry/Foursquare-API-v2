@@ -72,6 +72,7 @@
 		4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poweredByFoursquare_gray@2x.png"; sourceTree = "<group>"; };
 		4779884E16AC697200038756 /* FSWebLogin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		4779886316AC6E2900038756 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		479EA375178A143400B2DD92 /* Foursquare-API-v2.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Foursquare-API-v2.podspec"; path = "../Foursquare-API-v2.podspec"; sourceTree = "<group>"; };
 		47ADFAC716C3C6D700891DCD /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
 		47ADFAC816C3C6D700891DCD /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSConverter.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Foursquare_API-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Foursquare_API-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				479EA375178A143400B2DD92 /* Foursquare-API-v2.podspec */,
 				4779886316AC6E2900038756 /* README.md */,
 				4779881E16AC248800038756 /* Foursquare2 */,
 				080E96DDFE201D6D7F000001 /* Classes */,

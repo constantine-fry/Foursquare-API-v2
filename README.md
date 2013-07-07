@@ -15,12 +15,17 @@
 1. Create Your application here https://foursquare.com/developers/register
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/site.png?raw=true)
 
-2. You should modify Foursquare2.h
+2. Setup Foursquare to use your credentials
 
-    1. Change FS2_OAUTH_KEY and FS2_OAUTH_SECRET
-    2. Change FS2_REDIRECT_URL. It should start with app://
-    3. Change FS2_API_VERSION to your current date, so you will use latest API/
 
+        - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+            [Foursquare2 setupFoursquareWithKey:YOUR_KEY
+                                         secret:YOUR_SECRET
+                                    callbackURL:YOUR_CALLBACK_URL];
+        }
+    
+    
 3. You need to make sure you set up the URL scheme in your info.plist properly
 
 CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
