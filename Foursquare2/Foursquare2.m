@@ -53,7 +53,16 @@ static NSMutableDictionary *attributes;
 	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
 	if ([usDef objectForKey:@"access_token2"] != nil) {
 		[self classAttributes][@"access_token"] = [usDef objectForKey:@"access_token2"];
+
 	}
+}
+
++ (void)setupFoursquareWithKey:(NSString *)key
+                        secret:(NSString *)secret
+                   callbackURL:(NSString *)callbackURL {
+    [self classAttributes][@"FOURSQUARE_OAUTH_KEY"] = key;
+    [self classAttributes][@"FOURSQUARE_OAUTH_SECRET"] = secret;
+    [self classAttributes][@"FOURSQUARE_CALLBACK_URL"] = callbackURL;
 }
 
 
@@ -981,8 +990,11 @@ callback:(Foursquare2Callback)callback;
     NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"FS2_API_BaseUrl"]];
     
     [paramStr appendString:methodName];
-	[paramStr appendFormat:@"?client_id=%@",FS2_OAUTH_KEY];
-    [paramStr appendFormat:@"&client_secret=%@",FS2_OAUTH_SECRET];
+    NSDictionary *dic = [self classAttributes];
+    NSString *key = dic[@"FOURSQUARE_OAUTH_KEY"];
+    NSString *secret = dic[@"FOURSQUARE_OAUTH_SECRET"];
+	[paramStr appendFormat:@"?client_id=%@",key];
+    [paramStr appendFormat:@"&client_secret=%@",secret];
     [paramStr appendFormat:@"&v=%@",FS2_API_VERSION];
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
@@ -1146,7 +1158,10 @@ static Foursquare2 *instance;
 Foursquare2Callback authorizeCallbackDelegate;
 +(void)authorizeWithCallback:(Foursquare2Callback)callback{
 	authorizeCallbackDelegate = [callback copy];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",FS2_OAUTH_KEY,FS2_REDIRECT_URL];
+    NSDictionary *dic = [self classAttributes];
+    NSString *key = dic[@"FOURSQUARE_OAUTH_KEY"];
+    NSString *callbackURL = dic[@"FOURSQUARE_CALLBACK_URL"];
+	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",key,callbackURL];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);
