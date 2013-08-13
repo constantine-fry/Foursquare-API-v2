@@ -321,10 +321,10 @@ static NSMutableDictionary *attributes;
 		dic[@"state"] = state;
 	}
 	if (zip) {
-		dic[@"zip"] = name;
+		dic[@"zip"] = zip;
 	}
 	if (phone) {
-		dic[@"phone"] = name;
+		dic[@"phone"] = phone;
 	}
 	if (lat && lon) {
 		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
@@ -513,10 +513,10 @@ static NSMutableDictionary *attributes;
 		dic[@"state"] = state;
 	}
 	if (zip) {
-		dic[@"zip"] = name;
+		dic[@"zip"] = zip;
 	}
 	if (phone) {
-		dic[@"phone"] = name;
+		dic[@"phone"] = phone;
 	}
 	if (lat && lon) {
 		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
