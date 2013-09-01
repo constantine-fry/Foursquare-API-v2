@@ -39,6 +39,8 @@
 		4779885A16AC6BA200038756 /* poweredByFoursquare_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poweredByFoursquare_gray.png; sourceTree = "<group>"; };
 		4779885B16AC6BA200038756 /* poweredByFoursquare_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poweredByFoursquare_gray@2x.png"; sourceTree = "<group>"; };
 		47A0906C12D8BA3200B41063 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		47A8F67C17D3225B007216AC /* FSOAuth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FSOAuth.h; path = "submodule/foursquare-ios-oauth/FSOAuth.h"; sourceTree = "<group>"; };
+		47A8F67D17D3225B007216AC /* FSOAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FSOAuth.m; path = "submodule/foursquare-ios-oauth/FSOAuth.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Foursquare2_Mac-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Foursquare2_Mac-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Foursquare2-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foursquare2-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -135,6 +137,8 @@
 		4779885016AC6BA200038756 /* Foursquare2 */ = {
 			isa = PBXGroup;
 			children = (
+				47A8F67C17D3225B007216AC /* FSOAuth.h */,
+				47A8F67D17D3225B007216AC /* FSOAuth.m */,
 				4779885116AC6BA200038756 /* Foursquare2.h */,
 				4779885216AC6BA200038756 /* Foursquare2.m */,
 				4779885316AC6BA200038756 /* FSRequester.h */,

@@ -60,15 +60,19 @@ typedef enum {
 +(BOOL)isAuthorized;
 #pragma mark -
 
-+ (void)setupFoursquareWithKey:(NSString *)key
-                        secret:(NSString *)secret
-                   callbackURL:(NSString *)callbackURL;
++ (void)setupFoursquareWithClientId:(NSString *)key
+                             secret:(NSString *)secret
+                        callbackURL:(NSString *)callbackURL;
+
++ (void)authorizeWithCallback:(Foursquare2Callback)callback;
+
++ (BOOL)handleURL:(NSURL *)url;
+
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
-+(void)authorizeWithCallback:(Foursquare2Callback)callback;
- 
-// !!!: 1. userID is a valid user ID or "self" 
+
+// !!!: 1. userID is a valid user ID or "self"
 +(void)getDetailForUser:(NSString*)userID
-			  callback:(Foursquare2Callback)callback;
+               callback:(Foursquare2Callback)callback;
 
 +(void)searchUserPhone:(NSArray*)phones
 				 email:(NSArray*)emails

@@ -8,8 +8,11 @@
 
 #import "Foursquare2.h"
 #import "FSTargetCallback.h"
+#import "FSOAuth.h"
 
-
+static NSString const * kFOURSQUARE_OAUTH_KEY = @"FOURSQUARE_OAUTH_KEY";
+static NSString const * kFOURSQUARE_OAUTH_SECRET = @"FOURSQUARE_OAUTH_SECRET";
+static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 
 @interface Foursquare2 (PrivateAPI)
 + (void)        get:(NSString *)methodName
@@ -57,12 +60,12 @@ static NSMutableDictionary *attributes;
 	}
 }
 
-+ (void)setupFoursquareWithKey:(NSString *)key
-                        secret:(NSString *)secret
-                   callbackURL:(NSString *)callbackURL {
-    [self classAttributes][@"FOURSQUARE_OAUTH_KEY"] = key;
-    [self classAttributes][@"FOURSQUARE_OAUTH_SECRET"] = secret;
-    [self classAttributes][@"FOURSQUARE_CALLBACK_URL"] = callbackURL;
++ (void)setupFoursquareWithClientId:(NSString *)key
+                             secret:(NSString *)secret
+                        callbackURL:(NSString *)callbackURL {
+    [self classAttributes][kFOURSQUARE_OAUTH_KEY] = key;
+    [self classAttributes][kFOURSQUARE_OAUTH_SECRET] = secret;
+    [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
 }
 
 
@@ -991,8 +994,8 @@ callback:(Foursquare2Callback)callback;
     
     [paramStr appendString:methodName];
     NSDictionary *dic = [self classAttributes];
-    NSString *key = dic[@"FOURSQUARE_OAUTH_KEY"];
-    NSString *secret = dic[@"FOURSQUARE_OAUTH_SECRET"];
+    NSString *key = dic[kFOURSQUARE_OAUTH_KEY];
+    NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
 	[paramStr appendFormat:@"?client_id=%@",key];
     [paramStr appendFormat:@"&client_secret=%@",secret];
     [paramStr appendFormat:@"&v=%@",FS2_API_VERSION];
@@ -1155,13 +1158,24 @@ static Foursquare2 *instance;
 
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
-Foursquare2Callback authorizeCallbackDelegate;
-+(void)authorizeWithCallback:(Foursquare2Callback)callback{
-	authorizeCallbackDelegate = [callback copy];
++ (BOOL)nativeAuthorization {
     NSDictionary *dic = [self classAttributes];
-    NSString *key = dic[@"FOURSQUARE_OAUTH_KEY"];
-    NSString *callbackURL = dic[@"FOURSQUARE_CALLBACK_URL"];
-	NSString *url = [NSString stringWithFormat:@"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",key,callbackURL];
+    NSString *key = dic[kFOURSQUARE_OAUTH_KEY];
+    NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
+    FSOAuthStatusCode statusCode = [FSOAuth authorizeUserUsingClientId:key callbackURIString:callbackURL];
+    if (statusCode == FSOAuthStatusSuccess) {
+        return YES;
+    }
+    return NO;
+}
+
++ (void)webAuthorization {
+    NSDictionary *dic = [self classAttributes];
+    NSString *key = dic[kFOURSQUARE_OAUTH_KEY];
+    NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
+	NSString *url = [NSString stringWithFormat:
+                     @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
+                     key,callbackURL];
 	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);
@@ -1170,6 +1184,75 @@ Foursquare2Callback authorizeCallbackDelegate;
 	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
     UIViewController *controller = [self topViewController:mainWindow.rootViewController];
 	[controller presentViewController:navCon animated:YES completion:nil];
+}
+
+Foursquare2Callback authorizeCallbackDelegate;
++(void)authorizeWithCallback:(Foursquare2Callback)callback{
+	authorizeCallbackDelegate = [callback copy];
+    
+    if ([self nativeAuthorization]) {
+        return;
+    }
+    
+    [self webAuthorization];
+}
+
++ (BOOL)handleURL:(NSURL *)url {
+    NSDictionary *dic = [self classAttributes];
+    NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
+    if ([callbackURL hasPrefix:[url scheme] ]) {
+        FSOAuthErrorCode errorCode;
+        NSString *accessCode = [FSOAuth accessCodeForFSOAuthURL:url
+                                                          error:&errorCode];
+        if (errorCode == FSOAuthErrorNone) {
+            [Foursquare2 setAccessToken:accessCode];
+            [self done:nil];
+        } else {
+            NSError *error = [NSError errorWithDomain:@"fs.native.auth"
+                                                 code:-1
+                                             userInfo:@{@"error":[self errorMessageForCode:errorCode]}];
+            [self done:error];
+        }
+        return YES;
+    }
+    return NO;
+}
+
++ (NSString *)errorMessageForCode:(FSOAuthErrorCode)errorCode {
+    NSString *resultText = nil;
+    
+    switch (errorCode) {
+        case FSOAuthErrorNone: {
+            break;
+        }
+        case FSOAuthErrorInvalidClient: {
+            resultText = @"Invalid client error";
+            break;
+        }
+        case FSOAuthErrorInvalidGrant: {
+            resultText = @"Invalid grant error";
+            break;
+        }
+        case FSOAuthErrorInvalidRequest: {
+            resultText =  @"Invalid request error";
+            break;
+        }
+        case FSOAuthErrorUnauthorizedClient: {
+            resultText =  @"Invalid unauthorized client error";
+            break;
+        }
+        case FSOAuthErrorUnsupportedGrantType: {
+            resultText =  @"Invalid unsupported grant error";
+            break;
+        }
+        case FSOAuthErrorUnknown:
+        default: {
+            resultText =  @"Unknown error";
+            break;
+        }
+    }
+    
+    return resultText;
 }
 
 + (UIViewController *)topViewController:(UIViewController *)rootViewController

@@ -57,9 +57,11 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	NSString *url =[[request URL] absoluteString];
-
 	if ([url rangeOfString:@"access_token="].length != 0) {
 		NSHTTPCookie *cookie;
 		NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
@@ -72,22 +74,16 @@
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
         [Foursquare2 setAccessToken:arr[1]];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[delegate performSelector:selector withObject:nil];
-#pragma clang diagnostic pop
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 		[delegate performSelector:selector withObject:arr[1]];
-#pragma clang diagnostic pop
-        
 	} 
 
 	return YES;
 }
+#pragma clang diagnostic pop
 - (void)webViewDidStartLoad:(UIWebView *)webView{
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
