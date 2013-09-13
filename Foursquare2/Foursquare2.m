@@ -383,6 +383,73 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
++(void)searchTrendingVenuesNearByLatitude:(NSNumber*)lat
+						longitude:(NSNumber*)lon
+							limit:(NSNumber*)limit
+                           radius:(NSNumber*)radius
+						 callback:(Foursquare2Callback)callback
+{
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (lat && lon) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+	}
+	if (limit) {
+		dic[@"limit"] = limit.stringValue;
+	}
+    if (radius) {
+		dic[@"radius"] = radius.stringValue;
+	}
+	[self get:@"venues/trending" withParams:dic callback:callback];
+}
+
++(void)searchRecommendedVenuesNearByLatitude:(NSNumber*)lat
+						longitude:(NSNumber*)lon
+					   accuracyLL:(NSNumber*)accuracyLL
+						 altitude:(NSNumber*)altitude
+					  accuracyAlt:(NSNumber*)accuracyAlt
+							query:(NSString*)query
+							limit:(NSNumber*)limit
+                           radius:(NSNumber*)radius
+                           section:(NSString*)section
+                           novelty:(NSString*)novelty
+                           sortByDistance:(NSNumber*)sortByDistance
+                           price:(NSString*)price
+						 callback:(Foursquare2Callback)callback
+{
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (lat && lon) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+	}
+	if (accuracyLL) {
+		dic[@"llAcc"] = accuracyLL.stringValue;
+	}
+	if (altitude) {
+		dic[@"alt"] = altitude.stringValue;
+	}
+	if (accuracyAlt) {
+		dic[@"altAcc"] = accuracyAlt.stringValue;
+	}
+	if (query) {
+		dic[@"query"] = query;
+	}
+	if (limit) {
+		dic[@"limit"] = limit.stringValue;
+	}
+    if (radius) {
+		dic[@"radius"] = radius.stringValue;
+	}
+    if (novelty) {
+        dic[@"novelty"] = novelty;
+    }
+    if (sortByDistance) {
+        dic[@"sortByDistance"] = sortByDistance.stringValue;
+    }
+    if (price) {
+        dic[@"price"] = price;
+    }
+	[self get:@"venues/explore" withParams:dic callback:callback];
+}
+
 +(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
                                        w:(NSNumber*)w
                                        n:(NSNumber*)n
