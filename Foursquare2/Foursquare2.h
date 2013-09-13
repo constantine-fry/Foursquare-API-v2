@@ -168,6 +168,26 @@ typedef enum {
                        categoryId:(NSString*)categoryId
 						 callback:(Foursquare2Callback)callback;
 
++(void)searchTrendingVenuesNearByLatitude:(NSNumber*)lat
+						longitude:(NSNumber*)lon
+							limit:(NSNumber*)limit
+                           radius:(NSNumber*)radius
+						 callback:(Foursquare2Callback)callback;
+
++(void)searchRecommendedVenuesNearByLatitude:(NSNumber*)lat
+						longitude:(NSNumber*)lon
+					   accuracyLL:(NSNumber*)accuracyLL
+						 altitude:(NSNumber*)altitude
+					  accuracyAlt:(NSNumber*)accuracyAlt
+							query:(NSString*)query
+							limit:(NSNumber*)limit
+                           radius:(NSNumber*)radius
+                           section:(NSString*)section
+                           novelty:(NSString*)novelty
+                           sortByDistance:(NSNumber*)sortByDistance
+                           price:(NSString*)price
+						 callback:(Foursquare2Callback)callback;
+
 +(void)searchVenuesInBoundingQuadrangleS:(NSNumber*)s
                                        w:(NSNumber*)w
                                        n:(NSNumber*)n
