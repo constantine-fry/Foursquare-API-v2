@@ -1,4 +1,4 @@
-#Objective-C Foursquare API 2.0
+#Foursquare Objective-C API 2.0
 
 ###Features
 * Native and in-app authentication 
