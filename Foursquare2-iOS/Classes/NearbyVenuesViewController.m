@@ -95,7 +95,7 @@
 										   NSArray* venues = [dic valueForKeyPath:@"response.venues"];
                                            FSConverter *converter = [[FSConverter alloc]init];
                                            self.nearbyVenues = [converter convertToObjects:venues];
-                                           [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+                                           [self.tableView reloadData];
                                            [self proccessAnnotations];
 
 									   }

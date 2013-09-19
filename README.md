@@ -1,28 +1,28 @@
-#Foursquare API 2.0 For iOS and MacOS
+#Foursquare Objective-C API 2.0
 
 ###Features
-* In-App Authentication
+* Native authentication with Foursquare app.
+* In-app authentication.
 * Asynchronous requests with blocks
 * Build-in image uploader for photos.
-    * You can use [CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) for downloading images.
-* Made with native framworks:
-    * NSJSONSerialization for JSON parsing
-    * NSURLConnection for requests
+* Made with native frameworks.
 
 
 ###How To
 
+0. In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
+
 1. Create Your application here https://foursquare.com/developers/register
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/site.png?raw=true)
+![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/site1.png)
 
 2. Setup Foursquare to use your credentials
 
 
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-            [Foursquare2 setupFoursquareWithKey:YOUR_KEY
-                                         secret:YOUR_SECRET
-                                    callbackURL:YOUR_CALLBACK_URL];
+            [Foursquare2 setupFoursquareWithClientId:YOUR_KEY
+                                     		 secret:YOUR_SECRET
+	                                 callbackURL:YOUR_CALLBACK_URL];
         }
     
     
@@ -33,7 +33,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
 
 
-###Usefull tips
+###Useful tips
 1. How to get sw and ne from MKMapView?
 
         CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
@@ -55,14 +55,10 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 
 ###Screnshots
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%201.PNG?raw=true)
+![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/photo1.PNG)
 
 
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true)
-
-##My other usefull libs
-[CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) - is simple subclass of UIImageView for async downloading image. Very simple and powerfull. No extra code. I use native NSCache class for in-memory image caching.
-
+![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/photo2.PNG)
 
 
 I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
