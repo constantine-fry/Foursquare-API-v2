@@ -9,6 +9,8 @@
 
 ###How To
 
+0. In case you already use this library and you want to switch on native: login you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you should have redirect URL like this testapp123://foursquare or myapp://foursqurelogin. testapp123 or myapp are URL schemes of your application should be in plist(see steps below). 
+
 1. Create Your application here https://foursquare.com/developers/register
 ![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/site1.png)
 
