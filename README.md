@@ -1,13 +1,10 @@
-#Foursquare API 2.0 For iOS and MacOS
+#Objective-C Foursquare API 2.0
 
 ###Features
-* In-App Authentication
+* Native and in-app authentication 
 * Asynchronous requests with blocks
 * Build-in image uploader for photos.
-    * You can use [CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) for downloading images.
-* Made with native framworks:
-    * NSJSONSerialization for JSON parsing
-    * NSURLConnection for requests
+* Made with native frameworks.
 
 
 ###How To
@@ -20,9 +17,9 @@
 
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-            [Foursquare2 setupFoursquareWithKey:YOUR_KEY
-                                         secret:YOUR_SECRET
-                                    callbackURL:YOUR_CALLBACK_URL];
+            [Foursquare2 setupFoursquareWithClientId:YOUR_KEY
+                                     		 secret:YOUR_SECRET
+	                                 callbackURL:YOUR_CALLBACK_URL];
         }
     
     
@@ -33,7 +30,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
 
 
-###Usefull tips
+###Useful tips
 1. How to get sw and ne from MKMapView?
 
         CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
@@ -58,11 +55,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%201.PNG?raw=true)
 
 
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true)
-
-##My other usefull libs
-[CFAsyncImageView](https://github.com/Constantine-Fry/CFAsyncImageView) - is simple subclass of UIImageView for async downloading image. Very simple and powerfull. No extra code. I use native NSCache class for in-memory image caching.
-
+![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true
 
 
 I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
