@@ -10,7 +10,7 @@
 ###How To
 
 1. Create Your application here https://foursquare.com/developers/register
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/site1.png?raw=true)
+![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/site1.png)
 
 2. Setup Foursquare to use your credentials
 
