@@ -1,7 +1,8 @@
 #Foursquare Objective-C API 2.0
 
 ###Features
-* Native and in-app authentication 
+* Native authentication with Foursquare app.
+* In-app authentication.
 * Asynchronous requests with blocks
 * Build-in image uploader for photos.
 * Made with native frameworks.
