@@ -52,10 +52,10 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 
 ###Screnshots
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%201.PNG?raw=true)
+![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/photo1.PNG)
 
 
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/photo%202.PNG?raw=true
+![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/native-auth/img/photo2.PNG)
 
 
 I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
