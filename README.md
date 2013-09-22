@@ -15,13 +15,9 @@ IMPRORTANT: In case you already use this library and you want to switch on nativ
 
 1. Create Your application here https://foursquare.com/developers/register
 ![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/site1.png)
-
 2. You need to make sure you set up the URL scheme in your info.plist properly
-
 CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
-
 ![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
-
 3. Add handleURL: method in application:openURL:sourceApplication:annotation: method.
 
 
