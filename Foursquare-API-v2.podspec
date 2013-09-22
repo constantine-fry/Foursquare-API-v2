@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name         = "Foursquare-API-v2"
-  s.version      = "1.2.2"
-  s.summary      = "Foursquare API v2 For iOS."
+  s.version      = "1.3.0"
+  s.summary      = "Objective-C Foursquare API v2. With native authorisation now."
   s.homepage     = "https://github.com/Constantine-Fry/Foursquare-API-v2"
-  s.screenshots  = "https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/photo%202.PNG"
+  s.screenshots  = "https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/photo2.PNG"
   s.license      = 'MIT'
   s.author       = { "Constantine Fry" => "constantine.fry@gmail.com" }
-  s.source       = { :git => "https://github.com/Constantine-Fry/Foursquare-API-v2.git", :tag => "1.2.2" }
+  s.source       = { :git => "https://github.com/Constantine-Fry/Foursquare-API-v2.git", :tag => "1.3.0", :submodules => 'true' }
   s.platform     = :ios, '5.0'
   s.source_files = 'Classes', 'Foursquare2/**/*.{h,m}'
   s.exclude_files = 'Classes/Exclude'
