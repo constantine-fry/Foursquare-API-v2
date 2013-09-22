@@ -10,12 +10,29 @@
 
 ###How To
 
-1. In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
+IMPRORTANT: In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
 
-2. Create Your application here https://foursquare.com/developers/register
+1. Create Your application here https://foursquare.com/developers/register
 ![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/site1.png)
 
-3. Setup Foursquare to use your credentials
+
+2. You need to make sure you set up the URL scheme in your info.plist properly
+
+CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
+
+![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
+
+
+3. Add handleURL:method in application:openURL:sourceApplication:annotation: method
+
+
+        - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+            return [Foursquare2 handleURL:url];
+        }
+
+
+
+4. Setup Foursquare to use your credentials
 
 
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -24,13 +41,10 @@
                                      		 secret:YOUR_SECRET
 	                                 callbackURL:YOUR_CALLBACK_URL];
         }
-    
-    
-4. You need to make sure you set up the URL scheme in your info.plist properly
+ 
 
-CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
+    
 
-![](https://github.com/Constantine-Fry/Foursquare-API-v2/blob/master/img/plist.png?raw=true)
 
 
 ###Useful tips
