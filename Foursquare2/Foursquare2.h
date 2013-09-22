@@ -60,7 +60,7 @@ typedef enum {
 +(BOOL)isAuthorized;
 #pragma mark -
 
-+ (void)setupFoursquareWithClientId:(NSString *)key
++ (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
                         callbackURL:(NSString *)callbackURL;
 

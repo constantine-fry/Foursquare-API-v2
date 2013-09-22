@@ -44,7 +44,6 @@
                                     target:self
                                     action:@selector(cancel)];
 	
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
 	[webView loadRequest:request];
 }
@@ -53,8 +52,9 @@
 
 
 -(void)cancel{
-    [delegate performSelector:selector withObject:nil afterDelay:0];
-	[self dismissViewControllerAnimated:YES completion:nil];
+	[self dismissViewControllerAnimated:YES completion:^{
+        [delegate performSelector:selector withObject:nil afterDelay:0];
+    }];
 }
 
 #pragma clang diagnostic push
@@ -74,8 +74,9 @@
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
         [Foursquare2 setAccessToken:arr[1]];
-		[delegate performSelector:selector withObject:nil];
-		[self dismissViewControllerAnimated:YES completion:nil];
+		[self dismissViewControllerAnimated:YES completion:^{
+            [delegate performSelector:selector withObject:nil];
+        }];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
 		[delegate performSelector:selector withObject:arr[1]];
