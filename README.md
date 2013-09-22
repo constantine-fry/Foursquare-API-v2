@@ -10,12 +10,12 @@
 
 ###How To
 
-0. In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
+1. In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
 
-1. Create Your application here https://foursquare.com/developers/register
+2. Create Your application here https://foursquare.com/developers/register
 ![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/site1.png)
 
-2. Setup Foursquare to use your credentials
+3. Setup Foursquare to use your credentials
 
 
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -26,7 +26,7 @@
         }
     
     
-3. You need to make sure you set up the URL scheme in your info.plist properly
+4. You need to make sure you set up the URL scheme in your info.plist properly
 
 CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
@@ -63,3 +63,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
 
+
+###Cocoapod
+
+pod 'Foursquare-API-v2'
