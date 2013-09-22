@@ -1,3 +1,0 @@
-[submodule "Foursquare2/submodule/foursquare-ios-oauth"]
-	path = Foursquare2/submodule/foursquare-ios-oauth
-	url = git@github.com:foursquare/foursquare-ios-oauth.git
