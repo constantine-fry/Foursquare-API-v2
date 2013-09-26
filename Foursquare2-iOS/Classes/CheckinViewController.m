@@ -11,13 +11,13 @@
 #import "FSVenue.h"
 
 @interface CheckinViewController ()
-
+@property (strong, nonatomic) IBOutlet UILabel *venueName;
+- (IBAction)checkin:(id)sender;
 @end
 
 @implementation CheckinViewController
 
-
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title = @"Checkin";
     self.venueName.text = self.venue.name;
@@ -27,6 +27,7 @@
     [self setVenueName:nil];
     [super viewDidUnload];
 }
+
 - (IBAction)checkin:(id)sender {
     [Foursquare2  createCheckinAtVenue:self.venue.venueId
                                  venue:nil
@@ -42,11 +43,10 @@
                                       UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Checkin"
                                                                                      message:@"Success"
                                                                                     delegate:self
-                                                                           cancelButtonTitle:@"хорошо" otherButtonTitles:nil];
+                                                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                       [alert show];
                                   }
                               }];
-
-    
 }
+
 @end

@@ -40,7 +40,7 @@
 
 
 
--(void)cancel{
+- (void)cancel{
 	[self dismissViewControllerAnimated:YES completion:^{
         [delegate performSelector:selector withObject:nil afterDelay:0];
     }];

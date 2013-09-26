@@ -54,10 +54,10 @@ typedef enum {
 }
 
 + (void)setBaseURL:(NSString *)uri;
-+(void)setAccessToken:(NSString *)token;
-+(void)removeAccessToken;
-+(BOOL)isNeedToAuthorize;
-+(BOOL)isAuthorized;
++ (void)setAccessToken:(NSString *)token;
++ (void)removeAccessToken;
++ (BOOL)isNeedToAuthorize;
++ (BOOL)isAuthorized;
 #pragma mark -
 
 + (void)setupFoursquareWithClientId:(NSString *)clientId
@@ -71,289 +71,289 @@ typedef enum {
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
 
 // !!!: 1. userID is a valid user ID or "self"
-+(void)getDetailForUser:(NSString *)userID
++ (void)getDetailForUser:(NSString *)userID
+                callback:(Foursquare2Callback)callback;
+
++ (void)searchUserPhone:(NSArray *)phones
+                  email:(NSArray *)emails
+                twitter:(NSArray *)twitters
+          twitterSource:(NSString *)twitterSource
+            facebookIDs:(NSArray *)bdids
+                   name:(NSString *)name
                callback:(Foursquare2Callback)callback;
 
-+(void)searchUserPhone:(NSArray *)phones
-				 email:(NSArray *)emails
-			   twitter:(NSArray *)twitters
-		 twitterSource:(NSString *)twitterSource
-		   facebookIDs:(NSArray *)bdids
-				  name:(NSString *)name
-			  callback:(Foursquare2Callback)callback;
-
-+(void)getFriendRequestsCallback:(Foursquare2Callback)callback;
++ (void)getFriendRequestsCallback:(Foursquare2Callback)callback;
 
 
 
 #pragma mark Aspects
 
-+(void)getBadgesForUser:(NSString *)userID
-			   callback:(Foursquare2Callback)callback;
++ (void)getBadgesForUser:(NSString *)userID
+                callback:(Foursquare2Callback)callback;
 
 //For now, only "self" is supported
-+(void)getCheckinsByUser:(NSString *)userID
-				   limit:(NSString *)limit
-				  offset:(NSString *)offset
-		  afterTimestamp:(NSString *)afterTimestamp
-		 beforeTimestamp:(NSString *)beforeTimestamp
-				callback:(Foursquare2Callback)callback;
++ (void)getCheckinsByUser:(NSString *)userID
+                    limit:(NSString *)limit
+                   offset:(NSString *)offset
+           afterTimestamp:(NSString *)afterTimestamp
+          beforeTimestamp:(NSString *)beforeTimestamp
+                 callback:(Foursquare2Callback)callback;
 
-+(void)getFriendsOfUser:(NSString *)userID
-			   callback:(Foursquare2Callback)callback;
++ (void)getFriendsOfUser:(NSString *)userID
+                callback:(Foursquare2Callback)callback;
 
 //sort: One of recent, nearby, or popular. Nearby requires geolat and geolong to be provided.
-+(void)getTipsFromUser:(NSString *)userID
-				  sort:(FoursquareSortingType)sort
-			  latitude:(NSString *)lat
-			 longitude:(NSString *)lon
-			  callback:(Foursquare2Callback)callback;
++ (void)getTipsFromUser:(NSString *)userID
+                   sort:(FoursquareSortingType)sort
+               latitude:(NSString *)lat
+              longitude:(NSString *)lon
+               callback:(Foursquare2Callback)callback;
 
 //sort: One of recent or popular. Nearby requires geolat and geolong to be provided.
-+(void)getTodosFromUser:(NSString *)userID
-				   sort:(FoursquareSortingType)sort
-			   latitude:(NSString *)lat
-			  longitude:(NSString *)lon
-			   callback:(Foursquare2Callback)callback;
++ (void)getTodosFromUser:(NSString *)userID
+                    sort:(FoursquareSortingType)sort
+                latitude:(NSString *)lat
+               longitude:(NSString *)lon
+                callback:(Foursquare2Callback)callback;
 
 //For now, only "self" is supported
-+(void)getVenuesVisitedByUser:(NSString *)userID
-					 callback:(Foursquare2Callback)callback;
++ (void)getVenuesVisitedByUser:(NSString *)userID
+                      callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
 
-+(void)sendFriendRequestToUser:(NSString *)userID
-					  callback:(Foursquare2Callback)callback;
++ (void)sendFriendRequestToUser:(NSString *)userID
+                       callback:(Foursquare2Callback)callback;
 
-+(void)removeFriend:(NSString *)userID
-		   callback:(Foursquare2Callback)callback;
++ (void)removeFriend:(NSString *)userID
+            callback:(Foursquare2Callback)callback;
 
-+(void)approveFriend:(NSString *)userID
-			callback:(Foursquare2Callback)callback;
++ (void)approveFriend:(NSString *)userID
+             callback:(Foursquare2Callback)callback;
 
-+(void)denyFriend:(NSString *)userID
-		 callback:(Foursquare2Callback)callback;
++ (void)denyFriend:(NSString *)userID
+          callback:(Foursquare2Callback)callback;
 
-+(void)setPings:(BOOL)value
-	  forFriend:(NSString *)userID
-	   callback:(Foursquare2Callback)callback;
++ (void)setPings:(BOOL)value
+       forFriend:(NSString *)userID
+        callback:(Foursquare2Callback)callback;
 
 #pragma mark -
 
 
 #pragma mark ---------------------------- Venues ------------------------------------------------------------------------
 
-+(void)getDetailForVenue:(NSString *)venueID
-				callback:(Foursquare2Callback)callback;
++ (void)getDetailForVenue:(NSString *)venueID
+                 callback:(Foursquare2Callback)callback;
 
-+(void)addVenueWithName:(NSString *)name
-				address:(NSString *)address
-			crossStreet:(NSString *)crossStreet
-				   city:(NSString *)city
-				  state:(NSString *)state
-					zip:(NSString *)zip
-				  phone:(NSString *)phone
-			   latitude:(NSString *)lat
-			  longitude:(NSString *)lon
-	  primaryCategoryId:(NSString *)primaryCategoryId
-			   callback:(Foursquare2Callback)callback;
++ (void)addVenueWithName:(NSString *)name
+                 address:(NSString *)address
+             crossStreet:(NSString *)crossStreet
+                    city:(NSString *)city
+                   state:(NSString *)state
+                     zip:(NSString *)zip
+                   phone:(NSString *)phone
+                latitude:(NSString *)lat
+               longitude:(NSString *)lon
+       primaryCategoryId:(NSString *)primaryCategoryId
+                callback:(Foursquare2Callback)callback;
 
-+(void)getVenueCategoriesCallback:(Foursquare2Callback)callback;
++ (void)getVenueCategoriesCallback:(Foursquare2Callback)callback;
 
-+(void)searchVenuesNearByLatitude:(NSNumber *)lat
-						longitude:(NSNumber *)lon
-					   accuracyLL:(NSNumber *)accuracyLL
-						 altitude:(NSNumber *)altitude
-					  accuracyAlt:(NSNumber *)accuracyAlt
-							query:(NSString *)query
-							limit:(NSNumber *)limit
-						   intent:(FoursquareIntentType)intent
-                           radius:(NSNumber *)radius
-                       categoryId:(NSString *)categoryId
-						 callback:(Foursquare2Callback)callback;
++ (void)searchVenuesNearByLatitude:(NSNumber *)lat
+                         longitude:(NSNumber *)lon
+                        accuracyLL:(NSNumber *)accuracyLL
+                          altitude:(NSNumber *)altitude
+                       accuracyAlt:(NSNumber *)accuracyAlt
+                             query:(NSString *)query
+                             limit:(NSNumber *)limit
+                            intent:(FoursquareIntentType)intent
+                            radius:(NSNumber *)radius
+                        categoryId:(NSString *)categoryId
+                          callback:(Foursquare2Callback)callback;
 
-+(void)searchTrendingVenuesNearByLatitude:(NSNumber *)lat
-                                longitude:(NSNumber *)lon
++ (void)searchTrendingVenuesNearByLatitude:(NSNumber *)lat
+                                 longitude:(NSNumber *)lon
+                                     limit:(NSNumber *)limit
+                                    radius:(NSNumber *)radius
+                                  callback:(Foursquare2Callback)callback;
+
++ (void)searchRecommendedVenuesNearByLatitude:(NSNumber *)lat
+                                    longitude:(NSNumber *)lon
+                                   accuracyLL:(NSNumber *)accuracyLL
+                                     altitude:(NSNumber *)altitude
+                                  accuracyAlt:(NSNumber *)accuracyAlt
+                                        query:(NSString *)query
+                                        limit:(NSNumber *)limit
+                                       radius:(NSNumber *)radius
+                                      section:(NSString *)section
+                                      novelty:(NSString *)novelty
+                               sortByDistance:(NSNumber *)sortByDistance
+                                        price:(NSString *)price
+                                     callback:(Foursquare2Callback)callback;
+
++ (void)searchVenuesInBoundingQuadrangleS:(NSNumber *)s
+                                        w:(NSNumber *)w
+                                        n:(NSNumber *)n
+                                        e:(NSNumber *)e
+                                    query:(NSString *)query
                                     limit:(NSNumber *)limit
-                                   radius:(NSNumber *)radius
                                  callback:(Foursquare2Callback)callback;
-
-+(void)searchRecommendedVenuesNearByLatitude:(NSNumber *)lat
-                                   longitude:(NSNumber *)lon
-                                  accuracyLL:(NSNumber *)accuracyLL
-                                    altitude:(NSNumber *)altitude
-                                 accuracyAlt:(NSNumber *)accuracyAlt
-                                       query:(NSString *)query
-                                       limit:(NSNumber *)limit
-                                      radius:(NSNumber *)radius
-                                     section:(NSString *)section
-                                     novelty:(NSString *)novelty
-                              sortByDistance:(NSNumber *)sortByDistance
-                                       price:(NSString *)price
-                                    callback:(Foursquare2Callback)callback;
-
-+(void)searchVenuesInBoundingQuadrangleS:(NSNumber *)s
-                                       w:(NSNumber *)w
-                                       n:(NSNumber *)n
-                                       e:(NSNumber *)e
-                                   query:(NSString *)query
-                                   limit:(NSNumber *)limit
-                                callback:(Foursquare2Callback)callback;
 #pragma mark Aspects
-+(void)getVenueHereNow:(NSString *)venueID
-				 limit:(NSString *)limit
-				offset:(NSString *)offset
-		afterTimestamp:(NSString *)afterTimestamp
-			  callback:(Foursquare2Callback)callback;
++ (void)getVenueHereNow:(NSString *)venueID
+                  limit:(NSString *)limit
+                 offset:(NSString *)offset
+         afterTimestamp:(NSString *)afterTimestamp
+               callback:(Foursquare2Callback)callback;
 
-+(void)getTipsFromVenue:(NSString *)venueID
-				   sort:(FoursquareSortingType)sort
-			   callback:(Foursquare2Callback)callback;
++ (void)getTipsFromVenue:(NSString *)venueID
+                    sort:(FoursquareSortingType)sort
+                callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
 
-+(void)markVenueToDo:(NSString *)venueID
-				text:(NSString *)text
-			callback:(Foursquare2Callback)callback;
++ (void)markVenueToDo:(NSString *)venueID
+                 text:(NSString *)text
+             callback:(Foursquare2Callback)callback;
 
-+(void)flagVenue:(NSString *)venueID
-		 problem:(FoursquareProblemType)problem
-		callback:(Foursquare2Callback)callback;
++ (void)flagVenue:(NSString *)venueID
+          problem:(FoursquareProblemType)problem
+         callback:(Foursquare2Callback)callback;
 
-+(void)proposeEditVenue:(NSString *)venueID
-				   name:(NSString *)name
-				address:(NSString *)address
-			crossStreet:(NSString *)crossStreet
-				   city:(NSString *)city
-				  state:(NSString *)state
-					zip:(NSString *)zip
-				  phone:(NSString *)phone
-			   latitude:(NSString *)lat
-			  longitude:(NSString *)lon
-	  primaryCategoryId:(NSString *)primaryCategoryId
-			   callback:(Foursquare2Callback)callback;
++ (void)proposeEditVenue:(NSString *)venueID
+                    name:(NSString *)name
+                 address:(NSString *)address
+             crossStreet:(NSString *)crossStreet
+                    city:(NSString *)city
+                   state:(NSString *)state
+                     zip:(NSString *)zip
+                   phone:(NSString *)phone
+                latitude:(NSString *)lat
+               longitude:(NSString *)lon
+       primaryCategoryId:(NSString *)primaryCategoryId
+                callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 #pragma mark ---------------------------- Checkins ---------------------------------------------------------------------
 
-+(void)getDetailForCheckin:(NSString *)checkinID
-                  callback:(Foursquare2Callback)callback;
++ (void)getDetailForCheckin:(NSString *)checkinID
+                   callback:(Foursquare2Callback)callback;
 
 
-+(void)createCheckinAtVenue:(NSString *)venueID
-					  venue:(NSString *)venue
-					  shout:(NSString *)shout
-				   callback:(Foursquare2Callback)callback;
++ (void)createCheckinAtVenue:(NSString *)venueID
+                       venue:(NSString *)venue
+                       shout:(NSString *)shout
+                    callback:(Foursquare2Callback)callback;
 
 
-+(void)createCheckinAtVenue:(NSString *)venueID
-					  venue:(NSString *)venue
-					  shout:(NSString *)shout
-				  broadcast:(FoursquareBroadcastType)broadcast
-				   latitude:(NSString *)lat
-				  longitude:(NSString *)lon
-				 accuracyLL:(NSString *)accuracyLL
-				   altitude:(NSString *)altitude
-				accuracyAlt:(NSString *)accuracyAlt
-				   callback:(Foursquare2Callback)callback;
++ (void)createCheckinAtVenue:(NSString *)venueID
+                       venue:(NSString *)venue
+                       shout:(NSString *)shout
+                   broadcast:(FoursquareBroadcastType)broadcast
+                    latitude:(NSString *)lat
+                   longitude:(NSString *)lon
+                  accuracyLL:(NSString *)accuracyLL
+                    altitude:(NSString *)altitude
+                 accuracyAlt:(NSString *)accuracyAlt
+                    callback:(Foursquare2Callback)callback;
 
-+(void)getRecentCheckinsByFriendsNearByLatitude:(NSString *)lat
-									  longitude:(NSString *)lon
-										  limit:(NSString *)limit
-										 offset:(NSString *)offset
-								 afterTimestamp:(NSString *)afterTimestamp
-									   callback:(Foursquare2Callback)callback;
++ (void)getRecentCheckinsByFriendsNearByLatitude:(NSString *)lat
+                                       longitude:(NSString *)lon
+                                           limit:(NSString *)limit
+                                          offset:(NSString *)offset
+                                  afterTimestamp:(NSString *)afterTimestamp
+                                        callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
 
-+(void)addCommentToCheckin:(NSString *)checkinID
-					  text:(NSString *)text
-				  callback:(Foursquare2Callback)callback;
++ (void)addCommentToCheckin:(NSString *)checkinID
+                       text:(NSString *)text
+                   callback:(Foursquare2Callback)callback;
 
-+(void)deleteComment:(NSString *)commentID
-		  forCheckin:(NSString *)checkinID
-			callback:(Foursquare2Callback)callback;
++ (void)deleteComment:(NSString *)commentID
+           forCheckin:(NSString *)checkinID
+             callback:(Foursquare2Callback)callback;
 
 #pragma mark -
 #pragma mark ---------------------------- Tips ------------------------------------------------------------------------
 
-+(void)getDetailForTip:(NSString *)tipID
-              callback:(Foursquare2Callback)callback;
++ (void)getDetailForTip:(NSString *)tipID
+               callback:(Foursquare2Callback)callback;
 
-+(void)addTip:(NSString *)tip
-	 forVenue:(NSString *)venueID
-	  withURL:(NSString *)url
-	 callback:(Foursquare2Callback)callback;
++ (void)addTip:(NSString *)tip
+      forVenue:(NSString *)venueID
+       withURL:(NSString *)url
+      callback:(Foursquare2Callback)callback;
 
-+(void)searchTipNearbyLatitude:(NSString *)lat
-					 longitude:(NSString *)lon
-						 limit:(NSString *)limit
-						offset:(NSString *)offset
-				   friendsOnly:(BOOL)friendsOnly
-						 query:(NSString *)query
-					  callback:(Foursquare2Callback)callback;
++ (void)searchTipNearbyLatitude:(NSString *)lat
+                      longitude:(NSString *)lon
+                          limit:(NSString *)limit
+                         offset:(NSString *)offset
+                    friendsOnly:(BOOL)friendsOnly
+                          query:(NSString *)query
+                       callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
-+(void)markTipTodo:(NSString *)tipID
-		  callback:(Foursquare2Callback)callback;
++ (void)markTipTodo:(NSString *)tipID
+           callback:(Foursquare2Callback)callback;
 
-+(void)markTipDone:(NSString *)tipID
-		  callback:(Foursquare2Callback)callback;
++ (void)markTipDone:(NSString *)tipID
+           callback:(Foursquare2Callback)callback;
 
-+(void)unmarkTipTodo:(NSString *)tipID
-			callback:(Foursquare2Callback)callback;
++ (void)unmarkTipTodo:(NSString *)tipID
+             callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 
 #pragma mark ---------------------------- Photos ------------------------------------------------------------------------
 
-+(void)getDetailForPhoto:(NSString *)photoID
-                callback:(Foursquare2Callback)callback;
++ (void)getDetailForPhoto:(NSString *)photoID
+                 callback:(Foursquare2Callback)callback;
 
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+(void)addPhoto:(NSImage *)photo
++ (void)addPhoto:(NSImage *)photo
 #else
-+(void)addPhoto:(UIImage *)photo
++ (void)addPhoto:(UIImage *)photo
 #endif
-      toCheckin:(NSString *)checkinID
-       callback:(Foursquare2Callback)callback;
+       toCheckin:(NSString *)checkinID
+        callback:(Foursquare2Callback)callback;
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+(void)addPhoto:(NSImage *)photo
++ (void)addPhoto:(NSImage *)photo
 #else
-+(void)addPhoto:(UIImage *)photo
++ (void)addPhoto:(UIImage *)photo
 #endif
-	  toCheckin:(NSString *)checkinID
-			tip:(NSString *)tipID
-		  venue:(NSString *)venueID
-	  broadcast:(FoursquareBroadcastType)broadcast
-	   latitude:(NSString *)lat
-	  longitude:(NSString *)lon
-	 accuracyLL:(NSString *)accuracyLL
-	   altitude:(NSString *)altitude
-	accuracyAlt:(NSString *)accuracyAlt
-	   callback:(Foursquare2Callback)callback;
+       toCheckin:(NSString *)checkinID
+             tip:(NSString *)tipID
+           venue:(NSString *)venueID
+       broadcast:(FoursquareBroadcastType)broadcast
+        latitude:(NSString *)lat
+       longitude:(NSString *)lon
+      accuracyLL:(NSString *)accuracyLL
+        altitude:(NSString *)altitude
+     accuracyAlt:(NSString *)accuracyAlt
+        callback:(Foursquare2Callback)callback;
 
-+(void)getPhotosForVenue:(NSString *)venueID
-                   limit:(NSNumber *)limit
-                  offset:(NSNumber *)offset
-                callback:(Foursquare2Callback)callback;
++ (void)getPhotosForVenue:(NSString *)venueID
+                    limit:(NSNumber *)limit
+                   offset:(NSNumber *)offset
+                 callback:(Foursquare2Callback)callback;
 
 #pragma mark -
 
 #pragma mark ---------------------------- Settings ------------------------------------------------------------------------
 
-+(void)getAllSettingsCallback:(Foursquare2Callback)callback;
++ (void)getAllSettingsCallback:(Foursquare2Callback)callback;
 
-+(void)setSendToTwitter:(BOOL)value
-			   callback:(Foursquare2Callback)callback;
++ (void)setSendToTwitter:(BOOL)value
+                callback:(Foursquare2Callback)callback;
 
-+(void)setSendToFacebook:(BOOL)value
-				callback:(Foursquare2Callback)callback;
++ (void)setSendToFacebook:(BOOL)value
+                 callback:(Foursquare2Callback)callback;
 
-+(void)setReceivePings:(BOOL)value
-			  callback:(Foursquare2Callback)callback;
++ (void)setReceivePings:(BOOL)value
+               callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 @end

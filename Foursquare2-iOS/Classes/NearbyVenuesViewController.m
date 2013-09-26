@@ -33,16 +33,16 @@
     [_locationManager startUpdatingLocation];
 }
 
--(void)addRightButton{
+- (void)addRightButton{
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
 }
 
--(void)settings{
+- (void)settings{
     SettingsViewController *settings = [[SettingsViewController alloc]init];
     [self.navigationController pushViewController:settings animated:YES];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if ([Foursquare2 isAuthorized] == YES) {
         [self addRightButton];
@@ -51,7 +51,7 @@
     }
 }
 
--(void)removeAllAnnotationExceptOfCurrentUser
+- (void)removeAllAnnotationExceptOfCurrentUser
 {
     NSMutableArray *annForRemove = [[NSMutableArray alloc] initWithArray:self.mapView.annotations];
     if ([self.mapView.annotations.lastObject isKindOfClass:[MKUserLocation class]]) {
@@ -70,7 +70,7 @@
     [self.mapView removeAnnotations:annForRemove];
 }
 
--(void)proccessAnnotations{
+- (void)proccessAnnotations{
     [self removeAllAnnotationExceptOfCurrentUser];
     [self.mapView addAnnotations:self.nearbyVenues];
     
@@ -78,7 +78,7 @@
 
 
 
--(void)getVenuesForLocation:(CLLocation *)location {
+- (void)getVenuesForLocation:(CLLocation *)location {
     
     [Foursquare2 searchVenuesNearByLatitude:@(location.coordinate.latitude)
 								  longitude:@(location.coordinate.longitude)
@@ -103,7 +103,7 @@
 								   }];
 }
 
--(void)setupMapForLocatoion:(CLLocation *)newLocation{
+- (void)setupMapForLocatoion:(CLLocation *)newLocation{
     MKCoordinateRegion region;
     MKCoordinateSpan span;
     span.latitudeDelta = 0.003;
@@ -175,13 +175,13 @@
 
 #pragma mark - Table view delegate
 
--(void)checkin{
+- (void)checkin{
     CheckinViewController *checkin = [[CheckinViewController alloc]init];
     checkin.venue = self.selected;
     [self.navigationController pushViewController:checkin animated:YES];
 }
 
--(void)userDidSelectVenue{
+- (void)userDidSelectVenue{
     if ([Foursquare2 isAuthorized]) {
         [self checkin];
 	}else{
@@ -233,7 +233,7 @@
     return pin;
 }
 
--(void)checkinButton{
+- (void)checkinButton{
     self.selected = self.mapView.selectedAnnotations.lastObject;
     [self userDidSelectVenue];
 }

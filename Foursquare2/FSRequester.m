@@ -24,7 +24,7 @@
 
 
 
--(void)changeStateErrorAlert{
+- (void)changeStateErrorAlert{
     needToShowErrorAlert = YES;
 }
 
@@ -60,15 +60,15 @@
 	
 }
 
--(void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection{
+- (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection{
    [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%d", [connection hash]]];
 }
 
--(void)disconnettargetWithConnection:(NSURLConnection *)connection{
+- (void)disconnettargetWithConnection:(NSURLConnection *)connection{
     [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%d", [connection hash]]];
 }
 
--(FSTargetCallback *)targetForConnection:(NSURLConnection *)connection{
+- (FSTargetCallback *)targetForConnection:(NSURLConnection *)connection{
     return asyncConnDict[[NSString stringWithFormat: @"%d", [connection hash]]];
 }
 

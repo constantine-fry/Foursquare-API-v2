@@ -24,11 +24,11 @@
     return self;
 }
 
--(CLLocationCoordinate2D)coordinate{
+- (CLLocationCoordinate2D)coordinate{
     return self.location.coordinate;
 }
 
--(NSString *)title{
+- (NSString *)title{
     return self.name;
 }
 @end
