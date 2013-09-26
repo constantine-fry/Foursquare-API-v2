@@ -4,7 +4,7 @@
 #define TIMEOUT_INTERVAL 45
 
 @class FSTargetCallback;
-@interface FSRequester : NSObject{
+@interface FSRequester : NSObject {
     BOOL needToShowErrorAlert;
 }
 

@@ -15,8 +15,7 @@
 @end
 
 @implementation FSVenue
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         self.location = [[FSLocation alloc]init];
@@ -24,11 +23,11 @@
     return self;
 }
 
-- (CLLocationCoordinate2D)coordinate{
+- (CLLocationCoordinate2D)coordinate {
     return self.location.coordinate;
 }
 
-- (NSString *)title{
+- (NSString *)title {
     return self.name;
 }
 @end

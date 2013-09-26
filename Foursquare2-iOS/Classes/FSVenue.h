@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface FSLocation : NSObject{
+@interface FSLocation : NSObject {
     CLLocationCoordinate2D _coordinate;
 }
 

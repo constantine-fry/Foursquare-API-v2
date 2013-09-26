@@ -15,13 +15,10 @@
 @synthesize receivedData;
 
 
-- (id) initWithCallback: (callback_block )callback_ 
-         resultCallback: (SEL) aResultCallback
-             requestUrl: (NSString *) aRequestUrl
-               numTries: (int) numberTries
-{
-
-	
+- (id)initWithCallback:(callback_block)callback_
+        resultCallback:(SEL)aResultCallback
+            requestUrl:(NSString *)aRequestUrl
+              numTries:(int)numberTries {
     self = [super init];
     if (self) {
         self.callback = callback_;

@@ -24,7 +24,7 @@
 
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)viewDidLoad{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Login", nil);
     self.navigationItem.leftBarButtonItem =
@@ -40,7 +40,7 @@
 
 
 
-- (void)cancel{
+- (void)cancel {
 	[self dismissViewControllerAnimated:YES completion:^{
         [delegate performSelector:selector withObject:nil afterDelay:0];
     }];
@@ -49,7 +49,9 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+- (BOOL)webView:(UIWebView *)webView
+shouldStartLoadWithRequest:(NSURLRequest *)request
+ navigationType:(UIWebViewNavigationType)navigationType {
 	NSString *url =[[request URL] absoluteString];
 	if ([url rangeOfString:@"access_token="].length != 0) {
 		NSHTTPCookie *cookie;
@@ -74,13 +76,13 @@
 	return YES;
 }
 #pragma clang diagnostic pop
-- (void)webViewDidStartLoad:(UIWebView *)webView{
+- (void)webViewDidStartLoad:(UIWebView *)webView {
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 }
 
 - (void)didReceiveMemoryWarning {

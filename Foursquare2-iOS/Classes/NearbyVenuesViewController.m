@@ -21,8 +21,7 @@
 
 
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Nearby";
     self.tableView.tableHeaderView = self.mapView;
@@ -33,30 +32,29 @@
     [_locationManager startUpdatingLocation];
 }
 
-- (void)addRightButton{
+- (void)addRightButton {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
 }
 
-- (void)settings{
+- (void)settings {
     SettingsViewController *settings = [[SettingsViewController alloc]init];
     [self.navigationController pushViewController:settings animated:YES];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if ([Foursquare2 isAuthorized] == YES) {
         [self addRightButton];
-    }else{
+    } else {
         self.navigationItem.rightBarButtonItem = nil;
     }
 }
 
-- (void)removeAllAnnotationExceptOfCurrentUser
-{
+- (void)removeAllAnnotationExceptOfCurrentUser {
     NSMutableArray *annForRemove = [[NSMutableArray alloc] initWithArray:self.mapView.annotations];
     if ([self.mapView.annotations.lastObject isKindOfClass:[MKUserLocation class]]) {
         [annForRemove removeObject:self.mapView.annotations.lastObject];
-    }else{
+    } else {
         for (id <MKAnnotation> annot_ in self.mapView.annotations)
         {
             if ([annot_ isKindOfClass:[MKUserLocation class]] ) {
@@ -70,7 +68,7 @@
     [self.mapView removeAnnotations:annForRemove];
 }
 
-- (void)proccessAnnotations{
+- (void)proccessAnnotations {
     [self removeAllAnnotationExceptOfCurrentUser];
     [self.mapView addAnnotations:self.nearbyVenues];
     
@@ -103,7 +101,7 @@
 								   }];
 }
 
-- (void)setupMapForLocatoion:(CLLocation *)newLocation{
+- (void)setupMapForLocatoion:(CLLocation *)newLocation {
     MKCoordinateRegion region;
     MKCoordinateSpan span;
     span.latitudeDelta = 0.003;
@@ -118,36 +116,26 @@
 
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation{
+           fromLocation:(CLLocation *)oldLocation {
     [_locationManager stopUpdatingLocation];
     [self getVenuesForLocation:newLocation];
     [self setupMapForLocatoion:newLocation];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.nearbyVenues.count;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.nearbyVenues.count) {
         return 1;
     }
     return 0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -163,7 +151,7 @@
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m, %@",
                                      venue.location.distance,
                                      venue.location.address];
-    }else{
+    } else {
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m",
                                      venue.location.distance];
     }
@@ -175,16 +163,16 @@
 
 #pragma mark - Table view delegate
 
-- (void)checkin{
+- (void)checkin {
     CheckinViewController *checkin = [[CheckinViewController alloc]init];
     checkin.venue = self.selected;
     [self.navigationController pushViewController:checkin animated:YES];
 }
 
-- (void)userDidSelectVenue{
+- (void)userDidSelectVenue {
     if ([Foursquare2 isAuthorized]) {
         [self checkin];
-	}else{
+	} else {
         [Foursquare2 authorizeWithCallback:^(BOOL success, id result) {
             if (success) {
 				[Foursquare2  getDetailForUser:@"self"
@@ -199,8 +187,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.selected = self.nearbyVenues[indexPath.row];
     [self userDidSelectVenue];
@@ -213,7 +200,7 @@
     [super viewDidUnload];
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation{
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     if (annotation == mapView.userLocation)
         return nil;
     
@@ -233,7 +220,7 @@
     return pin;
 }
 
-- (void)checkinButton{
+- (void)checkinButton {
     self.selected = self.mapView.selectedAnnotations.lastObject;
     [self userDidSelectVenue];
 }

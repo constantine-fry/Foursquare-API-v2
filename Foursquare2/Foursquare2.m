@@ -708,8 +708,7 @@ static NSMutableDictionary *attributes;
 + (void)addTip:(NSString *)tip
       forVenue:(NSString *)venueID
        withURL:(NSString *)url
-      callback:(Foursquare2Callback)callback
-{
+      callback:(Foursquare2Callback)callback {
 	if (nil ==venueID || nil == tip) {
 		callback(NO,nil);
 		return;
@@ -1077,7 +1076,7 @@ static NSMutableDictionary *attributes;
     NSNumber *code = [d valueForKeyPath:@"meta.code"];
     if (d!= nil && (code.intValue == 200 || code.intValue == 201)) {
         target.callback(YES,d);
-    }else{
+    } else {
         target.callback(NO,[d valueForKeyPath:@"meta.errorDetail"]);
     }
 }
@@ -1311,7 +1310,7 @@ Foursquare2Callback authorizeCallbackDelegate;
     if ([Foursquare2 isAuthorized]) {
         [Foursquare2 setBaseURL:FS2_API_BaseUrl];
         authorizeCallbackDelegate(YES,error);
-    }else{
+    } else {
         authorizeCallbackDelegate(NO,error);
     }
     

@@ -10,13 +10,12 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         needToShowErrorAlert = YES;
     }
-//    self.requestHistory = [NSMutableArray array];
+    
     self.asyncConnDict = [NSMutableDictionary dictionaryWithCapacity:1];
     return self;
 }
@@ -24,11 +23,11 @@
 
 
 
-- (void)changeStateErrorAlert{
+- (void)changeStateErrorAlert {
     needToShowErrorAlert = YES;
 }
 
-- (void)handleConnectionError:(NSError *)error{
+- (void)handleConnectionError:(NSError *)error {
 	if(!error) {
 		return;
 	}
@@ -60,15 +59,15 @@
 	
 }
 
-- (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection{
+- (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection {
    [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%d", [connection hash]]];
 }
 
-- (void)disconnettargetWithConnection:(NSURLConnection *)connection{
+- (void)disconnettargetWithConnection:(NSURLConnection *)connection {
     [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%d", [connection hash]]];
 }
 
-- (FSTargetCallback *)targetForConnection:(NSURLConnection *)connection{
+- (FSTargetCallback *)targetForConnection:(NSURLConnection *)connection {
     return asyncConnDict[[NSString stringWithFormat: @"%d", [connection hash]]];
 }
 
@@ -112,8 +111,7 @@
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
-- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)response
-{
+- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)response {
 
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
@@ -122,8 +120,7 @@
 
 
 
-- (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data {
 
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
@@ -132,8 +129,7 @@
 	
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)aConnection
-{
+- (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
 	
