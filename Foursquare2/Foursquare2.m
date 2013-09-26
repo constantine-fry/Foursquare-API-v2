@@ -898,17 +898,6 @@ static NSMutableDictionary *attributes;
 }
 #pragma mark -
 
-
-
-
-
-
-
-
-
-
-
-
 #pragma mark Private methods
 
 +(NSString*)inentTypeToString:(FoursquareIntentType)broadcast {
