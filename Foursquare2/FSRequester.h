@@ -4,15 +4,11 @@
 #define TIMEOUT_INTERVAL 45
 
 @class FSTargetCallback;
-@interface FSRequester : NSObject {
-    BOOL needToShowErrorAlert;
-}
+@interface FSRequester : NSObject
 
 @property (strong,nonatomic) NSMutableArray *requestHistory;
 @property (strong, nonatomic)	NSMutableDictionary *asyncConnDict;
 
-
-- (void)handleConnectionError:(NSError *)error;
 - (void) makeAsyncRequest:(NSURL *)url target:(FSTargetCallback *)target;
 - (void) makeAsyncRequestWithRequest:(NSURLRequest *)urlRequest target:(FSTargetCallback *)target;
 @end

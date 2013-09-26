@@ -11,6 +11,7 @@
 #import "FSVenue.h"
 
 @interface CheckinViewController ()
+
 @property (strong, nonatomic) IBOutlet UILabel *venueName;
 - (IBAction)checkin:(id)sender;
 @end

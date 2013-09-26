@@ -3,16 +3,7 @@
 #import <Foundation/Foundation.h>
 typedef void(^callback_block)(BOOL success, id result);
 
-@interface FSTargetCallback : NSObject {
-	SEL				targetCallback;
-	SEL				resultCallback;
-	NSMutableData	*receivedData;		
-	
-	NSString		*requestUrl;
-	NSURLRequest	*request;
-	
-	int				numTries;
-}
+@interface FSTargetCallback : NSObject
 
 @property (weak, nonatomic)	id			targetObject;
 @property (assign, nonatomic)	SEL			targetCallback;
@@ -24,11 +15,9 @@ typedef void(^callback_block)(BOOL success, id result);
 
 @property (strong, nonatomic) NSMutableData	*receivedData;		
 
-
-
-- (id) initWithCallback: (callback_block )callback_ 
-         resultCallback: (SEL) aResultCallback
-             requestUrl: (NSString *) aRequestUrl
-               numTries: (int) numberTries;
+- (id) initWithCallback:(callback_block)callback
+         resultCallback:(SEL)aResultCallback
+             requestUrl:(NSString *)aRequestUrl
+               numTries:(int)numberTries;
 
 @end

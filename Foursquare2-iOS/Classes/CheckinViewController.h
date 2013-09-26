@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class FSVenue;
 @interface CheckinViewController : UIViewController
 
-@property (strong,nonatomic) FSVenue *venue;
+@property (strong, nonatomic) FSVenue *venue;
 
 @end

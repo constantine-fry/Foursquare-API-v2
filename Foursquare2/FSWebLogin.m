@@ -9,21 +9,23 @@
 #import "FSWebLogin.h"
 #import "Foursquare2.h"
 
+@interface FSWebLogin () <UIWebViewDelegate>
+
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+
+@end
 
 @implementation FSWebLogin
-@synthesize selector,delegate;
 
 - (id) initWithUrl:(NSString *)url {
 	self = [super init];
 	if (self != nil) {
-		_url = url;
+		self.url = url;
 	}
 	return self;
 }
 
-
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Login", nil);
@@ -33,8 +35,8 @@
                                     target:self
                                     action:@selector(cancel)];
 	
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
-	[webView loadRequest:request];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+	[self.webView loadRequest:request];
 }
 
 
@@ -42,7 +44,7 @@
 
 - (void)cancel {
 	[self dismissViewControllerAnimated:YES completion:^{
-        [delegate performSelector:selector withObject:nil afterDelay:0];
+        [self.delegate performSelector:self.selector withObject:nil afterDelay:0];
     }];
 }
 
@@ -66,11 +68,11 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		NSArray *arr = [url componentsSeparatedByString:@"="];
         [Foursquare2 setAccessToken:arr[1]];
 		[self dismissViewControllerAnimated:YES completion:^{
-            [delegate performSelector:selector withObject:nil];
+            [self.delegate performSelector:self.selector withObject:nil];
         }];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-		[delegate performSelector:selector withObject:arr[1]];
+		[self.delegate performSelector:self.selector withObject:arr[1]];
 	} 
 
 	return YES;
@@ -84,22 +86,5 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 }
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    webView = nil;
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-
-
 
 @end

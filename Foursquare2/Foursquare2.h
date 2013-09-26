@@ -49,9 +49,7 @@ typedef enum {
 	intentMatch
 } FoursquareIntentType;
 
-@interface Foursquare2 : FSRequester {
-	
-}
+@interface Foursquare2 : FSRequester
 
 + (void)setBaseURL:(NSString *)uri;
 + (void)setAccessToken:(NSString *)token;

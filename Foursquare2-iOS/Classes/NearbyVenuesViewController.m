@@ -12,9 +12,17 @@
 #import "CheckinViewController.h"
 #import "SettingsViewController.h"
 #import "FSConverter.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface NearbyVenuesViewController ()
+@interface NearbyVenuesViewController () <CLLocationManagerDelegate>
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 
+@property (strong, nonatomic) FSVenue *selected;
+@property (strong, nonatomic) NSArray *nearbyVenues;
 @end
 
 @implementation NearbyVenuesViewController
@@ -26,10 +34,10 @@
     self.title = @"Nearby";
     self.tableView.tableHeaderView = self.mapView;
     self.tableView.tableFooterView = self.footer;
-    _locationManager = [[CLLocationManager alloc]init];
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    _locationManager.delegate = self;
-    [_locationManager startUpdatingLocation];
+    self.locationManager = [[CLLocationManager alloc]init];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
 }
 
 - (void)addRightButton {
@@ -117,7 +125,7 @@
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation {
-    [_locationManager stopUpdatingLocation];
+    [self.locationManager stopUpdatingLocation];
     [self getVenuesForLocation:newLocation];
     [self setupMapForLocatoion:newLocation];
 }
@@ -191,13 +199,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.selected = self.nearbyVenues[indexPath.row];
     [self userDidSelectVenue];
-}
-
-- (void)viewDidUnload {
-    [self setUsernameLabel:nil];
-    [self setLogoutButton:nil];
-    [self setFooter:nil];
-    [super viewDidUnload];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {

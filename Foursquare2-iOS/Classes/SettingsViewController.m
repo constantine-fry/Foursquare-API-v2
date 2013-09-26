@@ -8,8 +8,9 @@
 
 #import "SettingsViewController.h"
 #import "Foursquare2.h"
-@interface SettingsViewController ()
 
+@interface SettingsViewController ()
+@property (strong, nonatomic) IBOutlet UILabel *name;
 @end
 
 @implementation SettingsViewController
@@ -32,11 +33,6 @@
                           }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)viewDidUnload {
     [self setName:nil];
     [super viewDidUnload];
@@ -46,4 +42,5 @@
     [Foursquare2 removeAccessToken];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 @end

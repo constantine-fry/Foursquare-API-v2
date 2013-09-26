@@ -13,27 +13,11 @@
 - (id)init {
     self = [super init];
     if (self) {
-        needToShowErrorAlert = YES;
+        self.asyncConnDict = [NSMutableDictionary dictionaryWithCapacity:1];
     }
-    
-    self.asyncConnDict = [NSMutableDictionary dictionaryWithCapacity:1];
     return self;
 }
 
-
-
-
-- (void)changeStateErrorAlert {
-    needToShowErrorAlert = YES;
-}
-
-- (void)handleConnectionError:(NSError *)error {
-	if(!error) {
-		return;
-	}
-
-
-}
 
 - (void) makeAsyncRequest:(NSURL *)url target:(FSTargetCallback *)target {
 
@@ -49,14 +33,8 @@
 	} else {
 		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo:dict];
-		
-		[self handleConnectionError: error];
-
 		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
-
-        
 	}
-	
 }
 
 - (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection {
@@ -85,9 +63,6 @@
 	} else {
 		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo: dict];
-		
-		[self handleConnectionError: error];
-
 		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
         
 	}
