@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NearbyVenuesViewController :UIViewController
+@interface NearbyVenuesViewController :UITableViewController
 
 @end

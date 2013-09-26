@@ -25,11 +25,11 @@
                                       secret:@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR"
                                  callbackURL:@"testapp123://foursquare"];
     
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIViewController *c = [[NearbyVenuesViewController alloc]init];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    window.rootViewController = nav;
-    [window makeKeyAndVisible];
+//	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    UIViewController *c = [[NearbyVenuesViewController alloc]init];
+//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+//    window.rootViewController = nav;
+//    [window makeKeyAndVisible];
 	return YES;
 }
 

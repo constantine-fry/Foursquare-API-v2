@@ -12,6 +12,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		470849B917F4D5CD002538CA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470849B817F4D5CD002538CA /* MainStoryboard.storyboard */; };
 		471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6616C0F17E009F88F9 /* pin@2x.png */; };
 		471EAC6916C0F41C009F88F9 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6816C0F41C009F88F9 /* pin.png */; };
 		4779882716AC248800038756 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882016AC248800038756 /* Foursquare2.m */; };
@@ -45,6 +46,7 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Foursquare_API_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare_API_Prefix.pch; sourceTree = "<group>"; };
+		470849B817F4D5CD002538CA /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		471EAC6616C0F17E009F88F9 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
 		471EAC6816C0F41C009F88F9 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		4779881F16AC248800038756 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Foursquare2.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -112,6 +114,7 @@
 				4779884516AC64CF00038756 /* SettingsViewController.h */,
 				4779884616AC64CF00038756 /* SettingsViewController.m */,
 				4779884716AC64CF00038756 /* SettingsViewController.xib */,
+				470849B817F4D5CD002538CA /* MainStoryboard.storyboard */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4779882C16AC25DF00038756 /* Default-568h@2x.png in Resources */,
+				470849B917F4D5CD002538CA /* MainStoryboard.storyboard in Resources */,
 				4779883216AC536E00038756 /* NearbyVenuesViewController.xib in Resources */,
 				4779884416AC623600038756 /* CheckinViewController.xib in Resources */,
 				4779884916AC64CF00038756 /* SettingsViewController.xib in Resources */,
@@ -303,7 +307,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Foursquare_API_Prefix.pch;
 				INFOPLIST_FILE = "Foursquare_API-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Foursquare2;
 			};
 			name = Debug;
@@ -316,7 +320,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Foursquare_API_Prefix.pch;
 				INFOPLIST_FILE = "Foursquare_API-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Foursquare2;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

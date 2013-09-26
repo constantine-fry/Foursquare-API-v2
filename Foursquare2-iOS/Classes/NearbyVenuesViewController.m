@@ -10,7 +10,6 @@
 #import "Foursquare2.h"
 #import "FSVenue.h"
 #import "CheckinViewController.h"
-#import "SettingsViewController.h"
 #import "FSConverter.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
@@ -18,7 +17,6 @@
 @interface NearbyVenuesViewController () <CLLocationManagerDelegate>
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 
 @property (strong, nonatomic) FSVenue *selected;
@@ -40,22 +38,13 @@
     [self.locationManager startUpdatingLocation];
 }
 
-- (void)addRightButton {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
-}
-
-- (void)settings {
-    SettingsViewController *settings = [[SettingsViewController alloc]init];
-    [self.navigationController pushViewController:settings animated:YES];
+- (void)updateRightBarButtonStatus {
+    self.navigationItem.rightBarButtonItem.enabled = [Foursquare2 isAuthorized];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if ([Foursquare2 isAuthorized] == YES) {
-        [self addRightButton];
-    } else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
+    [self updateRightBarButtonStatus];
 }
 
 - (void)removeAllAnnotationExceptOfCurrentUser {
@@ -63,8 +52,7 @@
     if ([self.mapView.annotations.lastObject isKindOfClass:[MKUserLocation class]]) {
         [annForRemove removeObject:self.mapView.annotations.lastObject];
     } else {
-        for (id <MKAnnotation> annot_ in self.mapView.annotations)
-        {
+        for (id <MKAnnotation> annot_ in self.mapView.annotations) {
             if ([annot_ isKindOfClass:[MKUserLocation class]] ) {
                 [annForRemove removeObject:annot_];
                 break;
@@ -72,14 +60,12 @@
         }
     }
     
-    
     [self.mapView removeAnnotations:annForRemove];
 }
 
 - (void)proccessAnnotations {
     [self removeAllAnnotationExceptOfCurrentUser];
     [self.mapView addAnnotations:self.nearbyVenues];
-    
 }
 
 
@@ -186,7 +172,7 @@
 				[Foursquare2  getDetailForUser:@"self"
 									  callback:^(BOOL success, id result){
 										  if (success) {
-                                              [self addRightButton];
+                                              [self updateRightBarButtonStatus];
 											  [self checkin];
 										  }
 									  }];
