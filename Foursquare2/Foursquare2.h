@@ -54,7 +54,7 @@ typedef enum {
 }
 
 + (void)setBaseURL:(NSString *)uri;
-+(void)setAccessToken:(NSString*)token;
++(void)setAccessToken:(NSString *)token;
 +(void)removeAccessToken;
 +(BOOL)isNeedToAuthorize;
 +(BOOL)isAuthorized;
