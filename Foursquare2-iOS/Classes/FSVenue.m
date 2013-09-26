@@ -28,7 +28,7 @@
     return self.location.coordinate;
 }
 
--(NSString*)title{
+-(NSString *)title{
     return self.name;
 }
 @end

@@ -39,10 +39,10 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 #endif
            callback:(Foursquare2Callback)callback;
 
-+(void)setAccessToken:(NSString*)token;
-+(NSString*)problemTypeToString:(FoursquareProblemType)problem;
-+(NSString*)broadcastTypeToString:(FoursquareBroadcastType)broadcast;
-+(NSString*)sortTypeToString:(FoursquareSortingType)type;
++(void)setAccessToken:(NSString *)token;
++(NSString *)problemTypeToString:(FoursquareProblemType)problem;
++(NSString *)broadcastTypeToString:(FoursquareBroadcastType)broadcast;
++(NSString *)sortTypeToString:(FoursquareSortingType)type;
 
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key;
 + (NSMutableDictionary *)classAttributes;
@@ -89,7 +89,7 @@ static NSMutableDictionary *attributes;
     return attributes;
 }
 
-+(void)setAccessToken:(NSString*)token {
++(void)setAccessToken:(NSString *)token {
 	[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
 	[[NSUserDefaults standardUserDefaults] setObject:token
                                               forKey:@"FOURSQUARE_ACCESS_TOKEN"];
@@ -111,7 +111,7 @@ static NSMutableDictionary *attributes;
 }
 
 
-+(NSString*)stringFromArray:(NSArray*)array {
++(NSString *)stringFromArray:(NSArray *)array {
 	if (array.count) {
         return [array componentsJoinedByString:@","];
     }
@@ -121,7 +121,7 @@ static NSMutableDictionary *attributes;
 #pragma mark -
 #pragma mark Users
 
-+(void)getDetailForUser:(NSString*)userID
++(void)getDetailForUser:(NSString *)userID
 			   callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@",userID];
 	[self get:path withParams:nil callback:callback];
@@ -185,7 +185,7 @@ static NSMutableDictionary *attributes;
 	
 }
 
-+(void)getFriendsOfUser:(NSString*)userID
++(void)getFriendsOfUser:(NSString *)userID
 			   callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
 	[self get:path withParams:nil callback:callback];
@@ -276,22 +276,22 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Venues
 
-+(void)getDetailForVenue:(NSString*)venueID
++(void)getDetailForVenue:(NSString *)venueID
 				callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"venues/%@",venueID];
 	[self get:path withParams:nil callback:callback];
 }
 
-+(void)addVenueWithName:(NSString*)name
-				address:(NSString*)address
-			crossStreet:(NSString*)crossStreet
-				   city:(NSString*)city
-				  state:(NSString*)state
-					zip:(NSString*)zip
-				  phone:(NSString*)phone
-			   latitude:(NSString*)lat
-			  longitude:(NSString*)lon
-	  primaryCategoryId:(NSString*)primaryCategoryId
++(void)addVenueWithName:(NSString *)name
+				address:(NSString *)address
+			crossStreet:(NSString *)crossStreet
+				   city:(NSString *)city
+				  state:(NSString *)state
+					zip:(NSString *)zip
+				  phone:(NSString *)phone
+			   latitude:(NSString *)lat
+			  longitude:(NSString *)lon
+	  primaryCategoryId:(NSString *)primaryCategoryId
 			   callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (name) {
@@ -578,7 +578,7 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Checkins
 
-+(void)getDetailForCheckin:(NSString*)checkinID
++(void)getDetailForCheckin:(NSString *)checkinID
 				  callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"checkins/%@",checkinID];
 	[self get:path withParams:nil callback:callback];
@@ -587,7 +587,8 @@ static NSMutableDictionary *attributes;
 +(void)createCheckinAtVenue:(NSString *)venueID
 					  venue:(NSString *)venue
 					  shout:(NSString *)shout
-				   callback:(Foursquare2Callback)callback{
+				   callback:(Foursquare2Callback)callback {
+    
     [Foursquare2 createCheckinAtVenue:venueID
 								venue:venue
 								shout:shout
@@ -678,8 +679,8 @@ static NSMutableDictionary *attributes;
 	[self post:path withParams:dic callback:callback];
 }
 
-+(void)deleteComment:(NSString*)commentID
-		  forCheckin:(NSString*)checkinID
++(void)deleteComment:(NSString *)commentID
+		  forCheckin:(NSString *)checkinID
 			callback:(Foursquare2Callback)callback {
 	if (nil ==checkinID) {
 		callback(NO,nil);
@@ -773,7 +774,7 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Photos
 
-+(void)getDetailForPhoto:(NSString*)photoID
++(void)getDetailForPhoto:(NSString *)photoID
 				callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"photos/%@",photoID];
 	[self get:path withParams:nil callback:callback];
@@ -785,7 +786,8 @@ static NSMutableDictionary *attributes;
 +(void)addPhoto:(UIImage *)photo
 #endif
       toCheckin:(NSString *)checkinID
-       callback:(Foursquare2Callback)callback{
+       callback:(Foursquare2Callback)callback {
+    
     [Foursquare2 addPhoto:photo
                 toCheckin:checkinID
                       tip:nil
@@ -900,7 +902,7 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Private methods
 
-+(NSString*)inentTypeToString:(FoursquareIntentType)broadcast {
++(NSString *)inentTypeToString:(FoursquareIntentType)broadcast {
 	switch (broadcast) {
 		case intentBrowse:
 			return @"browse";
@@ -922,7 +924,7 @@ static NSMutableDictionary *attributes;
 }
 
 
-+(NSString*)broadcastTypeToString:(FoursquareBroadcastType)broadcast {
++(NSString *)broadcastTypeToString:(FoursquareBroadcastType)broadcast {
 	switch (broadcast) {
 		case broadcastPublic:
 			return @"public";
@@ -946,7 +948,7 @@ static NSMutableDictionary *attributes;
 	
 }
 
-+(NSString*)problemTypeToString:(FoursquareProblemType)problem {
++(NSString *)problemTypeToString:(FoursquareProblemType)problem {
 	switch (problem) {
 		case problemClosed:
 			return @"closed";
@@ -964,7 +966,7 @@ static NSMutableDictionary *attributes;
 	
 }
 
-+(NSString*)sortTypeToString:(FoursquareSortingType)type {
++(NSString *)sortTypeToString:(FoursquareSortingType)type {
 	switch (type) {
 		case sortNearby:
 			return @"nearby";
@@ -1046,7 +1048,7 @@ static NSMutableDictionary *attributes;
 
 #pragma -
 
-+(Foursquare2*)sharedInstance {
++(Foursquare2 *)sharedInstance {
     static Foursquare2 *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

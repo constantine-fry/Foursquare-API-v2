@@ -78,7 +78,8 @@
 
 
 
--(void)getVenuesForLocation:(CLLocation*)location{
+-(void)getVenuesForLocation:(CLLocation *)location {
+    
     [Foursquare2 searchVenuesNearByLatitude:@(location.coordinate.latitude)
 								  longitude:@(location.coordinate.longitude)
 								 accuracyLL:nil
@@ -92,7 +93,7 @@
 								   callback:^(BOOL success, id result){
 									   if (success) {
 										   NSDictionary *dic = result;
-										   NSArray* venues = [dic valueForKeyPath:@"response.venues"];
+										   NSArray *venues = [dic valueForKeyPath:@"response.venues"];
                                            FSConverter *converter = [[FSConverter alloc]init];
                                            self.nearbyVenues = [converter convertToObjects:venues];
                                            [self.tableView reloadData];
@@ -102,7 +103,7 @@
 								   }];
 }
 
--(void)setupMapForLocatoion:(CLLocation*)newLocation{
+-(void)setupMapForLocatoion:(CLLocation *)newLocation{
     MKCoordinateRegion region;
     MKCoordinateSpan span;
     span.latitudeDelta = 0.003;

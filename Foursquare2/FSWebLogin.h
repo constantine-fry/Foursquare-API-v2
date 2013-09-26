@@ -17,5 +17,5 @@
 
 @property(nonatomic,weak) id delegate;
 @property (nonatomic,assign)SEL selector;
-- (id) initWithUrl:(NSString*)url;
+- (id) initWithUrl:(NSString *)url;
 @end
