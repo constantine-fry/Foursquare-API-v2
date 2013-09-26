@@ -1238,24 +1238,30 @@ Foursquare2Callback authorizeCallbackDelegate;
                                       clientId:key
                              callbackURIString:callbackURL
                                   clientSecret:secret
-                               completionBlock:^(NSString *authToken, BOOL requestCompleted, FSOAuthErrorCode errorCode) {
+                               completionBlock:^(NSString *authToken, BOOL requestCompleted,
+                                                 FSOAuthErrorCode errorCode) {
                                    if (errorCode  == FSOAuthErrorNone) {
                                        [Foursquare2 setAccessToken:authToken];
+                                       [self done:nil];
                                    } else {
-                                       NSLog(@"requestAccessTokenForCode error with code: %d",errorCode);
+                                       [self done:[self errorForCode:errorCode]];
                                    }
-                                   [self done:nil];
                                }];
 
         } else {
-            NSError *error = [NSError errorWithDomain:@"fs.native.auth"
-                                                 code:-1
-                                             userInfo:@{@"error":[self errorMessageForCode:errorCode]}];
-            [self done:error];
+           [self done:[self errorForCode:errorCode]];
         }
         return YES;
     }
     return NO;
+}
+
++ (NSError *)errorForCode:(FSOAuthErrorCode)errorCode {
+    NSString *msg = [self errorMessageForCode:errorCode];
+    NSError *error = [NSError errorWithDomain:@"fs.native.auth"
+                                         code:-1
+                                     userInfo:@{@"error":msg}];
+    return error;
 }
 
 + (NSString *)errorMessageForCode:(FSOAuthErrorCode)errorCode {
