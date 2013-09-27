@@ -158,7 +158,8 @@
 #pragma mark - Table view delegate
 
 - (void)checkin {
-    CheckinViewController *checkin = [[CheckinViewController alloc]init];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    CheckinViewController *checkin = [storyboard instantiateViewControllerWithIdentifier:@"CheckinVC"];
     checkin.venue = self.selected;
     [self.navigationController pushViewController:checkin animated:YES];
 }

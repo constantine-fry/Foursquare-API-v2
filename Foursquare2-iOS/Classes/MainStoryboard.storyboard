@@ -124,6 +124,59 @@
             </objects>
             <point key="canvasLocation" x="984" y="128"/>
         </scene>
+        <!--Checkin View Controller-->
+        <scene sceneID="bo1-bI-EsO">
+            <objects>
+                <viewController storyboardIdentifier="CheckinVC" id="eck-dh-Gb1" customClass="CheckinViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7fK-MH-ZSf"/>
+                        <viewControllerLayoutGuide type="bottom" id="7lY-mN-kdU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cVz-EA-J9Z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qoq-To-gOg">
+                                <rect key="frame" x="123" y="210" width="74" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="A1Z-fa-DZ0"/>
+                                </constraints>
+                                <state key="normal" title="Checkin">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="checkin:" destination="eck-dh-Gb1" eventType="touchUpInside" id="vbr-Y0-m9a"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1IX-Li-aA5">
+                                <rect key="frame" x="8" y="145" width="300" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Btj-xK-nWo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1IX-Li-aA5" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="8" id="2iZ-HU-CIw"/>
+                            <constraint firstItem="Qoq-To-gOg" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="123" id="3Tu-qf-3H9"/>
+                            <constraint firstItem="1IX-Li-aA5" firstAttribute="top" secondItem="7fK-MH-ZSf" secondAttribute="bottom" constant="125" id="6UP-T6-cgT"/>
+                            <constraint firstAttribute="trailing" secondItem="1IX-Li-aA5" secondAttribute="trailing" constant="12" id="DCa-nj-fe5"/>
+                            <constraint firstAttribute="trailing" secondItem="Qoq-To-gOg" secondAttribute="trailing" constant="123" id="c4X-Cv-9eO"/>
+                            <constraint firstItem="Qoq-To-gOg" firstAttribute="top" secondItem="1IX-Li-aA5" secondAttribute="bottom" constant="35" id="dov-g1-g6o"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="venueName" destination="1IX-Li-aA5" id="Pe2-zg-4Sd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f8V-8P-BYk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="990" y="798"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="5gz-RJ-4zc">
             <objects>
