@@ -137,7 +137,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qoq-To-gOg">
-                                <rect key="frame" x="123" y="210" width="74" height="30"/>
+                                <rect key="frame" x="123" y="187" width="74" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="A1Z-fa-DZ0"/>
@@ -158,18 +158,45 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eKr-FV-8vq">
+                                <rect key="frame" x="112" y="345" width="100" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="fJC-zA-1GR"/>
+                                </constraints>
+                                <state key="normal" title="Add photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addPhoto:" destination="eck-dh-Gb1" eventType="touchUpInside" id="Gqf-rm-xSM"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testimage.png" translatesAutoresizingMaskIntoConstraints="NO" id="oIm-og-hyO">
+                                <rect key="frame" x="108" y="243" width="109" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="e6A-KW-Myl"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="eKr-FV-8vq" firstAttribute="top" secondItem="oIm-og-hyO" secondAttribute="bottom" constant="2" id="27e-KN-s1v"/>
                             <constraint firstItem="1IX-Li-aA5" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="8" id="2iZ-HU-CIw"/>
                             <constraint firstItem="Qoq-To-gOg" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="123" id="3Tu-qf-3H9"/>
                             <constraint firstItem="1IX-Li-aA5" firstAttribute="top" secondItem="7fK-MH-ZSf" secondAttribute="bottom" constant="125" id="6UP-T6-cgT"/>
+                            <constraint firstItem="oIm-og-hyO" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="108" id="6iK-M9-asZ"/>
                             <constraint firstAttribute="trailing" secondItem="1IX-Li-aA5" secondAttribute="trailing" constant="12" id="DCa-nj-fe5"/>
+                            <constraint firstAttribute="trailing" secondItem="eKr-FV-8vq" secondAttribute="trailing" constant="108" id="Pyn-XE-2Pq"/>
                             <constraint firstAttribute="trailing" secondItem="Qoq-To-gOg" secondAttribute="trailing" constant="123" id="c4X-Cv-9eO"/>
-                            <constraint firstItem="Qoq-To-gOg" firstAttribute="top" secondItem="1IX-Li-aA5" secondAttribute="bottom" constant="35" id="dov-g1-g6o"/>
+                            <constraint firstItem="Qoq-To-gOg" firstAttribute="top" secondItem="1IX-Li-aA5" secondAttribute="bottom" constant="12" id="dov-g1-g6o"/>
+                            <constraint firstAttribute="trailing" secondItem="oIm-og-hyO" secondAttribute="trailing" constant="103" id="mjg-9m-EB0"/>
+                            <constraint firstItem="eKr-FV-8vq" firstAttribute="leading" secondItem="cVz-EA-J9Z" secondAttribute="leading" constant="112" id="q2I-FH-Q9R"/>
+                            <constraint firstItem="oIm-og-hyO" firstAttribute="top" secondItem="Qoq-To-gOg" secondAttribute="bottom" constant="26" id="xuH-2W-2Ty"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="uploadPhotButton" destination="eKr-FV-8vq" id="z0g-xQ-mUj"/>
                         <outlet property="venueName" destination="1IX-Li-aA5" id="Pe2-zg-4Sd"/>
                     </connections>
                 </viewController>
@@ -195,6 +222,7 @@
     </scenes>
     <resources>
         <image name="poweredByFoursquare_gray.png" width="236" height="60"/>
+        <image name="testimage.png" width="54" height="94"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

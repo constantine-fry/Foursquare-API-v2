@@ -12,7 +12,10 @@
 
 @interface CheckinViewController ()
 
-@property (strong, nonatomic) IBOutlet UILabel *venueName;
+@property (weak, nonatomic) IBOutlet UILabel *venueName;
+@property (weak, nonatomic) IBOutlet UIButton *uploadPhotButton;
+@property (strong, nonatomic) NSString *checkin;
+
 - (IBAction)checkin:(id)sender;
 @end
 
@@ -41,13 +44,30 @@
                            accuracyAlt:nil
                               callback:^(BOOL success, id result){
                                   if (success) {
-                                      UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Checkin"
-                                                                                     message:@"Success"
-                                                                                    delegate:self
-                                                                           cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                      [alert show];
+                                      self.checkin = [result valueForKeyPath:@"response.checkin.id"];
+                                      [self showAlertViewWithTitle:@"Checkin Successfull"];
+                                      self.uploadPhotButton.enabled = YES;
                                   }
                               }];
+}
+
+- (IBAction)addPhoto:(id)sender {
+    [Foursquare2 addPhoto:[UIImage imageNamed:@"testimage@2x.png"]
+                toCheckin:self.checkin
+                 callback:^(BOOL success, id result) {
+                     if (success) {
+                         [self showAlertViewWithTitle:@"Photo was added"];
+                     }
+                }];
+}
+
+- (void)showAlertViewWithTitle:(NSString *)title {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

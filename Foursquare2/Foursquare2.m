@@ -1158,7 +1158,7 @@ static NSMutableDictionary *attributes;
                           filename=\"photo.jpg\"\r\n"
                           dataUsingEncoding:NSUTF8StringEncoding];
 	[body appendData:stringData];
-	[body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+	[body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 	[body appendData:data];
 	[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setHTTPBody:body];

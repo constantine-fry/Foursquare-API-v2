@@ -13,6 +13,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		470849B917F4D5CD002538CA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470849B817F4D5CD002538CA /* MainStoryboard.storyboard */; };
+		470849BC17F607D6002538CA /* testimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 470849BB17F607D6002538CA /* testimage@2x.png */; };
 		471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6616C0F17E009F88F9 /* pin@2x.png */; };
 		471EAC6916C0F41C009F88F9 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6816C0F41C009F88F9 /* pin.png */; };
 		4779882716AC248800038756 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882016AC248800038756 /* Foursquare2.m */; };
@@ -44,6 +45,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Foursquare_API_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare_API_Prefix.pch; sourceTree = "<group>"; };
 		470849B817F4D5CD002538CA /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		470849BB17F607D6002538CA /* testimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testimage@2x.png"; sourceTree = "<group>"; };
 		471EAC6616C0F17E009F88F9 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
 		471EAC6816C0F41C009F88F9 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		4779881F16AC248800038756 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Foursquare2.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -106,6 +108,7 @@
 				4779884516AC64CF00038756 /* SettingsViewController.h */,
 				4779884616AC64CF00038756 /* SettingsViewController.m */,
 				470849B817F4D5CD002538CA /* MainStoryboard.storyboard */,
+				470849BA17F607D6002538CA /* images */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -161,6 +164,14 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		470849BA17F607D6002538CA /* images */ = {
+			isa = PBXGroup;
+			children = (
+				470849BB17F607D6002538CA /* testimage@2x.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		4779881E16AC248800038756 /* Foursquare2 */ = {
@@ -254,6 +265,7 @@
 				4779884C16AC686700038756 /* poweredByFoursquare_gray.png in Resources */,
 				4779884D16AC686700038756 /* poweredByFoursquare_gray@2x.png in Resources */,
 				4779886416AC6E2900038756 /* README.md in Resources */,
+				470849BC17F607D6002538CA /* testimage@2x.png in Resources */,
 				471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */,
 				471EAC6916C0F41C009F88F9 /* pin.png in Resources */,
 				478EA5111719335900062636 /* FSWebLogin.xib in Resources */,
