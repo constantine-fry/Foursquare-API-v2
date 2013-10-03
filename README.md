@@ -8,8 +8,8 @@ constract NSDictionary with parameters on your own. This library provide concret
 
 
     + (void)createCheckinAtVenue:(NSString *)venueID
-                        venue:(NSString *)venue
-                        shout:(NSString *)shout
+                           venue:(NSString *)venue
+                           shout:(NSString *)shout
                         callback:(Foursquare2Callback)callback;
                         
     + (void)getDetailForUser:(NSString *)userID
@@ -47,8 +47,8 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
             [Foursquare2 setupFoursquareWithClientId:YOUR_KEY
-                                     		 secret:YOUR_SECRET
-	                                 callbackURL:YOUR_CALLBACK_URL];
+                              secret:YOUR_SECRET
+                         callbackURL:YOUR_CALLBACK_URL];
         }
  
 
