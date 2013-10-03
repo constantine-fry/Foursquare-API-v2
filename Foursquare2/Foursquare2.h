@@ -46,6 +46,15 @@ typedef enum {
 	FoursquareCheckinsOldestFirst,
 } FoursquareCheckinsSort;
 
+typedef enum {
+    FoursquareListGroupNone,
+	FoursquareListGroupCreated,
+	FoursquareListGroupEdited,
+    FoursquareListGroupFollowed,
+    FoursquareListGroupFriends,
+    FoursquareListGroupSuggested
+} FoursquareListGroupType;
+
 
 @interface Foursquare2 : FSRequester
 
@@ -93,31 +102,31 @@ typedef enum {
     @param userID Valid user ID to get detail for. Pass "self" to get detail of the acting user.
     @returns "user" field. User detail for user with userID: https://developer.foursquare.com/docs/responses/user
  */
-+ (void)getDetailForUser:(NSString *)userID
-                callback:(Foursquare2Callback)callback;
++ (void)userGetDetail:(NSString *)userID
+             callback:(Foursquare2Callback)callback;
 
 #pragma mark General
 /**
     @returns "results" and "unmatched" fields. Where "results" is an array of compact user objects:
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)searchUserPhone:(NSArray *)phones
-                  email:(NSArray *)emails
-                twitter:(NSArray *)twitters
-          twitterSource:(NSString *)twitterSource
-            facebookIDs:(NSArray *)bdids
-                   name:(NSString *)name
-               callback:(Foursquare2Callback)callback;
++ (void)userSearchWithPhone:(NSArray *)phones
+                      email:(NSArray *)emails
+                    twitter:(NSArray *)twitters
+              twitterSource:(NSString *)twitterSource
+                facebookIDs:(NSArray *)bdids
+                       name:(NSString *)name
+                   callback:(Foursquare2Callback)callback;
 /**
     @returns "requests" field. Array of compact user object: https://developer.foursquare.com/docs/responses/user
  */
-+ (void)getFriendRequestsCallback:(Foursquare2Callback)callback;
++ (void)userGetFriendRequestsCallback:(Foursquare2Callback)callback;
 
 /**
     @returns "leaderboard" field with "count" and "items". API explorer:
     https://developer.foursquare.com/docs/explore#req=users/leaderboard
  */
-+ (void)getLeaderboardCallback:(Foursquare2Callback)callback;
++ (void)userGetLeaderboardCallback:(Foursquare2Callback)callback;
 
 
 #pragma mark Aspects
@@ -127,8 +136,8 @@ typedef enum {
     @returns "sets" and "badges" fields. API explorer:
     https://developer.foursquare.com/docs/explore#req=users/self/badges
  */
-+ (void)getBadgesForUser:(NSString *)userID
-                callback:(Foursquare2Callback)callback;
++ (void)userGetBadges:(NSString *)userID
+             callback:(Foursquare2Callback)callback;
 
 /**
     @param userID For now, only "self" is supported.
@@ -140,13 +149,13 @@ typedef enum {
     @returns "checkings" field. A "count" and "items" of check-ins:
     https://developer.foursquare.com/docs/responses/checkin
  */
-+ (void)getCheckinsByUser:(NSString *)userID
-                    limit:(NSNumber *)limit
-                   offset:(NSNumber *)offset
-                     sort:(FoursquareCheckinsSort)sort
-                    after:(NSDate *)after
-                   before:(NSDate *)before
-                 callback:(Foursquare2Callback)callback;
++ (void)userGetCheckins:(NSString *)userID
+                  limit:(NSNumber *)limit
+                 offset:(NSNumber *)offset
+                   sort:(FoursquareCheckinsSort)sort
+                  after:(NSDate *)after
+                 before:(NSDate *)before
+               callback:(Foursquare2Callback)callback;
 
 /**
     @param userID Valid user ID to get friends for. Pass "self" to get friends of the acting user.
@@ -155,10 +164,10 @@ typedef enum {
     @returns "friends" field. A "count" and "items" of compact user objects: 
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)getFriendsOfUser:(NSString *)userID
-                   limit:(NSNumber *)limit
-                  offset:(NSNumber *)offset
-                callback:(Foursquare2Callback)callback;
++ (void)userGetFriends:(NSString *)userID
+                 limit:(NSNumber *)limit
+                offset:(NSNumber *)offset
+              callback:(Foursquare2Callback)callback;
 
 /**
     @param userID Valid user ID to get tips from. Pass "self" to get tips of the acting user.
@@ -167,13 +176,13 @@ typedef enum {
     @param sort sortNearby requires latitude and longitude to be provided.
     @returns "tips" field. A count and items of tips: https://developer.foursquare.com/docs/responses/tip
  */
-+ (void)getTipsFromUser:(NSString *)userID
-                  limit:(NSNumber *)limit
-                 offset:(NSNumber *)offset
-                   sort:(FoursquareSortingType)sort
-               latitude:(NSNumber *)latitude
-              longitude:(NSNumber *)longitude
-               callback:(Foursquare2Callback)callback;
++ (void)userGetTips:(NSString *)userID
+              limit:(NSNumber *)limit
+             offset:(NSNumber *)offset
+               sort:(FoursquareSortingType)sort
+           latitude:(NSNumber *)latitude
+          longitude:(NSNumber *)longitude
+           callback:(Foursquare2Callback)callback;
 
 
 /**
@@ -181,11 +190,11 @@ typedef enum {
     @param sort Only sortNearby and sortRecent are supported. sortNearby requires latitude and longitude to be provided.
     @returns "todos" field. A count and items of todos: https://developer.foursquare.com/docs/responses/todo
  */
-+ (void)getTodosFromUser:(NSString *)userID
-                    sort:(FoursquareSortingType)sort
-                latitude:(NSNumber *)latitude
-               longitude:(NSNumber *)longitude
-                callback:(Foursquare2Callback)callback;
++ (void)userGetTodos:(NSString *)userID
+                sort:(FoursquareSortingType)sort
+            latitude:(NSNumber *)latitude
+           longitude:(NSNumber *)longitude
+            callback:(Foursquare2Callback)callback;
 
 /**
     Returns a list of all venues visited by the specified user, along with how many visits and when they were
@@ -196,11 +205,42 @@ typedef enum {
     @returns "venues" field. A count and items of objects containing a beenHere count and venue compact venues: 
     https://developer.foursquare.com/docs/responses/venue
  */
-+ (void)getVenueHistoryForUser:(NSString *)userID
-                         after:(NSDate *)after
-                        before:(NSDate *)before
-                    categoryID:(NSString *)categoryID
-                      callback:(Foursquare2Callback)callback;
++ (void)userGetVenueHistory:(NSString *)userID
+                      after:(NSDate *)after
+                     before:(NSDate *)before
+                 categoryID:(NSString *)categoryID
+                   callback:(Foursquare2Callback)callback;
+/**
+    A User's Lists.
+    @param userID Valid user ID to get lists for. Pass "self" to get lists of the acting user.
+    @returns "lists" field. If group is specified, contains a count and items of lists: 
+    https://developer.foursquare.com/docs/responses/list
+    If FoursquareListGroupNone is specified, it contains a groups array containing elements.
+ */
++ (void)userGetLists:(NSString *)userID
+               group:(FoursquareListGroupType)groupType
+            latitude:(NSNumber *)latitude
+           longitude:(NSNumber *)longitude
+            callback:(Foursquare2Callback)callback;
+
+/**
+    Returns a user's mayorships.
+    @param userID Valid user ID to get mayorships for. Pass "self" to get mayorships of the acting user.
+    @returns "mayorships" field. A count and items of objects which currently only contain compact venue objects:
+    https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)userGetMayorships:(NSString *)userID
+                 callback:(Foursquare2Callback)callback;
+
+/**
+    Returns photos from a user.
+    @param userID For now, only self is supported.
+    @returns "photos" field. A count and items of photos: https://developer.foursquare.com/docs/responses/photo
+ */
++ (void)userGetPhotos:(NSString *)userID
+                limit:(NSNumber *)limit
+               offset:(NSNumber *)offset
+             callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
 /**
@@ -210,8 +250,8 @@ typedef enum {
     @returns "user" field. A "user" object for pending user:
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)sendFriendRequestToUser:(NSString *)userID
-                       callback:(Foursquare2Callback)callback;
++ (void)userSendFriendRequest:(NSString *)userID
+                     callback:(Foursquare2Callback)callback;
 
 /**
     Unfriend user with userID.
@@ -219,8 +259,8 @@ typedef enum {
     @returns "user" field.
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)unfriend:(NSString *)userID
-        callback:(Foursquare2Callback)callback;
++ (void)userUnfriend:(NSString *)userID
+            callback:(Foursquare2Callback)callback;
 
 /**
     Approve pending friend request.
@@ -228,8 +268,8 @@ typedef enum {
     @returns "user" field. User object of approved user.
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)approveFriend:(NSString *)userID
-             callback:(Foursquare2Callback)callback;
++ (void)userApproveFriend:(NSString *)userID
+                 callback:(Foursquare2Callback)callback;
 
 /**
     Deny pending friend reques.
@@ -237,20 +277,21 @@ typedef enum {
     @returns "user" field. User object of denied user.
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)denyFriend:(NSString *)userID
-          callback:(Foursquare2Callback)callback;
++ (void)userDenyFriend:(NSString *)userID
+              callback:(Foursquare2Callback)callback;
 /**
     Changes whether the acting user will receive pings (phone notifications) when the specified user checks in.
     @returns "user" field. User object of the user.
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)setPings:(BOOL)value
-       forFriend:(NSString *)userID
-        callback:(Foursquare2Callback)callback;
++ (void)userSetPings:(BOOL)value
+           forFriend:(NSString *)userID
+            callback:(Foursquare2Callback)callback;
+
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)updateUserPhotoWithImage:(NSImage *)image
-                        callback:(Foursquare2Callback)callback;
++ (void)userUpdatePhoto:(NSImage *)image
+               callback:(Foursquare2Callback)callback;
 #else
 /**
     Updates the user's profile photo.
@@ -258,8 +299,8 @@ typedef enum {
     @returns "user" field. The current user object.
     https://developer.foursquare.com/docs/responses/user
  */
-+ (void)updateUserPhotoWithImage:(UIImage *)image
-                        callback:(Foursquare2Callback)callback;
++ (void)userUpdatePhoto:(UIImage *)image
+               callback:(Foursquare2Callback)callback;
 #endif
 
 #pragma mark -

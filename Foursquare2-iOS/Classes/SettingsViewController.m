@@ -22,15 +22,15 @@
 }
 
 - (void)prepareViewForUser {
-    [Foursquare2  getDetailForUser:@"self"
-                          callback:^(BOOL success, id result){
-                              if (success) {
-                                  self.name.text =
-                                  [NSString stringWithFormat:@"%@ %@",
-                                  [result valueForKeyPath:@"response.user.firstName"],
-                                   [result valueForKeyPath:@"response.user.lastName"]];
-                              }
-                          }];
+    [Foursquare2  userGetDetail:@"self"
+                       callback:^(BOOL success, id result){
+                           if (success) {
+                               self.name.text =
+                               [NSString stringWithFormat:@"%@ %@",
+                                [result valueForKeyPath:@"response.user.firstName"],
+                                [result valueForKeyPath:@"response.user.lastName"]];
+                           }
+                       }];
 }
 
 - (void)viewDidUnload {

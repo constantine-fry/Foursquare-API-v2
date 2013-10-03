@@ -118,19 +118,19 @@ static NSMutableDictionary *attributes;
 #pragma mark -
 #pragma mark Users
 
-+ (void)getDetailForUser:(NSString *)userID
-                callback:(Foursquare2Callback)callback {
++ (void)userGetDetail:(NSString *)userID
+             callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@",userID];
 	[self get:path withParams:nil callback:callback];
 }
 
-+ (void)searchUserPhone:(NSArray *)phones
-                  email:(NSArray *)emails
-                twitter:(NSArray *)twitters
-          twitterSource:(NSString *)twitterSource
-            facebookIDs:(NSArray *)fbid
-                   name:(NSString *)name
-               callback:(Foursquare2Callback)callback {
++ (void)userSearchWithPhone:(NSArray *)phones
+                      email:(NSArray *)emails
+                    twitter:(NSArray *)twitters
+              twitterSource:(NSString *)twitterSource
+                facebookIDs:(NSArray *)fbid
+                       name:(NSString *)name
+                   callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	dic[@"phone"] = [self stringFromArray:phones];
 	dic[@"email"] = [self stringFromArray:emails];
@@ -145,30 +145,30 @@ static NSMutableDictionary *attributes;
 	[self get:@"users/search" withParams:dic callback:callback];
 }
 
-+ (void)getFriendRequestsCallback:(Foursquare2Callback)callback {
++ (void)userGetFriendRequestsCallback:(Foursquare2Callback)callback {
     [self get:@"users/requests" withParams:nil callback:callback];
 }
 
-+ (void)getLeaderboardCallback:(Foursquare2Callback)callback {
++ (void)userGetLeaderboardCallback:(Foursquare2Callback)callback {
     [self get:@"users/leaderboard" withParams:nil callback:callback];
 }
 
 #pragma mark Aspects
 
 
-+ (void)getBadgesForUser:(NSString *)userID
-                callback:(Foursquare2Callback)callback {
++ (void)userGetBadges:(NSString *)userID
+             callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/badges",userID];
 	[self get:path withParams:nil callback:callback];
 }
 
-+ (void)getCheckinsByUser:(NSString *)userID
-                    limit:(NSNumber *)limit
-                   offset:(NSNumber *)offset
-                     sort:(FoursquareCheckinsSort)sort
-                    after:(NSDate *)after
-                   before:(NSDate *)before
-                 callback:(Foursquare2Callback)callback {
++ (void)userGetCheckins:(NSString *)userID
+                  limit:(NSNumber *)limit
+                 offset:(NSNumber *)offset
+                   sort:(FoursquareCheckinsSort)sort
+                  after:(NSDate *)after
+                 before:(NSDate *)before
+               callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     if (sort == FoursquareCheckinsNewestFirst) {
         dic[@"sort"] = @"newestfirst";
@@ -192,10 +192,10 @@ static NSMutableDictionary *attributes;
 	
 }
 
-+ (void)getFriendsOfUser:(NSString *)userID
-                   limit:(NSNumber *)limit
-                  offset:(NSNumber *)offset
-                callback:(Foursquare2Callback)callback {
++ (void)userGetFriends:(NSString *)userID
+                 limit:(NSNumber *)limit
+                offset:(NSNumber *)offset
+              callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     if (limit) {
@@ -209,13 +209,13 @@ static NSMutableDictionary *attributes;
 
 
 
-+ (void)getTipsFromUser:(NSString *)userID
-                  limit:(NSNumber *)limit
-                 offset:(NSNumber *)offset
-                   sort:(FoursquareSortingType)sort
-               latitude:(NSNumber *)latitude
-              longitude:(NSNumber *)longitude
-               callback:(Foursquare2Callback)callback {
++ (void)userGetTips:(NSString *)userID
+              limit:(NSNumber *)limit
+             offset:(NSNumber *)offset
+               sort:(FoursquareSortingType)sort
+           latitude:(NSNumber *)latitude
+          longitude:(NSNumber *)longitude
+           callback:(Foursquare2Callback)callback {
     if (sort == sortNearby && (!latitude || !longitude)) {
         NSAssert(NO, @"Foursqure2 getTipsFromUser: Nearby requires geolat and geolong to be provided.");
 	}
@@ -236,11 +236,11 @@ static NSMutableDictionary *attributes;
 	[self get:path withParams:dic callback:callback];
 }
 
-+ (void)getTodosFromUser:(NSString *)userID
-                    sort:(FoursquareSortingType)sort
-                latitude:(NSNumber *)latitude
-               longitude:(NSNumber *)longitude
-                callback:(Foursquare2Callback)callback {
++ (void)userGetTodos:(NSString *)userID
+                sort:(FoursquareSortingType)sort
+            latitude:(NSNumber *)latitude
+           longitude:(NSNumber *)longitude
+            callback:(Foursquare2Callback)callback {
 	if (sort == sortNearby && (!latitude || !longitude)) {
         NSAssert(NO, @"Foursqure2 getTodosFromUser: Nearby requires geolat and geolong to be provided.");
 	}
@@ -260,11 +260,11 @@ static NSMutableDictionary *attributes;
 }
 
 
-+ (void)getVenueHistoryForUser:(NSString *)userID
-                         after:(NSDate *)after
-                        before:(NSDate *)before
-                    categoryID:(NSString *)categoryID
-                      callback:(Foursquare2Callback)callback {
++ (void)userGetVenueHistory:(NSString *)userID
+                      after:(NSDate *)after
+                     before:(NSDate *)before
+                 categoryID:(NSString *)categoryID
+                   callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/venuehistory",userID];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     if (after) {
@@ -279,10 +279,47 @@ static NSMutableDictionary *attributes;
 	[self get:path withParams:dic callback:callback];
 }
 
++ (void)userGetLists:(NSString *)userID
+               group:(FoursquareListGroupType)groupType
+            latitude:(NSNumber *)latitude
+           longitude:(NSNumber *)longitude
+            callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"users/%@/lists",userID];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (groupType) {
+        dic[@"group"] = [self listGroupTypeToString:groupType];
+    }
+    if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+	}
+	[self get:path withParams:dic callback:callback];
+}
+
++ (void)userGetMayorships:(NSString *)userID
+                 callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"users/%@/mayorships",userID];
+    [self get:path withParams:nil callback:callback];
+}
+
++ (void)userGetPhotos:(NSString *)userID
+                limit:(NSNumber *)limit
+               offset:(NSNumber *)offset
+             callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"users/%@/photos",userID];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (limit) {
+        dic[@"limit"] = [limit stringValue];
+    }
+    if (offset) {
+        dic[@"offset"] = [offset stringValue];
+    }
+    [self get:path withParams:nil callback:callback];
+    
+}
 #pragma mark Actions
 
-+ (void)sendFriendRequestToUser:(NSString *)userID
-                       callback:(Foursquare2Callback)callback {
++ (void)userSendFriendRequest:(NSString *)userID
+                     callback:(Foursquare2Callback)callback {
     if (!userID || !userID.length) {
         NSAssert(NO, @"Foursqure2 sendFriendRequestToUser: userID can't be nil or empty.");
     }
@@ -290,27 +327,27 @@ static NSMutableDictionary *attributes;
 	[self post:path withParams:nil callback:callback];
 }
 
-+ (void)unfriend:(NSString *)userID
-        callback:(Foursquare2Callback)callback {
++ (void)userUnfriend:(NSString *)userID
+            callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/unfriend",userID];
 	[self post:path withParams:nil callback:callback];
 }
 
-+ (void)approveFriend:(NSString *)userID
-             callback:(Foursquare2Callback)callback {
++ (void)userApproveFriend:(NSString *)userID
+                 callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/approve",userID];
 	[self post:path withParams:nil callback:callback];
 }
 
-+ (void)denyFriend:(NSString *)userID
-          callback:(Foursquare2Callback)callback {
++ (void)userDenyFriend:(NSString *)userID
+              callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/deny",userID];
 	[self post:path withParams:nil callback:callback];
 }
 
-+ (void)setPings:(BOOL)value
-       forFriend:(NSString *)userID
-        callback:(Foursquare2Callback)callback {
++ (void)userSetPings:(BOOL)value
+           forFriend:(NSString *)userID
+            callback:(Foursquare2Callback)callback {
     if (!userID || !userID.length) {
         NSAssert(NO, @"Foursqure2 setPings: userID can't be nil or empty.");
     }
@@ -322,11 +359,11 @@ static NSMutableDictionary *attributes;
 
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)updateUserPhotoWithImage:(NSImage *)image
-                        callback:(Foursquare2Callback)callback
++ (void)userUpdatePhoto:(NSImage *)image
+               callback:(Foursquare2Callback)callback
 #else
-+ (void)updateUserPhotoWithImage:(UIImage *)image
-                        callback:(Foursquare2Callback)callback
++ (void)userUpdatePhoto:(UIImage *)image
+               callback:(Foursquare2Callback)callback
 #endif
 {
     
@@ -969,19 +1006,14 @@ static NSMutableDictionary *attributes;
 	switch (broadcast) {
 		case intentBrowse:
 			return @"browse";
-			break;
 		case intentCheckin:
 			return @"checkin";
-			break;
 		case intentGlobal:
 			return @"global";
-			break;
 		case intentMatch:
 			return @"match";
-			break;
 		default:
-			return nil;
-			break;
+			return @"";
 	}
 	
 }
@@ -991,22 +1023,16 @@ static NSMutableDictionary *attributes;
 	switch (broadcast) {
 		case broadcastPublic:
 			return @"public";
-			break;
 		case broadcastPrivate:
 			return @"private";
-			break;
 		case broadcastFacebook:
 			return @"faceboook";
-			break;
 		case broadcastTwitter:
 			return @"twitter";
-			break;
 		case broadcastBoth:
 			return @"twitter,facebook";
-			break;
 		default:
-			return nil;
-			break;
+			return @"";
 	}
 	
 }
@@ -1015,16 +1041,12 @@ static NSMutableDictionary *attributes;
 	switch (problem) {
 		case problemClosed:
 			return @"closed";
-			break;
 		case problemDuplicate:
 			return @"duplicate";
-			break;
 		case problemMislocated:
 			return @"mislocated";
-			break;
 		default:
-			return nil;
-			break;
+			return @"";
 	}
 	
 }
@@ -1037,16 +1059,31 @@ static NSMutableDictionary *attributes;
 	switch (type) {
 		case sortNearby:
 			return @"nearby";
-			break;
 		case sortPopular:
 			return @"popular";
-			break;
 		case sortRecent:
 			return @"recent";
-			break;
 		default:
-			return nil;
-			break;
+			return @"";
+	}
+}
+
++ (NSString *)listGroupTypeToString:(FoursquareListGroupType)type {
+	switch (type) {
+		case FoursquareListGroupNone:
+			return @"";
+		case FoursquareListGroupCreated:
+			return @"created";
+		case FoursquareListGroupEdited:
+			return @"edited";
+		case FoursquareListGroupFollowed:
+			return @"followed";
+		case FoursquareListGroupFriends:
+			return @"friends";
+		case FoursquareListGroupSuggested:
+			return @"suggested";
+		default:
+			return @"";
 	}
 }
 

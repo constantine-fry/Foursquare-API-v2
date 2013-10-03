@@ -170,13 +170,13 @@
 	} else {
         [Foursquare2 authorizeWithCallback:^(BOOL success, id result) {
             if (success) {
-				[Foursquare2  getDetailForUser:@"self"
-									  callback:^(BOOL success, id result){
-										  if (success) {
-                                              [self updateRightBarButtonStatus];
-											  [self checkin];
-										  }
-									  }];
+				[Foursquare2  userGetDetail:@"self"
+                                   callback:^(BOOL success, id result){
+                                       if (success) {
+                                           [self updateRightBarButtonStatus];
+                                           [self checkin];
+                                       }
+                                   }];
 			}
         }];
     }
