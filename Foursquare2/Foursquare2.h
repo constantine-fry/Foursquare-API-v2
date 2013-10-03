@@ -17,13 +17,17 @@ typedef void(^Foursquare2Callback)(BOOL success, id result);
 typedef enum {
 	sortRecent,
 	sortNearby,
-	sortPopular
+	sortPopular,
+    sortFriends
 } FoursquareSortingType;
 
 typedef enum {
 	problemMislocated,
 	problemClosed,
-	problemDuplicate
+	problemDuplicate,
+    problemInappropriate,
+    problemDoesntExist,
+    problemEventOver
 } FoursquareProblemType;
 
 typedef enum {
@@ -34,6 +38,21 @@ typedef enum {
 	broadcastBoth
 } FoursquareBroadcastType;
 
+
+/**
+    @param intentCheckin Finds results that the current user is likely to check in to at the provided ll
+    at the current moment in time.
+ 
+    @param intentBrowse Find venues within a given area. Unlike the checkin intent, browse searches an entire
+    region instead of only finding Venues closest to a point. You must define a region to search be including
+    the ll and radius parameters
+ 
+    @param intentGlobal Finds the most globally relevant venues for the search, independent of location. 
+    Ignores all other parameters other than query and limit.
+ 
+    @param intentMatch Finds venues that are are nearly-exact matches for the given query and ll. 
+    This is helpful when trying to correlate an existing place database with foursquare's.
+ */
 typedef enum {
 	intentCheckin,
 	intentBrowse,
@@ -56,6 +75,12 @@ typedef enum {
 } FoursquareListGroupType;
 
 
+//End points coverage.
+//Users 19 from 19.
+
+/**
+    Foursqure2.
+ */
 @interface Foursquare2 : FSRequester
 
 /**
@@ -310,84 +335,156 @@ typedef enum {
 
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 
-+ (void)getDetailForVenue:(NSString *)venueID
-                 callback:(Foursquare2Callback)callback;
+/**
+ Returns details about a venue, including location, mayorship, tags, tips, specials, and category.
+ @param venueID ID of venue to revrieve.
+ @returns "venue" field. A complete venue object: https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueGetDetail:(NSString *)venueID
+              callback:(Foursquare2Callback)callback;
 
-+ (void)addVenueWithName:(NSString *)name
+/**
+    Add new venue.
+    @returns "venue" field. Venue object that was created: https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueAddWithName:(NSString *)name
                  address:(NSString *)address
              crossStreet:(NSString *)crossStreet
                     city:(NSString *)city
                    state:(NSString *)state
                      zip:(NSString *)zip
                    phone:(NSString *)phone
-                latitude:(NSString *)lat
-               longitude:(NSString *)lon
+                 twitter:(NSString *)twitter
+             description:(NSString *)description
+                latitude:(NSNumber *)latitude
+               longitude:(NSNumber *)longitude
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback;
 
-+ (void)getVenueCategoriesCallback:(Foursquare2Callback)callback;
+/**
+    Returns a hierarchical list of categories applied to venues.
+    @returns "categories" field. An array of categories containing sub- and sub-sub- categories.
+    https://developer.foursquare.com/docs/responses/category
+ */
++ (void)venueGetCategoriesCallback:(Foursquare2Callback)callback;
 
-+ (void)searchVenuesNearByLatitude:(NSNumber *)lat
-                         longitude:(NSNumber *)lon
-                        accuracyLL:(NSNumber *)accuracyLL
-                          altitude:(NSNumber *)altitude
-                       accuracyAlt:(NSNumber *)accuracyAlt
-                             query:(NSString *)query
-                             limit:(NSNumber *)limit
-                            intent:(FoursquareIntentType)intent
-                            radius:(NSNumber *)radius
-                        categoryId:(NSString *)categoryId
-                          callback:(Foursquare2Callback)callback;
+/**
+    Returns a list of venues near the current location, optionally matching a search term. llAcc, alt, altAcc are not 
+    included because they do not currently affect search results.
+    @parm query A search term to be applied against venue names.
+    @param limit Number of results to return, up to 50.
+    @returns "venues" field. An array of compact venues:https://developer.foursquare.com/docs/responses/venue
+*/
++ (void)venueSearchNearByLatitude:(NSNumber *)latitude
+                        longitude:(NSNumber *)longitude
+                            query:(NSString *)query
+                            limit:(NSNumber *)limit
+                           intent:(FoursquareIntentType)intent
+                           radius:(NSNumber *)radius
+                       categoryId:(NSString *)categoryId
+                         callback:(Foursquare2Callback)callback;
 
-+ (void)searchTrendingVenuesNearByLatitude:(NSNumber *)lat
-                                 longitude:(NSNumber *)lon
-                                     limit:(NSNumber *)limit
-                                    radius:(NSNumber *)radius
-                                  callback:(Foursquare2Callback)callback;
+/**
+    Returns a list of venues near the current location, optionally matching a search term
+    @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude
+    given by sw as its south-west corner, and ne as its north-east corner.
+    @param query A search term to be applied against venue names.
+    @param limit Number of results to return, up to 50.
+    @returns "venues" field. An array of compact venues:https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueSearchInBoundingQuadrangleS:(NSNumber *)s
+                                       w:(NSNumber *)w
+                                       n:(NSNumber *)n
+                                       e:(NSNumber *)e
+                                   query:(NSString *)query
+                                   limit:(NSNumber *)limit
+                                callback:(Foursquare2Callback)callback;
 
-+ (void)searchRecommendedVenuesNearByLatitude:(NSNumber *)lat
-                                    longitude:(NSNumber *)lon
+/**
+    Returns a list of venues near the current location with the most people currently checked in. 
+    @returns "venues" field. https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueTrendingNearByLatitude:(NSNumber *)latitude
+                          longitude:(NSNumber *)longitude
+                              limit:(NSNumber *)limit
+                             radius:(NSNumber *)radius
+                           callback:(Foursquare2Callback)callback;
+
+/**
+    Returns a list of recommended venues near the current location.
+    @param latitude,longitude required unless near is provided. Latitude and longitude of the user's location.
+    @param near required unless lat and lon are provided. A string naming a place in the world.
+    If the near string is not geocodable, returns a failed_geocode error.
+    @param limit Number of results to return, up to 50.
+    @param offset Used to page through results.
+    @param sortByDistance flag to sort the results by distance instead of relevance.
+    @param openNow flag to only include venues that are open now. This prefers official provider 
+    hours but falls back to popular check-in hours.
+    @returns see documentation https://developer.foursquare.com/docs/venues/explore
+ */
++ (void)venueExploreRecommendedNearByLatitude:(NSNumber *)latitude
+                                    longitude:(NSNumber *)longitude
+                                         near:(NSString *)near
                                    accuracyLL:(NSNumber *)accuracyLL
                                      altitude:(NSNumber *)altitude
                                   accuracyAlt:(NSNumber *)accuracyAlt
                                         query:(NSString *)query
                                         limit:(NSNumber *)limit
+                                       offset:(NSNumber *)offset
                                        radius:(NSNumber *)radius
                                       section:(NSString *)section
                                       novelty:(NSString *)novelty
-                               sortByDistance:(NSNumber *)sortByDistance
+                               sortByDistance:(BOOL)sortByDistance
+                                      openNow:(BOOL)openNow
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback;
 
-+ (void)searchVenuesInBoundingQuadrangleS:(NSNumber *)s
-                                        w:(NSNumber *)w
-                                        n:(NSNumber *)n
-                                        e:(NSNumber *)e
-                                    query:(NSString *)query
-                                    limit:(NSNumber *)limit
-                                 callback:(Foursquare2Callback)callback;
+
 #pragma mark Aspects
-+ (void)getVenueHereNow:(NSString *)venueID
+/**
+    Provides a count of how many people are at a given venue. 
+    @param venueID required ID of venue to retrieve
+    @returns "hereNow" field. A count and items where items are checkins: 
+    https://developer.foursquare.com/docs/responses/checkin
+ */
++ (void)venueGetHereNow:(NSString *)venueID
                   limit:(NSString *)limit
                  offset:(NSString *)offset
          afterTimestamp:(NSString *)afterTimestamp
                callback:(Foursquare2Callback)callback;
 
-+ (void)getTipsFromVenue:(NSString *)venueID
-                    sort:(FoursquareSortingType)sort
-                callback:(Foursquare2Callback)callback;
+/**
+    Returns tips for a venue. 
+    @param venueID required The venue you want tips for.
+    @param limit Number of results to return, up to 500.
+    @param offset Used to page through results.
+    @returns "tips" field. A count and items of tips: https://developer.foursquare.com/docs/responses/tip
+ */
++ (void)venueGetTips:(NSString *)venueID
+                sort:(FoursquareSortingType)sort
+               limit:(NSNumber *)limit
+              offset:(NSNumber *)offset
+            callback:(Foursquare2Callback)callback;
 
 #pragma mark Actions
 
-+ (void)markVenueToDo:(NSString *)venueID
-                 text:(NSString *)text
-             callback:(Foursquare2Callback)callback;
 
-+ (void)flagVenue:(NSString *)venueID
+/**
+    Allows users to indicate a venue is incorrect in some way.
+    @param venueID required The venue id for which an edit is being proposed.
+    @param problem required
+    @param duplicateVenueID ID of the duplicated venue (for problem problemDuplicate)
+ */
++ (void)venueFlag:(NSString *)venueID
           problem:(FoursquareProblemType)problem
+ duplicateVenueID:(NSString *)duplicateVenueID
          callback:(Foursquare2Callback)callback;
 
-+ (void)proposeEditVenue:(NSString *)venueID
+/**
+    Allows you to propose a change to a venue. 
+    @param venueID required The venue id for which an edit is being proposed.
+ */
++ (void)venueProposeEdit:(NSString *)venueID
                     name:(NSString *)name
                  address:(NSString *)address
              crossStreet:(NSString *)crossStreet
@@ -399,6 +496,7 @@ typedef enum {
                longitude:(NSString *)lon
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback;
+
 #pragma mark -
 
 #pragma mark ---------------------------- Checkins ---------------------------------------------------------------------

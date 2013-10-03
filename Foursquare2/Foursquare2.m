@@ -377,23 +377,30 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Venues
 
-+ (void)getDetailForVenue:(NSString *)venueID
-                 callback:(Foursquare2Callback)callback {
++ (void)venueGetDetail:(NSString *)venueID
+              callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"venues/%@",venueID];
 	[self get:path withParams:nil callback:callback];
 }
 
-+ (void)addVenueWithName:(NSString *)name
+
++ (void)venueAddWithName:(NSString *)name
                  address:(NSString *)address
              crossStreet:(NSString *)crossStreet
                     city:(NSString *)city
                    state:(NSString *)state
                      zip:(NSString *)zip
                    phone:(NSString *)phone
-                latitude:(NSString *)lat
-               longitude:(NSString *)lon
+                 twitter:(NSString *)twitter
+             description:(NSString *)description
+                latitude:(NSNumber *)latitude
+               longitude:(NSNumber *)longitude
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback {
+    if (!name || !name.length || !latitude || !longitude) {
+        NSAssert(NO, @"Forusquare2 venueAddWithName: name, latitude, longitude are required parameters.");
+    }
+    
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (name) {
 		dic[@"name"] = name;
@@ -416,8 +423,14 @@ static NSMutableDictionary *attributes;
 	if (phone) {
 		dic[@"phone"] = phone;
 	}
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+    if (twitter) {
+        dic[@"twitter"] = twitter;
+    }
+    if (description) {
+        dic[@"description"] = description;
+    }
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@", latitude, longitude];
 	}
 	if (primaryCategoryId) {
 		dic[@"primaryCategoryId"] = primaryCategoryId;
@@ -425,33 +438,21 @@ static NSMutableDictionary *attributes;
 	[self post:@"venues/add" withParams:dic callback:callback];
 }
 
-+ (void)getVenueCategoriesCallback:(Foursquare2Callback)callback {
++ (void)venueGetCategoriesCallback:(Foursquare2Callback)callback {
 	[self get:@"venues/categories" withParams:nil callback:callback];
 }
 
-+ (void)searchVenuesNearByLatitude:(NSNumber *)lat
-                         longitude:(NSNumber *)lon
-                        accuracyLL:(NSNumber *)accuracyLL
-                          altitude:(NSNumber *)altitude
-                       accuracyAlt:(NSNumber *)accuracyAlt
-                             query:(NSString *)query
-                             limit:(NSNumber *)limit
-                            intent:(FoursquareIntentType)intent
-                            radius:(NSNumber *)radius
-                        categoryId:(NSString *)categoryId
-                          callback:(Foursquare2Callback)callback {
++ (void)venueSearchNearByLatitude:(NSNumber *)latitude
+                        longitude:(NSNumber *)longitude
+                            query:(NSString *)query
+                            limit:(NSNumber *)limit
+                           intent:(FoursquareIntentType)intent
+                           radius:(NSNumber *)radius
+                       categoryId:(NSString *)categoryId
+                         callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
-	}
-	if (accuracyLL) {
-		dic[@"llAcc"] = accuracyLL.stringValue;
-	}
-	if (altitude) {
-		dic[@"alt"] = altitude.stringValue;
-	}
-	if (accuracyAlt) {
-		dic[@"altAcc"] = accuracyAlt.stringValue;
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	if (query) {
 		dic[@"query"] = query;
@@ -471,14 +472,40 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
-+ (void)searchTrendingVenuesNearByLatitude:(NSNumber *)lat
-                                 longitude:(NSNumber *)lon
-                                     limit:(NSNumber *)limit
-                                    radius:(NSNumber *)radius
-                                  callback:(Foursquare2Callback)callback {
++ (void)venueSearchInBoundingQuadrangleS:(NSNumber *)s
+                                       w:(NSNumber *)w
+                                       n:(NSNumber *)n
+                                       e:(NSNumber *)e
+                                   query:(NSString *)query
+                                   limit:(NSNumber *)limit
+                                callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+	if (s && w && n && e) {
+		dic[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
+        dic[@"ne"] = [NSString stringWithFormat:@"%@,%@",n, e];
+	}
+	if (query) {
+		dic[@"query"] = query;
+	}
+	if (limit) {
+		dic[@"limit"] = limit.stringValue;
+	}
+    dic[@"intent"] = [self inentTypeToString:intentBrowse];
+    
+	[self get:@"venues/search" withParams:dic callback:callback];
+}
+
++ (void)venueTrendingNearByLatitude:(NSNumber *)latitude
+                          longitude:(NSNumber *)longitude
+                              limit:(NSNumber *)limit
+                             radius:(NSNumber *)radius
+                           callback:(Foursquare2Callback)callback {
+    if (!latitude || !longitude) {
+        NSAssert(NO, @"Foursqure2 venueTrendingNearByLatitude: latitude and longitude are required parameters.");
+    }
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	if (limit) {
 		dic[@"limit"] = limit.stringValue;
@@ -489,23 +516,32 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/trending" withParams:dic callback:callback];
 }
 
-+ (void)searchRecommendedVenuesNearByLatitude:(NSNumber *)lat
-                                    longitude:(NSNumber *)lon
++ (void)venueExploreRecommendedNearByLatitude:(NSNumber *)latitude
+                                    longitude:(NSNumber *)longitude
+                                         near:(NSString *)near
                                    accuracyLL:(NSNumber *)accuracyLL
                                      altitude:(NSNumber *)altitude
                                   accuracyAlt:(NSNumber *)accuracyAlt
                                         query:(NSString *)query
                                         limit:(NSNumber *)limit
+                                       offset:(NSNumber *)offset
                                        radius:(NSNumber *)radius
                                       section:(NSString *)section
                                       novelty:(NSString *)novelty
-                               sortByDistance:(NSNumber *)sortByDistance
+                               sortByDistance:(BOOL)sortByDistance
+                                      openNow:(BOOL)openNow
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+    if (!near || !near.length || (!latitude && !longitude)) {
+        NSAssert(NO, @"Foursqure2 venueExploreRecommendedNearByLatitude: near or ll are required parameters.");
+    }
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
+    if (near) {
+        dic[@"near"] = near;
+    }
 	if (accuracyLL) {
 		dic[@"llAcc"] = accuracyLL.stringValue;
 	}
@@ -521,14 +557,20 @@ static NSMutableDictionary *attributes;
 	if (limit) {
 		dic[@"limit"] = limit.stringValue;
 	}
+    if (offset) {
+        dic[@"offset"] = offset.stringValue;
+    }
     if (radius) {
 		dic[@"radius"] = radius.stringValue;
 	}
     if (novelty) {
         dic[@"novelty"] = novelty;
     }
+    if (openNow) {
+        dic[@"openNow"] = @(openNow);
+    }
     if (sortByDistance) {
-        dic[@"sortByDistance"] = sortByDistance.stringValue;
+        dic[@"sortByDistance"] = @(sortByDistance);
     }
     if (price) {
         dic[@"price"] = price;
@@ -536,37 +578,14 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/explore" withParams:dic callback:callback];
 }
 
-+ (void)searchVenuesInBoundingQuadrangleS:(NSNumber *)s
-                                        w:(NSNumber *)w
-                                        n:(NSNumber *)n
-                                        e:(NSNumber *)e
-                                    query:(NSString *)query
-                                    limit:(NSNumber *)limit
-                                 callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (s && w && n && e) {
-		dic[@"sw"] = [NSString stringWithFormat:@"%@,%@",s,w];
-        dic[@"ne"] = [NSString stringWithFormat:@"%@,%@",n,e];
-	}
-	if (query) {
-		dic[@"query"] = query;
-	}
-	if (limit) {
-		dic[@"limit"] = limit.stringValue;
-	}
-    dic[@"intent"] = [self inentTypeToString:intentBrowse];
-    
-	[self get:@"venues/search" withParams:dic callback:callback];
-}
-
 #pragma mark Aspects
-+ (void)getVenueHereNow:(NSString *)venueID
++ (void)venueGetHereNow:(NSString *)venueID
                   limit:(NSString *)limit
                  offset:(NSString *)offset
          afterTimestamp:(NSString *)afterTimestamp
                callback:(Foursquare2Callback)callback {
-	if(nil == venueID){
-		callback(NO,nil);
+	if(!venueID || !venueID.length){
+        NSAssert(NO, @"Foursquare2 venueGetHereNow: venueID is required parameter.");
 		return;
 	}
 	
@@ -584,41 +603,37 @@ static NSMutableDictionary *attributes;
 	[self get:path withParams:dic callback:callback];
 }
 
-+ (void)getTipsFromVenue:(NSString *)venueID
-                    sort:(FoursquareSortingType)sort
-                callback:(Foursquare2Callback)callback {
-	if (nil == venueID || sort == sortNearby) {
-		callback(NO,nil);
-		return;
++ (void)venueGetTips:(NSString *)venueID
+                sort:(FoursquareSortingType)sort
+               limit:(NSNumber *)limit
+              offset:(NSNumber *)offset
+            callback:(Foursquare2Callback)callback {
+	if (!venueID || !venueID.length) {
+		NSAssert(NO, @"Foursqare2 venueGetTips: venueID is required parameter");
 	}
+    if (sort == sortNearby) {
+        NSAssert(NO, @"Foursqare2 venueGetTips: sort can only be sortFriends, sortRecent, or sortPopular.");
+    }
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	dic[@"sort"] = [self sortTypeToString:sort];
+    if (limit) {
+        dic[@"limit"] = limit.stringValue;
+    }
+    if (offset) {
+        dic[@"offset"] = offset.stringValue;
+    }
 	NSString *path = [NSString stringWithFormat:@"venues/%@/tips",venueID];
 	[self get:path withParams:dic callback:callback];
 }
 
 #pragma mark Actions
-+ (void)markVenueToDo:(NSString *)venueID
-                 text:(NSString *)text
-             callback:(Foursquare2Callback)callback {
-	if (nil == venueID) {
-		callback(NO,nil);
-		return;
-	}
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (text) {
-		dic[@"text"] = text;
-	}
-	NSString *path = [NSString stringWithFormat:@"venues/%@/marktodo",venueID];
-	[self post:path withParams:dic callback:callback];
-}
 
-+ (void)flagVenue:(NSString *)venueID
++ (void)venueFlag:(NSString *)venueID
           problem:(FoursquareProblemType)problem
+ duplicateVenueID:(NSString *)duplicateVenueID
          callback:(Foursquare2Callback)callback {
-	if (nil == venueID) {
-		callback(NO,nil);
-		return;
+	if (!venueID || !venueID.length) {
+        NSAssert(NO, @"Foursqure2 venueFlag: venueID is required parameter");
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	dic[@"problem"] = [self problemTypeToString:problem];
@@ -627,7 +642,7 @@ static NSMutableDictionary *attributes;
 }
 
 
-+ (void)proposeEditVenue:(NSString *)venueID
++ (void)venueProposeEdit:(NSString *)venueID
                     name:(NSString *)name
                  address:(NSString *)address
              crossStreet:(NSString *)crossStreet
@@ -639,9 +654,8 @@ static NSMutableDictionary *attributes;
                longitude:(NSString *)lon
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback {
-	if (nil == venueID) {
-		callback(NO,nil);
-		return;
+    if (!venueID || !venueID.length) {
+        NSAssert(NO, @"Foursqure2 proposeEditVenue: venueID is required parameter");
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (name) {
@@ -1045,6 +1059,12 @@ static NSMutableDictionary *attributes;
 			return @"duplicate";
 		case problemMislocated:
 			return @"mislocated";
+        case problemDoesntExist:
+            return @"doesnt_exist";
+        case problemEventOver:
+            return @"event_over";
+        case problemInappropriate:
+            return @"inappropriate";
 		default:
 			return @"";
 	}
@@ -1063,6 +1083,8 @@ static NSMutableDictionary *attributes;
 			return @"popular";
 		case sortRecent:
 			return @"recent";
+        case sortFriends:
+            return @"friends";
 		default:
 			return @"";
 	}

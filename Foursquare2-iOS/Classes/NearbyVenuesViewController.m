@@ -72,27 +72,24 @@
 
 - (void)getVenuesForLocation:(CLLocation *)location {
     
-    [Foursquare2 searchVenuesNearByLatitude:@(location.coordinate.latitude)
-								  longitude:@(location.coordinate.longitude)
-								 accuracyLL:nil
-								   altitude:nil
-								accuracyAlt:nil
-									  query:nil
-									  limit:nil
-									 intent:intentCheckin
-                                     radius:@(500)
-                                 categoryId:nil
-								   callback:^(BOOL success, id result){
-									   if (success) {
-										   NSDictionary *dic = result;
-										   NSArray *venues = [dic valueForKeyPath:@"response.venues"];
-                                           FSConverter *converter = [[FSConverter alloc]init];
-                                           self.nearbyVenues = [converter convertToObjects:venues];
-                                           [self.tableView reloadData];
-                                           [self proccessAnnotations];
-
-									   }
-								   }];
+    [Foursquare2 venueSearchNearByLatitude:@(location.coordinate.latitude)
+                                 longitude:@(location.coordinate.longitude)
+                                     query:nil
+                                     limit:nil
+                                    intent:intentCheckin
+                                    radius:@(500)
+                                categoryId:nil
+                                  callback:^(BOOL success, id result){
+                                      if (success) {
+                                          NSDictionary *dic = result;
+                                          NSArray *venues = [dic valueForKeyPath:@"response.venues"];
+                                          FSConverter *converter = [[FSConverter alloc]init];
+                                          self.nearbyVenues = [converter convertToObjects:venues];
+                                          [self.tableView reloadData];
+                                          [self proccessAnnotations];
+                                          
+                                      }
+                                  }];
 }
 
 - (void)setupMapForLocatoion:(CLLocation *)newLocation {
