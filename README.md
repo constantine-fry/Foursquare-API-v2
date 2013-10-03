@@ -1,5 +1,21 @@
 #Foursquare Objective-C API 2.0
 
+###Motivation
+The main idea behind this library is to provide not abstract library with concrete methods to use.
+What do I mean by abstract library? Abstract library for me is API that provide for developers only several
+methods to construct request with path and parameters, but you need to read online documentation and
+constract NSDictionary with parameters on your own. This library provide concrete, ready-to-use method like this:
+
+
+    + (void)createCheckinAtVenue:(NSString *)venueID
+                        venue:(NSString *)venue
+                        shout:(NSString *)shout
+                        callback:(Foursquare2Callback)callback;
+                        
+    + (void)getDetailForUser:(NSString *)userID
+                    callback:(Foursquare2Callback)callback;
+
+
 ###Features
 * Native authentication with Foursquare app.
 * In-app authentication.
