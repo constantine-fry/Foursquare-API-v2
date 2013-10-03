@@ -540,7 +540,7 @@ typedef enum {
              callback:(Foursquare2Callback)callback;
 
 #pragma mark -
-#pragma mark ---------------------------- Tips ------------------------------------------------------------------------
+#pragma mark ---------------------------- Tips -------------------------------------------------------------------------
 
 + (void)getDetailForTip:(NSString *)tipID
                callback:(Foursquare2Callback)callback;
@@ -570,7 +570,7 @@ typedef enum {
 #pragma mark -
 
 
-#pragma mark ---------------------------- Photos ------------------------------------------------------------------------
+#pragma mark ---------------------------- Photos -----------------------------------------------------------------------
 
 + (void)getDetailForPhoto:(NSString *)photoID
                  callback:(Foursquare2Callback)callback;
@@ -607,7 +607,7 @@ typedef enum {
 
 #pragma mark -
 
-#pragma mark ---------------------------- Settings ------------------------------------------------------------------------
+#pragma mark ---------------------------- Settings ---------------------------------------------------------------------
 
 + (void)getAllSettingsCallback:(Foursquare2Callback)callback;
 
