@@ -20,12 +20,9 @@
 	//please read documentation http://developer.foursquare.com/docs/oauth.html
 	//this access token just for testing
 	[Foursquare2 setAccessToken:@"0Y05CMDZ1LBMAILF1ZZOXKQUXCEUZT1X0Z55IM0FKMVRXDI5"];
-	[Foursquare2 sendFriendRequestToUser:@"2363525"
-								callback:^(BOOL success, id result){
-					 if (success) {
-						 NSLog(@"%@",result);
-					 }
-				 }];
+	[Foursquare2 userGetDetail:@"self" callback:^(BOOL success, id result) {
+        NSLog(@"%@",result);
+    }];
 }
 
 @end
