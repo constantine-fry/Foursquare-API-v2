@@ -12,8 +12,8 @@ constract NSDictionary with parameters on your own. This library provide concret
                            shout:(NSString *)shout
                         callback:(Foursquare2Callback)callback;
                         
-    + (void)getDetailForUser:(NSString *)userID
-                    callback:(Foursquare2Callback)callback;
+    + (void)userGetDetail:(NSString *)userID
+                 callback:(Foursquare2Callback)callback;
 
 
 ###Features
