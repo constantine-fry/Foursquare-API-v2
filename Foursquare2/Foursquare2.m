@@ -10,6 +10,14 @@
 #import "FSTargetCallback.h"
 #import "FSOAuth.h"
 
+//update this date to use up-to-date Foursquare API
+#ifndef FS2_API_VERSION
+#define FS2_API_VERSION (@"20131003")
+#endif
+
+static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
+
+
 static NSString const * kFOURSQUARE_CLIET_ID = @"FOURSQUARE_CLIET_ID";
 static NSString const * kFOURSQUARE_OAUTH_SECRET = @"FOURSQUARE_OAUTH_SECRET";
 static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
@@ -53,7 +61,6 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 static NSMutableDictionary *attributes;
 
 + (void)initialize {
-    [self setBaseURL:FS2_API_BaseUrl];
 	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
 	if ([usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"] != nil) {
 		[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = [usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
@@ -67,12 +74,6 @@ static NSMutableDictionary *attributes;
     [self classAttributes][kFOURSQUARE_CLIET_ID] = clientId;
     [self classAttributes][kFOURSQUARE_OAUTH_SECRET] = secret;
     [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
-}
-
-
-
-+ (void)setBaseURL:(NSString *)uri {
-    [self setAttributeValue:uri forKey:@"FS2_API_BaseUrl"];
 }
 
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key {
@@ -100,10 +101,6 @@ static NSMutableDictionary *attributes;
 	[[self classAttributes]removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-+ (BOOL)isNeedToAuthorize {
-	return ([self classAttributes][kFOURSQUARE_ACCESS_TOKEN] == nil);
 }
 
 + (BOOL)isAuthorized {
@@ -149,7 +146,11 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)getFriendRequestsCallback:(Foursquare2Callback)callback {
-	[self get:@"users/requests" withParams:nil callback:callback];
+    [self get:@"users/requests" withParams:nil callback:callback];
+}
+
++ (void)getLeaderboardCallback:(Foursquare2Callback)callback {
+    [self get:@"users/leaderboard" withParams:nil callback:callback];
 }
 
 #pragma mark Aspects
@@ -162,23 +163,29 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)getCheckinsByUser:(NSString *)userID
-                    limit:(NSString *)limit
-                   offset:(NSString *)offset
-           afterTimestamp:(NSString *)afterTimestamp
-          beforeTimestamp:(NSString *)beforeTimestamp
+                    limit:(NSNumber *)limit
+                   offset:(NSNumber *)offset
+                     sort:(FoursquareCheckinsSort)sort
+                    after:(NSDate *)after
+                   before:(NSDate *)before
                  callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (limit) {
-		dic[@"limit"] = limit;
-	}
+    if (sort == FoursquareCheckinsNewestFirst) {
+        dic[@"sort"] = @"newestfirst";
+    } else if (sort == FoursquareCheckinsOldestFirst) {
+        dic[@"sort"] = @"oldestfirst";
+    }
 	if (offset) {
-		dic[@"offset"] = offset;
+		dic[@"offset"] = [offset stringValue];
 	}
-	if (afterTimestamp) {
-		dic[@"afterTimestamp"] = afterTimestamp;
+    if (limit) {
+		dic[@"limit"] = [limit stringValue];
 	}
-	if (beforeTimestamp) {
-		dic[@"beforeTimestamp"] = beforeTimestamp;
+	if (after) {
+		dic[@"afterTimestamp"] = [self timeStampStringFromDate:after];
+	}
+	if (before) {
+		dic[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/checkins",userID];
 	[self get:path withParams:dic callback:callback];
@@ -186,24 +193,44 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)getFriendsOfUser:(NSString *)userID
+                   limit:(NSNumber *)limit
+                  offset:(NSNumber *)offset
                 callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
-	[self get:path withParams:nil callback:callback];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (limit) {
+        dic[@"limit"] = [limit stringValue];
+    }
+    if (offset) {
+        dic[@"offset"] = [offset stringValue];
+    }
+	[self get:path withParams:dic callback:callback];
 }
 
 
 
 + (void)getTipsFromUser:(NSString *)userID
+                  limit:(NSNumber *)limit
+                 offset:(NSNumber *)offset
                    sort:(FoursquareSortingType)sort
-               latitude:(NSString *)lat
-              longitude:(NSString *)lon
+               latitude:(NSNumber *)latitude
+              longitude:(NSNumber *)longitude
                callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (sort) {
-		dic[@"sort"] = [self sortTypeToString:sort];
+    if (sort == sortNearby && (!latitude || !longitude)) {
+        NSAssert(NO, @"Foursqure2 getTipsFromUser: Nearby requires geolat and geolong to be provided.");
 	}
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic[@"sort"] = [self sortTypeToString:sort];
+    if (limit) {
+        dic[@"limit"] = [limit stringValue];
+    }
+    if (offset) {
+        dic[@"offset"] = [offset stringValue];
+    }
+
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/tips",userID];
 	[self get:path withParams:dic callback:callback];
@@ -211,42 +238,60 @@ static NSMutableDictionary *attributes;
 
 + (void)getTodosFromUser:(NSString *)userID
                     sort:(FoursquareSortingType)sort
-                latitude:(NSString *)lat
-               longitude:(NSString *)lon
+                latitude:(NSNumber *)latitude
+               longitude:(NSNumber *)longitude
                 callback:(Foursquare2Callback)callback {
-	if (sort == sortNearby) {
-		callback(NO, @"sort is one of recent or popular. Nearby requires geolat and geolong to be provided.");
-		return;
+	if (sort == sortNearby && (!latitude || !longitude)) {
+        NSAssert(NO, @"Foursqure2 getTodosFromUser: Nearby requires geolat and geolong to be provided.");
 	}
+    
+    if (sort == sortPopular) {
+        NSAssert(NO, @"Foursqure2 getTodosFromUser: sortPopular is not supported in this method.");
+	}
+
 	
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (sort) {
-		dic[@"sort"] = [self sortTypeToString:sort];
-	}
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+    dic[@"sort"] = [self sortTypeToString:sort];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	NSString *path = [NSString stringWithFormat:@"users/%@/todos",userID];
 	[self get:path withParams:dic callback:callback];
 }
 
 
-+ (void)getVenuesVisitedByUser:(NSString *)userID
++ (void)getVenueHistoryForUser:(NSString *)userID
+                         after:(NSDate *)after
+                        before:(NSDate *)before
+                    categoryID:(NSString *)categoryID
                       callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/venuehistory",userID];
-	[self get:path withParams:nil callback:callback];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (after) {
+		dic[@"afterTimestamp"] = [self timeStampStringFromDate:after];
+	}
+	if (before) {
+		dic[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
+	}
+    if (categoryID) {
+        dic[@"categoryId"] = categoryID;
+    }
+	[self get:path withParams:dic callback:callback];
 }
 
 #pragma mark Actions
 
 + (void)sendFriendRequestToUser:(NSString *)userID
                        callback:(Foursquare2Callback)callback {
+    if (!userID || !userID.length) {
+        NSAssert(NO, @"Foursqure2 sendFriendRequestToUser: userID can't be nil or empty.");
+    }
 	NSString *path = [NSString stringWithFormat:@"users/%@/request",userID];
 	[self post:path withParams:nil callback:callback];
 }
 
-+ (void)removeFriend:(NSString *)userID
-            callback:(Foursquare2Callback)callback {
++ (void)unfriend:(NSString *)userID
+        callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"users/%@/unfriend",userID];
 	[self post:path withParams:nil callback:callback];
 }
@@ -266,11 +311,30 @@ static NSMutableDictionary *attributes;
 + (void)setPings:(BOOL)value
        forFriend:(NSString *)userID
         callback:(Foursquare2Callback)callback {
+    if (!userID || !userID.length) {
+        NSAssert(NO, @"Foursqure2 setPings: userID can't be nil or empty.");
+    }
 	NSString *path = [NSString stringWithFormat:@"users/%@/setpings",userID];
 	NSDictionary *params = @{@"value":(value?@"true":@"false")};
 	[self post:path withParams:params callback:callback];
 }
 
+
+
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
++ (void)updateUserPhotoWithImage:(NSImage *)image
+                        callback:(Foursquare2Callback)callback
+#else
++ (void)updateUserPhotoWithImage:(UIImage *)image
+                        callback:(Foursquare2Callback)callback
+#endif
+{
+    
+    [self uploadPhoto:@"users/self/update"
+           withParams:nil
+            withImage:image
+             callback:callback];
+}
 #pragma mark -
 
 
@@ -965,6 +1029,10 @@ static NSMutableDictionary *attributes;
 	
 }
 
++ (NSString *)timeStampStringFromDate:(NSDate *)date {
+    return [NSString stringWithFormat:@"%@",@(floor([date timeIntervalSince1970]))];
+}
+
 + (NSString *)sortTypeToString:(FoursquareSortingType)type {
 	switch (type) {
 		case sortNearby:
@@ -1005,7 +1073,7 @@ static NSMutableDictionary *attributes;
 
 + (NSString *)constructRequestUrlForMethod:(NSString *)methodName
                                     params:(NSDictionary *)paramMap {
-    NSMutableString *paramStr = [NSMutableString stringWithString: [self classAttributes][@"FS2_API_BaseUrl"]];
+    NSMutableString *paramStr = [NSMutableString stringWithString: kFOURSQUARE_BASE_URL];
     
     [paramStr appendString:methodName];
     NSDictionary *dic = [self classAttributes];
@@ -1308,10 +1376,9 @@ Foursquare2Callback authorizeCallbackDelegate;
 
 + (void)done:(NSError *)error {
     if ([Foursquare2 isAuthorized]) {
-        [Foursquare2 setBaseURL:FS2_API_BaseUrl];
-        authorizeCallbackDelegate(YES,error);
+        authorizeCallbackDelegate(YES, error);
     } else {
-        authorizeCallbackDelegate(NO,error);
+        authorizeCallbackDelegate(NO, error);
     }
     
 }
