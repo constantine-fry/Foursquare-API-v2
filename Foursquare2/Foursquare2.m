@@ -8,7 +8,9 @@
 
 #import "Foursquare2.h"
 #import "FSTargetCallback.h"
+#ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSOAuth.h"
+#endif
 
 //update this date to use up-to-date Foursquare API
 #ifndef FS2_API_VERSION
