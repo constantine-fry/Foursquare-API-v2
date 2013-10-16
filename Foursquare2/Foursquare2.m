@@ -1197,16 +1197,20 @@ static NSMutableDictionary *attributes;
                                 callback:callback];
 }
 
-- (void) callback: (NSDictionary *)d target:(FSTargetCallback *)target {
-    if (d[kFOURSQUARE_ACCESS_TOKEN]) {
-        target.callback(YES,d);
+- (void) callback: (id)result target:(FSTargetCallback *)target {
+    if ([result isKindOfClass:[NSError class]]) {
+        target.callback(NO,result);
         return;
     }
-    NSNumber *code = [d valueForKeyPath:@"meta.code"];
-    if (d!= nil && (code.intValue == 200 || code.intValue == 201)) {
-        target.callback(YES,d);
+    if (result[kFOURSQUARE_ACCESS_TOKEN]) {
+        target.callback(YES,result);
+        return;
+    }
+    NSNumber *code = [result valueForKeyPath:@"meta.code"];
+    if (result!= nil && (code.intValue == 200 || code.intValue == 201)) {
+        target.callback(YES,result);
     } else {
-        target.callback(NO,[d valueForKeyPath:@"meta.errorDetail"]);
+        target.callback(NO,[result valueForKeyPath:@"meta.errorDetail"]);
     }
 }
 

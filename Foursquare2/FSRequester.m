@@ -13,28 +13,9 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.asyncConnDict = [NSMutableDictionary dictionaryWithCapacity:1];
+        self.asyncConnDict = [NSMutableDictionary dictionary];
     }
     return self;
-}
-
-
-- (void) makeAsyncRequest:(NSURL *)url target:(FSTargetCallback *)target {
-
-	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
-												cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-											timeoutInterval:TIMEOUT_INTERVAL];
-	
-	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest 
-                                                                   delegate:self] ;
-	if (connection) {
-		target.receivedData = [NSMutableData data];
-        [self connectTarget:target andConnection:connection];
-	} else {
-		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
-		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo:dict];
-		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
-	}
 }
 
 - (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection {
@@ -51,9 +32,6 @@
 
 
 - (void) makeAsyncRequestWithRequest:(NSURLRequest *)urlRequest target:(FSTargetCallback *)target {
-
-
-
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self] ;
 	
 	if (connection) {
@@ -63,11 +41,12 @@
 	} else {
 		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo: dict];
-		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
-        
+        if (target.resultCallback) {
+            [self performSelector:target.resultCallback
+                       withObject:error
+                       withObject:target];
+        }
 	}
-	
-
 }
 
 #pragma mark NSURLConnection
@@ -107,18 +86,13 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
-	
-
-	
-	id result = nil;
-	
-    result = [NSJSONSerialization JSONObjectWithData:receivedData
-                                             options:0
-                                               error:nil];
+	id result = [NSJSONSerialization JSONObjectWithData:receivedData
+                                                options:0
+                                                  error:nil];
 	if (target.resultCallback) {
-        [self performSelector:target.resultCallback withObject:result withObject:target];
-
-        
+        [self performSelector:target.resultCallback
+                   withObject:result
+                   withObject:target];
     }
 	
 	
@@ -131,7 +105,11 @@
 	
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 
-	[target.targetObject performSelector:target.targetCallback withObject:nil withObject:error];
+    if (target.resultCallback) {
+        [self performSelector:target.resultCallback
+                   withObject:error
+                   withObject:target];
+    }
 
     
     
