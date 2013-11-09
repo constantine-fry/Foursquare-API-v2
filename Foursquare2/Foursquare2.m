@@ -763,8 +763,8 @@ static NSMutableDictionary *attributes;
 	if (shout) {
 		dic[@"shout"] = shout;
 	}
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	if (accuracyLL) {
 		dic[@"llAcc"] = accuracyLL.stringValue;
@@ -780,8 +780,8 @@ static NSMutableDictionary *attributes;
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }
 
-+ (void)checkinGetRecentsByFriends:(NSNumber *)lat
-                         longitude:(NSNumber *)lon
++ (void)checkinGetRecentsByFriends:(NSNumber *)latitude
+                         longitude:(NSNumber *)longitude
                              limit:(NSNumber *)limit
                     afterTimestamp:(NSString *)afterTimestamp
                           callback:(Foursquare2Callback)callback {
@@ -792,8 +792,8 @@ static NSMutableDictionary *attributes;
 	if (afterTimestamp) {
 		dic[@"afterTimestamp"] = afterTimestamp;
 	}
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	
 	[self get:@"checkins/recent" withParams:dic callback:callback];
@@ -857,7 +857,7 @@ static NSMutableDictionary *attributes;
 	if (checkinID) {
 		dic[@"checkinId"] = checkinID;
 	}
-    dic[@"set"] = [NSString stringWithFormat:@"%d",like?1:0];
+    dic[@"set"] = like?@"1":@"0";
 	NSString *path = [NSString stringWithFormat:@"checkins/%@/like",checkinID];
 	[self post:path withParams:dic callback:callback];
 }
@@ -934,9 +934,9 @@ static NSMutableDictionary *attributes;
 }
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)phodoAdd:(NSImage *)photo
++ (void)photoAdd:(NSImage *)photo
 #else
-+ (void)phodoAdd:(UIImage *)photo
++ (void)photoAdd:(UIImage *)photo
 #endif
        toCheckin:(NSString *)checkinID
         callback:(Foursquare2Callback)callback {
@@ -1006,30 +1006,21 @@ static NSMutableDictionary *attributes;
 #pragma mark -
 
 #pragma mark Settings
-+ (void)getAllSettingsCallback:(Foursquare2Callback)callback {
+
++ (void)settingsGetAllCallback:(Foursquare2Callback)callback {
 	[self get:@"settings/all" withParams:nil callback:callback];
 }
 
-+ (void)setSendToTwitter:(BOOL)value
-                callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	dic[@"value"] = value?@"1":@"0";
-	[self post:@"settings/sendToTwitter/set" withParams:dic callback:callback];
++ (void)settingsSet:(FoursquareSettingName)settingName
+            toValue:(BOOL)value
+           callback:(Foursquare2Callback)callback {
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic[@"value"] = value?@"1":@"0";
+    NSString *path = [NSString stringWithFormat:@"settings/%@/set",
+                      [self foursquareSettingNameToString:settingName]];
+    [self post:path withParams:dic callback:callback];
 }
 
-+ (void)setSendToFacebook:(BOOL)value
-                 callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	dic[@"value"] = value?@"1":@"0";
-	[self post:@"settings/sendToFacebook/set" withParams:dic callback:callback];
-}
-
-+ (void)setReceivePings:(BOOL)value
-               callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	dic[@"value"] = value?@"1":@"0";
-	[self post:@"settings/receivePings/set" withParams:dic callback:callback];
-}
 #pragma mark -
 
 #pragma mark Private methods
@@ -1050,6 +1041,25 @@ static NSMutableDictionary *attributes;
 	
 }
 
++ (NSString *)foursquareSettingNameToString:(FoursquareSettingName)settingName {
+    switch (settingName) {
+        case FoursquareSettingNameSendMayorshipsToTwitter:
+            return @"sendMayorshipsToTwitter";
+        case FoursquareSettingNameSendBadgesToTwitter:
+            return @"sendBadgesToTwitter";
+        case FoursquareSettingNameSendMayorshipsToFacebook:
+            return @"sendMayorshipsToFacebook";
+        case FoursquareSettingNameSendBadgesToFacebook:
+            return @"sendBadgesToFacebook";
+        case FoursquareSettingNameReceivePings:
+            return @"receivePings";
+        case FoursquareSettingNameReceiveCommentPings:
+            return @"receiveCommentPings";
+            
+        default:
+            return @"";
+    }
+}
 
 + (NSString *)broadcastTypeToString:(FoursquareBroadcastType)broadcast {
     NSMutableArray *result = [NSMutableArray array];

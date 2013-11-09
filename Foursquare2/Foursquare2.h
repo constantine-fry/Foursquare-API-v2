@@ -30,6 +30,15 @@ typedef enum {
     problemEventOver
 } FoursquareProblemType;
 
+typedef NS_OPTIONS(NSUInteger, FoursquareSettingName) {
+	FoursquareSettingNameSendMayorshipsToTwitter = 1,
+    FoursquareSettingNameSendBadgesToTwitter,
+	FoursquareSettingNameSendMayorshipsToFacebook,
+	FoursquareSettingNameSendBadgesToFacebook,
+	FoursquareSettingNameReceivePings,
+    FoursquareSettingNameReceiveCommentPings
+};
+
 typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
 	broadcastPrivate    = 1 << 0,
     broadcastFollowers  = 1 << 1,
@@ -78,8 +87,12 @@ typedef enum {
 /**
     End points coverage.
     Users 19 from 19.
-    Venues 9 from 26.
+    Venues 10 from 26.
     Checkins 6 from 7.
+    Photos 1 from 1
+    Settings 2 from 2.
+ 
+    38 covered endpoints.
  */
 
 
@@ -552,8 +565,8 @@ typedef enum {
                     event:(NSString *)eventID
                     shout:(NSString *)shout
                 broadcast:(FoursquareBroadcastType)broadcast
-                 latitude:(NSNumber *)lat
-                longitude:(NSNumber *)lon
+                 latitude:(NSNumber *)latitude
+                longitude:(NSNumber *)longitude
                accuracyLL:(NSNumber *)accuracyLL
                  altitude:(NSNumber *)altitude
               accuracyAlt:(NSNumber *)accuracyAlt
@@ -565,8 +578,8 @@ typedef enum {
     @returns "checkins" field. an array of checkin objects with user details present.
     https://developer.foursquare.com/docs/responses/checkin
  */
-+ (void)checkinGetRecentsByFriends:(NSNumber *)lat
-                         longitude:(NSNumber *)lon
++ (void)checkinGetRecentsByFriends:(NSNumber *)latitude
+                         longitude:(NSNumber *)longitude
                              limit:(NSNumber *)limit
                     afterTimestamp:(NSString *)afterTimestamp
                           callback:(Foursquare2Callback)callback;
@@ -677,9 +690,9 @@ typedef enum {
     @returns "photo" field. The photo that was just created. https://developer.foursquare.com/docs/responses/photo
  */
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)phodoAdd:(NSImage *)photo
++ (void)photoAdd:(NSImage *)photo
 #else
-+ (void)phodoAdd:(UIImage *)photo
++ (void)photoAdd:(UIImage *)photo
 #endif
        toCheckin:(NSString *)checkinID
         callback:(Foursquare2Callback)callback;
@@ -714,16 +727,23 @@ typedef enum {
 
 #pragma mark ---------------------------- Settings ---------------------------------------------------------------------
 
-+ (void)getAllSettingsCallback:(Foursquare2Callback)callback;
+/**
+    Returns the settings of the acting user.
+    @returns "settings" field. A setting object for the acting user. 
+    https://developer.foursquare.com/docs/responses/settings
+ */
++ (void)settingsGetAllCallback:(Foursquare2Callback)callback;
 
-+ (void)setSendToTwitter:(BOOL)value
-                callback:(Foursquare2Callback)callback;
+/*
+    Change a setting for the given user.
+    @param settingName setting to set value.
+    @param value YES or NO.
+    @returns "message" field. a confirmation message.
+ */
++ (void)settingsSet:(FoursquareSettingName)settingName
+            toValue:(BOOL)value
+           callback:(Foursquare2Callback)callback;
 
-+ (void)setSendToFacebook:(BOOL)value
-                 callback:(Foursquare2Callback)callback;
-
-+ (void)setReceivePings:(BOOL)value
-               callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 

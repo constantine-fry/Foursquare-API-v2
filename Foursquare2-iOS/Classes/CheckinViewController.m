@@ -45,7 +45,7 @@
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [Foursquare2 addPhoto:[UIImage imageNamed:@"testimage@2x.png"]
+    [Foursquare2 photoAdd:[UIImage imageNamed:@"testimage@2x.png"]
                 toCheckin:self.checkin
                  callback:^(BOOL success, id result) {
                      if (success) {
