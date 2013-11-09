@@ -9,6 +9,10 @@
 #import "FSWebLogin.h"
 #import "Foursquare2.h"
 
+@interface Foursquare2 (InterfaceTick)
++ (void)setAccessToken:(NSString *)token;
+@end
+
 @interface FSWebLogin () <UIWebViewDelegate>
 
 @property (nonatomic, strong) NSString *url;

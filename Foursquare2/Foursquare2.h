@@ -133,12 +133,6 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 + (BOOL)handleURL:(NSURL *)url;
 
 
-
-
-
-
-
-
 #pragma mark ---------------------------- Users ------------------------------------------------------------------------
 
 /**
@@ -745,9 +739,5 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
            callback:(Foursquare2Callback)callback;
 
 #pragma mark -
-
-
-
-+ (void)setAccessToken:(NSString *)token;
 
 @end
