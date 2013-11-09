@@ -75,10 +75,12 @@ typedef enum {
 } FoursquareListGroupType;
 
 
-//End points coverage.
-//Users 19 from 19.
-//Venues 9 from 26.
-//Checkins 6 from 7.
+/**
+    End points coverage.
+    Users 19 from 19.
+    Venues 9 from 26.
+    Checkins 6 from 7.
+ */
 
 
 /**
@@ -497,8 +499,8 @@ typedef enum {
                    state:(NSString *)state
                      zip:(NSString *)zip
                    phone:(NSString *)phone
-                latitude:(NSString *)lat
-               longitude:(NSString *)lon
+                latitude:(NSNumber *)lat
+               longitude:(NSNumber *)lon
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback;
 
@@ -552,9 +554,9 @@ typedef enum {
     @returns "checkins" field. an array of checkin objects with user details present.
     https://developer.foursquare.com/docs/responses/checkin
  */
-+ (void)checkinGetRecentsByFriends:(NSString *)lat
-                         longitude:(NSString *)lon
-                             limit:(NSString *)limit
++ (void)checkinGetRecentsByFriends:(NSNumber *)lat
+                         longitude:(NSNumber *)lon
+                             limit:(NSNumber *)limit
                     afterTimestamp:(NSString *)afterTimestamp
                           callback:(Foursquare2Callback)callback;
 #pragma mark Aspects
@@ -604,31 +606,44 @@ typedef enum {
 #pragma mark -
 #pragma mark ---------------------------- Tips -------------------------------------------------------------------------
 
-+ (void)getDetailForTip:(NSString *)tipID
-               callback:(Foursquare2Callback)callback;
+/**
+    Gives details about a tip, including which users (especially friends) have marked the tip to-do.
+    @param tipID required ID of tip to retrieve.
+    @returns "tip" field. A complete tip https://developer.foursquare.com/docs/responses/tip
+ */
++ (void)tipGetDetail:(NSString *)tipID
+            callback:(Foursquare2Callback)callback;
 
-+ (void)addTip:(NSString *)tip
+/**
+    Allows you to add a new tip at a venue.
+    @param tip required the text for this tip.
+    @param venueID required The venue where you want to add this tip.
+    @param url A URL related to this tip.
+    @returns "tip" field. https://developer.foursquare.com/docs/responses/tip
+ */
++ (void)tipAdd:(NSString *)tip
       forVenue:(NSString *)venueID
        withURL:(NSString *)url
       callback:(Foursquare2Callback)callback;
 
-+ (void)searchTipNearbyLatitude:(NSString *)lat
-                      longitude:(NSString *)lon
-                          limit:(NSString *)limit
-                         offset:(NSString *)offset
+/**
+    Returns a list of tips near the area specified. 
+    @param lat and lon required unless near is provided. Latitude and longitude of the user's location.
+    @param near required unless lat and lon are provided. A string naming a place in the world.
+    @param limit Number of result to return, up to 500.
+    @param offset The number of results to skip. Used for paging.
+    @param friendsOnly If YES only show nearby tips from friends.
+    @returns "tips" field. An array of tips, each of which contain a user and venue.
+ */
++ (void)tipSearchNearbyLatitude:(NSNumber *)lat
+                      longitude:(NSNumber *)lon
+                           near:(NSString *)near
+                          limit:(NSNumber *)limit
+                         offset:(NSNumber *)offset
                     friendsOnly:(BOOL)friendsOnly
                           query:(NSString *)query
                        callback:(Foursquare2Callback)callback;
 
-#pragma mark Actions
-+ (void)markTipTodo:(NSString *)tipID
-           callback:(Foursquare2Callback)callback;
-
-+ (void)markTipDone:(NSString *)tipID
-           callback:(Foursquare2Callback)callback;
-
-+ (void)unmarkTipTodo:(NSString *)tipID
-             callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 

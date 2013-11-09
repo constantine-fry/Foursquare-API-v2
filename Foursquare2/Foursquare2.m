@@ -652,8 +652,8 @@ static NSMutableDictionary *attributes;
                    state:(NSString *)state
                      zip:(NSString *)zip
                    phone:(NSString *)phone
-                latitude:(NSString *)lat
-               longitude:(NSString *)lon
+                latitude:(NSNumber *)lat
+               longitude:(NSNumber *)lon
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback {
     if (!venueID || !venueID.length) {
@@ -758,14 +758,14 @@ static NSMutableDictionary *attributes;
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }
 
-+ (void)checkinGetRecentsByFriends:(NSString *)lat
-                         longitude:(NSString *)lon
-                             limit:(NSString *)limit
++ (void)checkinGetRecentsByFriends:(NSNumber *)lat
+                         longitude:(NSNumber *)lon
+                             limit:(NSNumber *)limit
                     afterTimestamp:(NSString *)afterTimestamp
                           callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		dic[@"limit"] = limit;
+		dic[@"limit"] = limit.stringValue;
 	}
 	if (afterTimestamp) {
 		dic[@"afterTimestamp"] = afterTimestamp;
@@ -845,44 +845,50 @@ static NSMutableDictionary *attributes;
 #pragma mark Tips
 
 
-+ (void)getDetailForTip:(NSString *)tipID
-               callback:(Foursquare2Callback)callback {
++ (void)tipGetDetail:(NSString *)tipID
+            callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"tips/%@/",tipID];
 	[self get:path withParams:nil callback:callback];
 }
 
 
-+ (void)addTip:(NSString *)tip
++ (void)tipAdd:(NSString *)tip
       forVenue:(NSString *)venueID
        withURL:(NSString *)url
       callback:(Foursquare2Callback)callback {
-	if (nil ==venueID || nil == tip) {
-		callback(NO,nil);
-		return;
+	if (!venueID || !tip) {
+		NSAssert(NO, @"Foursqure2 tipAdd: tip and venueID are required parameters.");
 	}
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	dic[@"venueId"] = venueID;
 	dic[@"text"] = tip;
-	if(url)
+	if(url) {
 		dic[@"url"] = url;
-	
+    }
 	[self post:@"tips/add" withParams:dic callback:callback];
 }
 
-+ (void)searchTipNearbyLatitude:(NSString *)lat
-                      longitude:(NSString *)lon
-                          limit:(NSString *)limit
-                         offset:(NSString *)offset
++ (void)tipSearchNearbyLatitude:(NSNumber *)lat
+                      longitude:(NSNumber *)lon
+                           near:(NSString *)near
+                          limit:(NSNumber *)limit
+                         offset:(NSNumber *)offset
                     friendsOnly:(BOOL)friendsOnly
                           query:(NSString *)query
                        callback:(Foursquare2Callback)callback {
+    if ((!lat || !lon)) {
+        NSAssert(NO, @"Foursquare2 lat and lon are required parameters");
+    }
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
-		dic[@"limit"] = limit;
+		dic[@"limit"] = limit.stringValue;
 	}
 	if (offset) {
-		dic[@"offset"] = offset;
+		dic[@"offset"] = offset.stringValue;
 	}
+    if (near) {
+        dic[@"near"] = near;
+    }
 	
 	if (lat && lon) {
 		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
@@ -895,24 +901,6 @@ static NSMutableDictionary *attributes;
 	}
 	
 	[self get:@"tips/search" withParams:dic callback:callback];
-}
-#pragma mark Actions
-+ (void)markTipTodo:(NSString *)tipID
-           callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"tips/%@/marktodo",tipID];
-	[self post:path withParams:nil callback:callback];
-}
-
-+ (void)markTipDone:(NSString *)tipID
-           callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"tips/%@/markdone",tipID];
-	[self post:path withParams:nil callback:callback];
-}
-
-+ (void)unmarkTipTodo:(NSString *)tipID
-             callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"tips/%@/unmark",tipID];
-	[self post:path withParams:nil callback:callback];
 }
 
 #pragma mark -
