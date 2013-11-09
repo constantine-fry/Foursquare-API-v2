@@ -695,47 +695,48 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Checkins
 
-+ (void)getDetailForCheckin:(NSString *)checkinID
-                   callback:(Foursquare2Callback)callback {
++ (void)checkinGetDetail:(NSString *)checkinID
+                callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"checkins/%@",checkinID];
 	[self get:path withParams:nil callback:callback];
 }
 
-+ (void)createCheckinAtVenue:(NSString *)venueID
-                       venue:(NSString *)venue
-                       shout:(NSString *)shout
-                    callback:(Foursquare2Callback)callback {
++ (void)checkinAddAtVenue:(NSString *)venueID
+                    shout:(NSString *)shout
+                 callback:(Foursquare2Callback)callback {
     
-    [Foursquare2 createCheckinAtVenue:venueID
-								venue:venue
-								shout:shout
-							broadcast:broadcastPublic
-							 latitude:nil
-							longitude:nil
-						   accuracyLL:nil
-							 altitude:nil
-						  accuracyAlt:nil
-							 callback:callback];
+    [Foursquare2 checkinAddAtVenue:venueID
+                             event:nil
+                             shout:shout
+                         broadcast:broadcastPublic
+                          latitude:nil
+                         longitude:nil
+                        accuracyLL:nil
+                          altitude:nil
+                       accuracyAlt:nil
+                          callback:callback];
 }
 
 
 
-+ (void)createCheckinAtVenue:(NSString *)venueID
-                       venue:(NSString *)venue
-                       shout:(NSString *)shout
-                   broadcast:(FoursquareBroadcastType)broadcast
-                    latitude:(NSString *)lat
-                   longitude:(NSString *)lon
-                  accuracyLL:(NSString *)accuracyLL
-                    altitude:(NSString *)altitude
-                 accuracyAlt:(NSString *)accuracyAlt
-                    callback:(Foursquare2Callback)callback {
++ (void)checkinAddAtVenue:(NSString *)venueID
+                    event:(NSString *)eventID
+                    shout:(NSString *)shout
+                broadcast:(FoursquareBroadcastType)broadcast
+                 latitude:(NSNumber *)lat
+                longitude:(NSNumber *)lon
+               accuracyLL:(NSNumber *)accuracyLL
+                 altitude:(NSNumber *)altitude
+              accuracyAlt:(NSNumber *)accuracyAlt
+                 callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (venueID) {
 		dic[@"venueId"] = venueID;
-	}
-	if (venue) {
-		dic[@"venue"] = venue;
+	} else {
+        NSAssert(NO, @"Foursqure2 checkinAddAtVenue: venueID is required.");
+    }
+	if (eventID) {
+		dic[@"eventId"] = eventID;
 	}
 	if (shout) {
 		dic[@"shout"] = shout;
@@ -744,31 +745,27 @@ static NSMutableDictionary *attributes;
 		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
 	}
 	if (accuracyLL) {
-		dic[@"llAcc"] = accuracyLL;
+		dic[@"llAcc"] = accuracyLL.stringValue;
 	}
 	if (altitude) {
-		dic[@"alt"] = altitude;
+		dic[@"alt"] = altitude.stringValue;
 	}
 	if (accuracyAlt) {
-		dic[@"altAcc"] = accuracyAlt;
+		dic[@"altAcc"] = accuracyAlt.stringValue;
 	}
 	
 	dic[@"broadcast"] = [self broadcastTypeToString:broadcast];
 	[self post:@"checkins/add" withParams:dic callback:callback];
 }
 
-+ (void)getRecentCheckinsByFriendsNearByLatitude:(NSString *)lat
-                                       longitude:(NSString *)lon
-                                           limit:(NSString *)limit
-                                          offset:(NSString *)offset
-                                  afterTimestamp:(NSString *)afterTimestamp
-                                        callback:(Foursquare2Callback)callback {
++ (void)checkinGetRecentsByFriends:(NSString *)lat
+                         longitude:(NSString *)lon
+                             limit:(NSString *)limit
+                    afterTimestamp:(NSString *)afterTimestamp
+                          callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	if (limit) {
 		dic[@"limit"] = limit;
-	}
-	if (offset) {
-		dic[@"offset"] = offset;
 	}
 	if (afterTimestamp) {
 		dic[@"afterTimestamp"] = afterTimestamp;
@@ -780,10 +777,27 @@ static NSMutableDictionary *attributes;
 	[self get:@"checkins/recent" withParams:dic callback:callback];
 }
 
+#pragma mark Aspects
+
++ (void)checkinGetLikes:(NSString *)checkinID
+               callback:(Foursquare2Callback)callback {
+    if (!checkinID) {
+        NSAssert(NO, @"Foursqure2 checkinGetLikes: checkinID is required.");
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (checkinID) {
+		dic[@"checkinId"] = checkinID;
+	}
+	NSString *path = [NSString stringWithFormat:@"checkins/%@/likes",checkinID];
+	[self post:path withParams:dic callback:callback];
+}
+
+#pragma -
+
 #pragma mark Actions
-+ (void)addCommentToCheckin:(NSString *)checkinID
-                       text:(NSString *)text
-                   callback:(Foursquare2Callback)callback {
++ (void)checkinAddComment:(NSString *)checkinID
+                     text:(NSString *)text
+                 callback:(Foursquare2Callback)callback {
 	if (nil ==checkinID) {
 		callback(NO,nil);
 		return;
@@ -796,9 +810,9 @@ static NSMutableDictionary *attributes;
 	[self post:path withParams:dic callback:callback];
 }
 
-+ (void)deleteComment:(NSString *)commentID
-           forCheckin:(NSString *)checkinID
-             callback:(Foursquare2Callback)callback {
++ (void)checkinDeleteComment:(NSString *)commentID
+                  forCheckin:(NSString *)checkinID
+                    callback:(Foursquare2Callback)callback {
 	if (nil ==checkinID) {
 		callback(NO,nil);
 		return;
@@ -810,6 +824,22 @@ static NSMutableDictionary *attributes;
 	NSString *path = [NSString stringWithFormat:@"checkins/%@/deletecomment",checkinID];
 	[self post:path withParams:dic callback:callback];
 }
+
++ (void)checkinLike:(NSString *)checkinID
+               like:(BOOL)like
+           callback:(Foursquare2Callback)callback {
+    if (!checkinID) {
+        NSAssert(NO, @"Foursqure2 checkinLike: checkinID is required.");
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (checkinID) {
+		dic[@"checkinId"] = checkinID;
+	}
+    dic[@"set"] = [NSString stringWithFormat:@"%d",like?1:0];
+	NSString *path = [NSString stringWithFormat:@"checkins/%@/like",checkinID];
+	[self post:path withParams:dic callback:callback];
+}
+
 #pragma mark -
 
 #pragma mark Tips
@@ -1036,21 +1066,23 @@ static NSMutableDictionary *attributes;
 
 
 + (NSString *)broadcastTypeToString:(FoursquareBroadcastType)broadcast {
-	switch (broadcast) {
-		case broadcastPublic:
-			return @"public";
-		case broadcastPrivate:
-			return @"private";
-		case broadcastFacebook:
-			return @"faceboook";
-		case broadcastTwitter:
-			return @"twitter";
-		case broadcastBoth:
-			return @"twitter,facebook";
-		default:
-			return @"";
-	}
-	
+    NSMutableArray *result = [NSMutableArray array];
+    if (broadcast & broadcastPublic) {
+        [result addObject:@"public"];
+    }
+    if (broadcast & broadcastPrivate) {
+        [result addObject:@"private"];
+    }
+    if (broadcast & broadcastFollowers) {
+        [result addObject:@"followers"];
+    }
+    if (broadcast & broadcastFacebook) {
+        [result addObject:@"facebook"];
+    }
+    if (broadcast & broadcastTwitter) {
+        [result addObject:@"twitter"];
+    }
+	return [result componentsJoinedByString:@","];
 }
 
 + (NSString *)problemTypeToString:(FoursquareProblemType)problem {

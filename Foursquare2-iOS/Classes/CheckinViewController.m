@@ -33,22 +33,15 @@
 }
 
 - (IBAction)checkin:(id)sender {
-    [Foursquare2  createCheckinAtVenue:self.venue.venueId
-                                 venue:nil
-                                 shout:@"Testing"
-                             broadcast:broadcastPublic
-                              latitude:nil
-                             longitude:nil
-                            accuracyLL:nil
-                              altitude:nil
-                           accuracyAlt:nil
-                              callback:^(BOOL success, id result){
-                                  if (success) {
-                                      self.checkin = [result valueForKeyPath:@"response.checkin.id"];
-                                      [self showAlertViewWithTitle:@"Checkin Successfull"];
-                                      self.uploadPhotButton.enabled = YES;
-                                  }
-                              }];
+    [Foursquare2 checkinAddAtVenue:self.venue.venueId
+                             shout:@"Testing"
+                          callback:^(BOOL success, id result) {
+                              if (success) {
+                                  self.checkin = [result valueForKeyPath:@"response.checkin.id"];
+                                  [self showAlertViewWithTitle:@"Checkin Successfull"];
+                                  self.uploadPhotButton.enabled = YES;
+                              }
+                          }];
 }
 
 - (IBAction)addPhoto:(id)sender {

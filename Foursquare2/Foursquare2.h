@@ -30,13 +30,13 @@ typedef enum {
     problemEventOver
 } FoursquareProblemType;
 
-typedef enum {
-	broadcastPrivate,
-	broadcastPublic,
-	broadcastFacebook,
-	broadcastTwitter,
-	broadcastBoth
-} FoursquareBroadcastType;
+typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
+	broadcastPrivate    = 1 << 0,
+    broadcastFollowers  = 1 << 1,
+	broadcastPublic     = 1 << 2,
+	broadcastFacebook   = 1 << 3,
+	broadcastTwitter    = 1 << 4
+};
 
 
 /**
@@ -77,9 +77,12 @@ typedef enum {
 
 //End points coverage.
 //Users 19 from 19.
+//Venues 9 from 26.
+//Checkins 6 from 7.
+
 
 /**
-    Foursqure2.
+    @class Foursqure2
  */
 @interface Foursquare2 : FSRequester
 
@@ -474,6 +477,7 @@ typedef enum {
     @param venueID required The venue id for which an edit is being proposed.
     @param problem required
     @param duplicateVenueID ID of the duplicated venue (for problem problemDuplicate)
+    @returns no fields.
  */
 + (void)venueFlag:(NSString *)venueID
           problem:(FoursquareProblemType)problem
@@ -483,6 +487,7 @@ typedef enum {
 /**
     Allows you to propose a change to a venue. 
     @param venueID required The venue id for which an edit is being proposed.
+    @returns no fields.
  */
 + (void)venueProposeEdit:(NSString *)venueID
                     name:(NSString *)name
@@ -501,43 +506,100 @@ typedef enum {
 
 #pragma mark ---------------------------- Checkins ---------------------------------------------------------------------
 
-+ (void)getDetailForCheckin:(NSString *)checkinID
-                   callback:(Foursquare2Callback)callback;
+/**
+    Get details of checkin.
+    @param checkinID The ID of the checkin to retrieve additional information for.
+    @returns a complete checkin object. https://developer.foursquare.com/docs/responses/checkin
+*/
++ (void)checkinGetDetail:(NSString *)checkinID
+                callback:(Foursquare2Callback)callback;
 
+/**
+    Create checkin at venue with venueID with broadcastPublic.
+    @param venueID required the venue where the user is checking in. 
+    @param shout a message about your check-in.
+    @returns "checkin" and "notifications" field.
+    a checkin object https://developer.foursquare.com/docs/responses/checkin
+    a notification object https://developer.foursquare.com/docs/responses/notifications
+*/
++ (void)checkinAddAtVenue:(NSString *)venueID
+                    shout:(NSString *)shout
+                 callback:(Foursquare2Callback)callback;
+/**
+    Create checkin at venue with venueID.
+    @param venueID required the venue where the user is checking in.
+    @param eventID the event the user is checking in to.
+    @param shout a message about your check-in.
+    @param broadcast who to broadcast this check-in to. Accepts several values.
+    @returns "checkin" and "notifications" field.
+    a checkin object https://developer.foursquare.com/docs/responses/checkin
+    a notification object https://developer.foursquare.com/docs/responses/notifications
+*/
++ (void)checkinAddAtVenue:(NSString *)venueID
+                    event:(NSString *)eventID
+                    shout:(NSString *)shout
+                broadcast:(FoursquareBroadcastType)broadcast
+                 latitude:(NSNumber *)lat
+                longitude:(NSNumber *)lon
+               accuracyLL:(NSNumber *)accuracyLL
+                 altitude:(NSNumber *)altitude
+              accuracyAlt:(NSNumber *)accuracyAlt
+                 callback:(Foursquare2Callback)callback;
 
-+ (void)createCheckinAtVenue:(NSString *)venueID
-                       venue:(NSString *)venue
-                       shout:(NSString *)shout
-                    callback:(Foursquare2Callback)callback;
+/**
+    Returns a list of recent checkins from friends.
+    @param limit number of results to return, up to 100.
+    @returns "checkins" field. an array of checkin objects with user details present.
+    https://developer.foursquare.com/docs/responses/checkin
+ */
++ (void)checkinGetRecentsByFriends:(NSString *)lat
+                         longitude:(NSString *)lon
+                             limit:(NSString *)limit
+                    afterTimestamp:(NSString *)afterTimestamp
+                          callback:(Foursquare2Callback)callback;
+#pragma mark Aspects
 
+/**
+    Returns friends and a total count of users who have liked this checkin.
+    @param The ID of the checkin to get likes for.
+    @returns "likes" field. A "count" and "groups" of users who like this checkin.
+ */
++ (void)checkinGetLikes:(NSString *)checkinID
+               callback:(Foursquare2Callback)callback;
 
-+ (void)createCheckinAtVenue:(NSString *)venueID
-                       venue:(NSString *)venue
-                       shout:(NSString *)shout
-                   broadcast:(FoursquareBroadcastType)broadcast
-                    latitude:(NSString *)lat
-                   longitude:(NSString *)lon
-                  accuracyLL:(NSString *)accuracyLL
-                    altitude:(NSString *)altitude
-                 accuracyAlt:(NSString *)accuracyAlt
-                    callback:(Foursquare2Callback)callback;
-
-+ (void)getRecentCheckinsByFriendsNearByLatitude:(NSString *)lat
-                                       longitude:(NSString *)lon
-                                           limit:(NSString *)limit
-                                          offset:(NSString *)offset
-                                  afterTimestamp:(NSString *)afterTimestamp
-                                        callback:(Foursquare2Callback)callback;
-
+#pragma -
 #pragma mark Actions
 
-+ (void)addCommentToCheckin:(NSString *)checkinID
-                       text:(NSString *)text
-                   callback:(Foursquare2Callback)callback;
+/**
+    Comment on a checkin-in.
+    @param checkinID the ID of the checkin to add a comment to.
+    @param text the text of the comment.
+    @returns "comment" field. The newly-created comment.
+ */
++ (void)checkinAddComment:(NSString *)checkinID
+                     text:(NSString *)text
+                 callback:(Foursquare2Callback)callback;
 
-+ (void)deleteComment:(NSString *)commentID
-           forCheckin:(NSString *)checkinID
-             callback:(Foursquare2Callback)callback;
+/**
+    Remove a comment from a checkin, if the acting user is the author or the owner of the checkin.
+    @param commentID the ID of the comment to remove.
+    @param checkinID the ID of the checkin to remove a comment from.
+    @returns "checkin" field. the checkin, minus this comment.
+ */
++ (void)checkinDeleteComment:(NSString *)commentID
+                  forCheckin:(NSString *)checkinID
+                    callback:(Foursquare2Callback)callback;
+
+/**
+    Allows the acting user to like or unlike a checkin.
+    @param checkinID required The checkin to like or unlike.
+    @param like If YES, like this checkin. If NO, unlike.
+    @returns "likes" field. updated count and groups of users who like this checkin.
+ */
++ (void)checkinLike:(NSString *)checkinID
+               like:(BOOL)like
+           callback:(Foursquare2Callback)callback;
+
 
 #pragma mark -
 #pragma mark ---------------------------- Tips -------------------------------------------------------------------------
