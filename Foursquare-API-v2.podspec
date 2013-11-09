@@ -9,7 +9,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Constantine-Fry/Foursquare-API-v2.git", :tag => "1.3.1", :submodules => 'true' }
   s.platform     = :ios, '5.0'
   s.source_files = 'Classes', 'Foursquare2/**/*.{h,m}'
-  s.exclude_files = 'Classes/Exclude'
+  s.exclude_files = 'Foursquare2/submodule'
   s.resources = 'Foursquare2/*.png', 'Foursquare2/**/*.{xib}'
   s.requires_arc = true
+  s.dependency 'FSOAuth'
 end
