@@ -1055,7 +1055,6 @@ static NSMutableDictionary *attributes;
             return @"receivePings";
         case FoursquareSettingNameReceiveCommentPings:
             return @"receiveCommentPings";
-            
         default:
             return @"";
     }

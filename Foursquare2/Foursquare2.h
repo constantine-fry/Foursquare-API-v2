@@ -14,21 +14,21 @@
 
 typedef void(^Foursquare2Callback)(BOOL success, id result);
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, FoursquareSortingType) {
 	sortRecent,
 	sortNearby,
 	sortPopular,
     sortFriends
-} FoursquareSortingType;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, FoursquareProblemType) {
 	problemMislocated,
 	problemClosed,
 	problemDuplicate,
     problemInappropriate,
     problemDoesntExist,
     problemEventOver
-} FoursquareProblemType;
+};
 
 typedef NS_OPTIONS(NSUInteger, FoursquareSettingName) {
 	FoursquareSettingNameSendMayorshipsToTwitter = 1,
@@ -62,26 +62,26 @@ typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
     @param intentMatch Finds venues that are are nearly-exact matches for the given query and ll. 
     This is helpful when trying to correlate an existing place database with foursquare's.
  */
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, FoursquareIntentType) {
 	intentCheckin,
 	intentBrowse,
 	intentGlobal,
 	intentMatch
-} FoursquareIntentType;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, FoursquareCheckinsSort) {
 	FoursquareCheckinsNewestFirst,
 	FoursquareCheckinsOldestFirst,
-} FoursquareCheckinsSort;
+};
 
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
     FoursquareListGroupNone,
 	FoursquareListGroupCreated,
 	FoursquareListGroupEdited,
     FoursquareListGroupFollowed,
     FoursquareListGroupFriends,
     FoursquareListGroupSuggested
-} FoursquareListGroupType;
+};
 
 
 /**
