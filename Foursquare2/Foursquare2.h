@@ -504,6 +504,17 @@ typedef enum {
        primaryCategoryId:(NSString *)primaryCategoryId
                 callback:(Foursquare2Callback)callback;
 
+/**
+    Returns photos for a venue. 
+    @param venueID required The venue you want photos for.
+    @param limit Number of result to return, up to 500.
+    @param offset The number of results to skip. Used for paging.
+    @returns "photos" field. A count and items of photo. https://developer.foursquare.com/docs/responses/photo
+ */
++ (void)venueGetPhotos:(NSString *)venueID
+                 limit:(NSNumber *)limit
+                offset:(NSNumber *)offset
+              callback:(Foursquare2Callback)callback;
 #pragma mark -
 
 #pragma mark ---------------------------- Checkins ---------------------------------------------------------------------
@@ -635,8 +646,8 @@ typedef enum {
     @param friendsOnly If YES only show nearby tips from friends.
     @returns "tips" field. An array of tips, each of which contain a user and venue.
  */
-+ (void)tipSearchNearbyLatitude:(NSNumber *)lat
-                      longitude:(NSNumber *)lon
++ (void)tipSearchNearbyLatitude:(NSNumber *)latitude
+                      longitude:(NSNumber *)longitude
                            near:(NSString *)near
                           limit:(NSNumber *)limit
                          offset:(NSNumber *)offset
@@ -649,38 +660,55 @@ typedef enum {
 
 #pragma mark ---------------------------- Photos -----------------------------------------------------------------------
 
-+ (void)getDetailForPhoto:(NSString *)photoID
-                 callback:(Foursquare2Callback)callback;
+/**
+    Get details of a photo.
+    @param photoID required The ID of the photo to retrieve additional information for.
+    @returns "photo" field. A complete photo object. https://developer.foursquare.com/docs/responses/photo
+ */
++ (void)photoGetDetail:(NSString *)photoID
+              callback:(Foursquare2Callback)callback;
 
 
+
+/**
+    Allows users to add a new photo to a checkin.
+    @param photo photo to upload.
+    @param checkinID the ID of a checkin owned by the user.
+    @returns "photo" field. The photo that was just created. https://developer.foursquare.com/docs/responses/photo
+ */
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)addPhoto:(NSImage *)photo
++ (void)phodoAdd:(NSImage *)photo
 #else
-+ (void)addPhoto:(UIImage *)photo
++ (void)phodoAdd:(UIImage *)photo
 #endif
        toCheckin:(NSString *)checkinID
         callback:(Foursquare2Callback)callback;
 
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)addPhoto:(NSImage *)photo
-#else
-+ (void)addPhoto:(UIImage *)photo
-#endif
-       toCheckin:(NSString *)checkinID
-             tip:(NSString *)tipID
-           venue:(NSString *)venueID
-       broadcast:(FoursquareBroadcastType)broadcast
-        latitude:(NSString *)lat
-       longitude:(NSString *)lon
-      accuracyLL:(NSString *)accuracyLL
-        altitude:(NSString *)altitude
-     accuracyAlt:(NSString *)accuracyAlt
-        callback:(Foursquare2Callback)callback;
 
-+ (void)getPhotosForVenue:(NSString *)venueID
-                    limit:(NSNumber *)limit
-                   offset:(NSNumber *)offset
-                 callback:(Foursquare2Callback)callback;
+
+/**
+    Allows users to add a new photo to a checkin, tip or venue.
+    @param photo photo to upload.
+    @param checkinID the ID of a checkin owned by the user.
+    @param tipID the ID of a tip owned by the user.
+    @param broadcast whether to broadcast this photo.
+    @returns "photo" field. The photo that was just created. https://developer.foursquare.com/docs/responses/photo
+ */
+#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
++ (void)photoAddTo:(NSImage *)photo
+#else
++ (void)photoAddTo:(UIImage *)photo
+#endif
+           checkin:(NSString *)checkinID
+               tip:(NSString *)tipID
+             venue:(NSString *)venueID
+         broadcast:(FoursquareBroadcastType)broadcast
+          latitude:(NSNumber *)latitude
+         longitude:(NSNumber *)longitude
+        accuracyLL:(NSNumber *)accuracyLL
+          altitude:(NSNumber *)altitude
+       accuracyAlt:(NSNumber *)accuracyAlt
+          callback:(Foursquare2Callback)callback;
 
 #pragma mark -
 

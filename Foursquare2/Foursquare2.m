@@ -691,6 +691,28 @@ static NSMutableDictionary *attributes;
 	[self post:path withParams:dic callback:callback];
 }
 
++ (void)venueGetPhotos:(NSString *)venueID
+                 limit:(NSNumber *)limit
+                offset:(NSNumber *)offset
+              callback:(Foursquare2Callback)callback {
+    if (!venueID) {
+        callback(NO,nil);
+        return;
+    }
+    
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (limit) {
+        dic[@"limit"] = limit.stringValue;
+    }
+    
+    if (offset) {
+        dic[@"offset"] = offset.stringValue;
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"venues/%@/photos", venueID];
+    [self get:path withParams:dic callback:callback];
+}
+
 #pragma mark -
 
 #pragma mark Checkins
@@ -723,8 +745,8 @@ static NSMutableDictionary *attributes;
                     event:(NSString *)eventID
                     shout:(NSString *)shout
                 broadcast:(FoursquareBroadcastType)broadcast
-                 latitude:(NSNumber *)lat
-                longitude:(NSNumber *)lon
+                 latitude:(NSNumber *)latitude
+                longitude:(NSNumber *)longitude
                accuracyLL:(NSNumber *)accuracyLL
                  altitude:(NSNumber *)altitude
               accuracyAlt:(NSNumber *)accuracyAlt
@@ -868,18 +890,19 @@ static NSMutableDictionary *attributes;
 	[self post:@"tips/add" withParams:dic callback:callback];
 }
 
-+ (void)tipSearchNearbyLatitude:(NSNumber *)lat
-                      longitude:(NSNumber *)lon
++ (void)tipSearchNearbyLatitude:(NSNumber *)latitude
+                      longitude:(NSNumber *)longitude
                            near:(NSString *)near
                           limit:(NSNumber *)limit
                          offset:(NSNumber *)offset
                     friendsOnly:(BOOL)friendsOnly
                           query:(NSString *)query
                        callback:(Foursquare2Callback)callback {
-    if ((!lat || !lon)) {
+    if ((!latitude || !longitude)) {
         NSAssert(NO, @"Foursquare2 lat and lon are required parameters");
     }
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	if (limit) {
 		dic[@"limit"] = limit.stringValue;
 	}
@@ -889,10 +912,6 @@ static NSMutableDictionary *attributes;
     if (near) {
         dic[@"near"] = near;
     }
-	
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
-	}
 	if (friendsOnly) {
 		dic[@"filter"] = @"friends";
 	}
@@ -908,68 +927,67 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Photos
 
-+ (void)getDetailForPhoto:(NSString *)photoID
-                 callback:(Foursquare2Callback)callback {
++ (void)photoGetDetail:(NSString *)photoID
+              callback:(Foursquare2Callback)callback {
 	NSString *path = [NSString stringWithFormat:@"photos/%@",photoID];
 	[self get:path withParams:nil callback:callback];
 }
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)addPhoto:(NSImage *)photo
++ (void)phodoAdd:(NSImage *)photo
 #else
-+ (void)addPhoto:(UIImage *)photo
++ (void)phodoAdd:(UIImage *)photo
 #endif
        toCheckin:(NSString *)checkinID
         callback:(Foursquare2Callback)callback {
     
-    [Foursquare2 addPhoto:photo
-                toCheckin:checkinID
-                      tip:nil
-                    venue:nil
-                broadcast:broadcastPublic
-                 latitude:nil
-                longitude:nil
-               accuracyLL:nil
-                 altitude:nil
-              accuracyAlt:nil
-                 callback:callback];
+    [Foursquare2 photoAddTo:photo
+                    checkin:checkinID
+                        tip:nil
+                      venue:nil
+                  broadcast:broadcastPublic
+                   latitude:nil
+                  longitude:nil
+                 accuracyLL:nil
+                   altitude:nil
+                accuracyAlt:nil
+                   callback:callback];
 }
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (void)addPhoto:(NSImage *)photo
++ (void)photoAddTo:(NSImage *)photo
 #else
-+ (void)addPhoto:(UIImage *)photo
++ (void)photoAddTo:(UIImage *)photo
 #endif
-       toCheckin:(NSString *)checkinID
-             tip:(NSString *)tipID
-           venue:(NSString *)venueID
-       broadcast:(FoursquareBroadcastType)broadcast
-        latitude:(NSString *)lat
-       longitude:(NSString *)lon
-      accuracyLL:(NSString *)accuracyLL
-        altitude:(NSString *)altitude
-     accuracyAlt:(NSString *)accuracyAlt
-        callback:(Foursquare2Callback)callback {
+           checkin:(NSString *)checkinID
+               tip:(NSString *)tipID
+             venue:(NSString *)venueID
+         broadcast:(FoursquareBroadcastType)broadcast
+          latitude:(NSNumber *)latitude
+         longitude:(NSNumber *)longitude
+        accuracyLL:(NSNumber *)accuracyLL
+          altitude:(NSNumber *)altitude
+       accuracyAlt:(NSNumber *)accuracyAlt
+          callback:(Foursquare2Callback)callback {
 	if (!checkinID && !tipID && !venueID) {
 		callback(NO,nil);
 		return;
 	}
 	
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	if (lat && lon) {
-		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+    dic[@"broadcast"] = [self broadcastTypeToString:broadcast];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
 	}
 	if (accuracyLL) {
-		dic[@"llAcc"] = accuracyLL;
+		dic[@"llAcc"] = accuracyLL.stringValue;
 	}
 	if (altitude) {
-		dic[@"alt"] = altitude;
+		dic[@"alt"] = altitude.stringValue;
 	}
 	if (accuracyAlt) {
-		dic[@"altAcc"] = accuracyAlt;
+		dic[@"altAcc"] = accuracyAlt.stringValue;
 	}
-	
-	dic[@"broadcast"] = [self broadcastTypeToString:broadcast];
 	if (checkinID) {
 		dic[@"checkinId"] = checkinID;
 	}
@@ -983,26 +1001,6 @@ static NSMutableDictionary *attributes;
 		   withParams:dic
 			withImage:photo
 			 callback:callback];
-}
-
-+ (void)getPhotosForVenue:(NSString *)venueID
-                    limit:(NSNumber *)limit
-                   offset:(NSNumber *)offset
-                 callback:(Foursquare2Callback)callback {
-    if (!venueID) {
-		callback(NO,nil);
-		return;
-	}
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    if (limit) {
-        dic[@"limit"] = limit.stringValue;
-    }
-    if (offset) {
-        dic[@"offset"] = offset.stringValue;
-    }
-    NSString *path = [NSString stringWithFormat:@"venues/%@/photos", venueID];
-	[self get:path withParams:dic callback:callback];
 }
 
 #pragma mark -
