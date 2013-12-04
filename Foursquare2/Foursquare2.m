@@ -535,7 +535,7 @@ static NSMutableDictionary *attributes;
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    if (!near || !near.length || (!latitude && !longitude)) {
+    if ((!near && !near.length) && (!latitude && !longitude)) {
         NSAssert(NO, @"Foursqure2 venueExploreRecommendedNearByLatitude: near or ll are required parameters.");
     }
 	if (latitude && longitude) {
@@ -569,10 +569,10 @@ static NSMutableDictionary *attributes;
         dic[@"novelty"] = novelty;
     }
     if (openNow) {
-        dic[@"openNow"] = @(openNow);
+        dic[@"openNow"] = @"1";
     }
     if (sortByDistance) {
-        dic[@"sortByDistance"] = @(sortByDistance);
+        dic[@"sortByDistance"] = @"1";
     }
     if (price) {
         dic[@"price"] = price;
