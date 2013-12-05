@@ -397,6 +397,30 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
                          callback:(Foursquare2Callback)callback;
 
 /**
+ Returns a list of minivenues near the current location, matching a required partial search term. llAcc, alt, altAcc are not
+ included because they do not currently affect search results.
+ @parm query A required search term of at least 3 characters to be applied against venue names.
+ @param limit Number of results to return, up to 100.
+ @param radius Limit results to venues within this many meters of the specified location
+ @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
+ @returns "minivenues" field. An array of compact venues:https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueSuggestCompletionByLatitude:(NSNumber *)latitude
+                               longitude:(NSNumber *)longitude
+                                    near:(NSString *)near
+                              accuracyLL:(NSNumber *)accuracyLL
+                                altitude:(NSNumber *)altitude
+                             accuracyAlt:(NSNumber *)accuracyAlt
+                                   query:(NSString *)query
+                                   limit:(NSNumber *)limit
+                                  radius:(NSNumber *)radius
+                                       s:(NSNumber *)s
+                                       w:(NSNumber *)w
+                                       n:(NSNumber *)n
+                                       e:(NSNumber *)e
+                                callback:(Foursquare2Callback)callback;
+
+/**
     Returns a list of venues near the current location, optionally matching a search term
     @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
     given by sw as its south-west corner, and ne as its north-east corner.
