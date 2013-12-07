@@ -86,9 +86,14 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
-	id result = [NSJSONSerialization JSONObjectWithData:receivedData
-                                                options:0
-                                                  error:nil];
+  id result;
+  if (receivedData)
+  {
+    result = [NSJSONSerialization JSONObjectWithData:receivedData
+                                             options:0
+                                               error:nil];
+  }
+
 	if (target.resultCallback) {
         [self performSelector:target.resultCallback
                    withObject:result
