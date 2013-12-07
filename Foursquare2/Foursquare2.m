@@ -474,6 +474,45 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
++ (void)venueSuggestCompletionByLatitude:(NSNumber *)latitude
+                               longitude:(NSNumber *)longitude
+                                    near:(NSString *)near
+                              accuracyLL:(NSNumber *)accuracyLL
+                                altitude:(NSNumber *)altitude
+                             accuracyAlt:(NSNumber *)accuracyAlt
+                                   query:(NSString *)query
+                                   limit:(NSNumber *)limit
+                                  radius:(NSNumber *)radius
+                                       s:(NSNumber *)s
+                                       w:(NSNumber *)w
+                                       n:(NSNumber *)n
+                                       e:(NSNumber *)e
+                                callback:(Foursquare2Callback)callback {
+
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	if (latitude && longitude) {
+		dic[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+	}
+    if (near) {
+        dic[@"near"] = near;
+    }
+	if (query) {
+		dic[@"query"] = query;
+	}
+	if (limit) {
+		dic[@"limit"] = limit.stringValue;
+	}
+    if (radius) {
+		dic[@"radius"] = radius.stringValue;
+	}
+    if (s && w && n && e) {
+		dic[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
+        dic[@"ne"] = [NSString stringWithFormat:@"%@,%@",n, e];
+	}
+	[self get:@"venues/suggestcompletion" withParams:dic callback:callback];
+
+}
+
 + (void)venueSearchInBoundingQuadrangleS:(NSNumber *)s
                                        w:(NSNumber *)w
                                        n:(NSNumber *)n
@@ -569,10 +608,10 @@ static NSMutableDictionary *attributes;
         dic[@"novelty"] = novelty;
     }
     if (openNow) {
-        dic[@"openNow"] = @(openNow);
+      dic[@"openNow"] = openNow;
     }
     if (sortByDistance) {
-        dic[@"sortByDistance"] = @(sortByDistance);
+        dic[@"sortByDistance"] = sortByDistance;
     }
     if (price) {
         dic[@"price"] = price;
