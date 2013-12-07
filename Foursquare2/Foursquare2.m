@@ -535,7 +535,7 @@ static NSMutableDictionary *attributes;
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    if (!near || !near.length || (!latitude && !longitude)) {
+    if (!near && !near.length && (!latitude && !longitude)) {
         NSAssert(NO, @"Foursqure2 venueExploreRecommendedNearByLatitude: near or ll are required parameters.");
     }
 	if (latitude && longitude) {
@@ -1180,14 +1180,19 @@ static NSMutableDictionary *attributes;
 	
 	if(paramMap) {
 		NSEnumerator *enumerator = [paramMap keyEnumerator];
-		NSString *key, *value;
+		NSString *key;
+        id value;
 		
 		while ((key = (NSString *)[enumerator nextObject])) {
-			value = (NSString *)paramMap[key];
+			value = paramMap[key];
 			//DLog(@"value: " @"%@", value);
 			
-			NSString *urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:
-                                         NSUTF8StringEncoding];//NSASCIIStringEncoding];
+			NSString *urlEncodedValue;
+            if ([value isKindOfClass:[NSNumber class]]) {
+                urlEncodedValue = [value stringValue];
+            } else  {
+                urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            }
 			
 			if(!urlEncodedValue) {
 				urlEncodedValue = @"";
