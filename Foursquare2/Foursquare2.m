@@ -608,10 +608,10 @@ static NSMutableDictionary *attributes;
         dic[@"novelty"] = novelty;
     }
     if (openNow) {
-      dic[@"openNow"] = openNow;
+      dic[@"openNow"] = @(openNow);
     }
     if (sortByDistance) {
-        dic[@"sortByDistance"] = sortByDistance;
+      dic[@"sortByDistance"] = @(sortByDistance);
     }
     if (price) {
         dic[@"price"] = price;
