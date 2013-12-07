@@ -33,6 +33,7 @@
 		478EA5111719335900062636 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4779884E16AC697200038756 /* FSWebLogin.xib */; };
 		47A8F67B17D31F06007216AC /* FSOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A8F67A17D31BF5007216AC /* FSOAuth.m */; };
 		47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 47ADFAC816C3C6D700891DCD /* FSConverter.m */; };
+		47CC3E231853483C00AEEA1F /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 47CC3E221853483C00AEEA1F /* CHANGELOG.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		47A8F67A17D31BF5007216AC /* FSOAuth.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FSOAuth.m; path = "submodule/foursquare-ios-oauth/FSOAuth.m"; sourceTree = "<group>"; };
 		47ADFAC716C3C6D700891DCD /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = FSConverter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		47ADFAC816C3C6D700891DCD /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FSConverter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		47CC3E221853483C00AEEA1F /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Foursquare_API-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Foursquare_API-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -192,6 +194,7 @@
 				471EAC6816C0F41C009F88F9 /* pin.png */,
 				4779884A16AC686700038756 /* poweredByFoursquare_gray.png */,
 				4779884B16AC686700038756 /* poweredByFoursquare_gray@2x.png */,
+				47CC3E221853483C00AEEA1F /* CHANGELOG.md */,
 			);
 			name = Foursquare2;
 			path = ../Foursquare2;
@@ -269,6 +272,7 @@
 				471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */,
 				471EAC6916C0F41C009F88F9 /* pin.png in Resources */,
 				478EA5111719335900062636 /* FSWebLogin.xib in Resources */,
+				47CC3E231853483C00AEEA1F /* CHANGELOG.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

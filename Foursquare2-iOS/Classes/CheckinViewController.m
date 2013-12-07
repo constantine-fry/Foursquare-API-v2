@@ -27,9 +27,8 @@
     self.venueName.text = self.venue.name;
 }
 
-- (void)viewDidUnload {
-    [self setVenueName:nil];
-    [super viewDidUnload];
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 - (IBAction)checkin:(id)sender {
