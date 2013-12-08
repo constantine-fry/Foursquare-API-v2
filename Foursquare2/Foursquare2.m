@@ -93,10 +93,13 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)setAccessToken:(NSString *)token {
-	[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
-	[[NSUserDefaults standardUserDefaults] setObject:token
+  if (token)
+  {
+    [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
+    [[NSUserDefaults standardUserDefaults] setObject:token
                                               forKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
 }
 
 + (void)removeAccessToken {
