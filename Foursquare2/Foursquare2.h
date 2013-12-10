@@ -397,6 +397,23 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
                          callback:(Foursquare2Callback)callback;
 
 /**
+ *  Returns a list of venues near the specified location, optionally matching a search term.
+ *
+ *  @param location   A string naming a place in the world. If the near string is not geocodable, returns a failed_geocode error.
+ *  @param query      A search term to be applied against venue names.
+ *  @param limit      Number of results to return, up to 50.
+ *  @param intent     A value defined by FoursquareIntentType.
+ *  @param radius     Limit results to venues within this many meters of the specified location. Defaults to a city-wide area.
+ *  @returns "venues" field. An array of compact venues:https://developer.foursquare.com/docs/responses/venue
+ */
++ (void)venueSearchNearLocation:(NSString *)location
+                          query:(NSString *)query
+                          limit:(NSNumber *)limit
+                         intent:(FoursquareIntentType)intent
+                         radius:(NSNumber *)radius
+                     categoryId:(NSString *)categoryId
+                       callback:(Foursquare2Callback)callback;
+/**
  Returns a list of minivenues near the current location, matching a required partial search term. llAcc, alt, altAcc are not
  included because they do not currently affect search results.
  @parm query A required search term of at least 3 characters to be applied against venue names.
