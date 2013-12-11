@@ -477,6 +477,35 @@ static NSMutableDictionary *attributes;
 	[self get:@"venues/search" withParams:dic callback:callback];
 }
 
++ (void)venueSearchNearLocation:(NSString *)location
+                          query:(NSString *)query
+                          limit:(NSNumber *)limit
+                         intent:(FoursquareIntentType)intent
+                         radius:(NSNumber *)radius
+                     categoryId:(NSString *)categoryId
+                       callback:(Foursquare2Callback)callback {
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    if (location) {
+        dic[@"near"] = location;
+    }
+    if (query) {
+        dic[@"query"] = query;
+    }
+    if (limit) {
+        dic[@"limit"] = limit.stringValue;
+    }
+    if (intent) {
+        dic[@"intent"] = [self inentTypeToString:intent];
+    }
+    if (radius) {
+        dic[@"radius"] = radius.stringValue;
+    }
+    if (categoryId) {
+        dic[@"categoryId"] = categoryId;
+    }
+    [self get:@"venues/search" withParams:dic callback:callback];
+}
+
 + (void)venueSuggestCompletionByLatitude:(NSNumber *)latitude
                                longitude:(NSNumber *)longitude
                                     near:(NSString *)near
