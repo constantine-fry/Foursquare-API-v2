@@ -2,5 +2,7 @@
 
 __v1.4.1__
 
-*  Fix possible crash in connectionDidFinishLoading: method.
-*  Fix crash in venueExploreRecommendedNearByLatitude: method.
+*  Fixed possible crash in connectionDidFinishLoading: method.
+*  Fixed crash in venueExploreRecommendedNearByLatitude: method.
+*  Added venueSearchNearLocation: method
+*  Added venueSuggestCompletionByLatitude: method
