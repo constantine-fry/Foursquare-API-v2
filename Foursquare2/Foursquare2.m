@@ -645,6 +645,9 @@ static NSMutableDictionary *attributes;
     if (sortByDistance) {
       dic[@"sortByDistance"] = @(sortByDistance);
     }
+    if (section) {
+        dic[@"section"] = section;
+    }
     if (price) {
         dic[@"price"] = price;
     }
@@ -1895,6 +1898,9 @@ Foursquare2Callback authorizeCallbackDelegate;
     }
     if (price) {
         dic[@"price"] = price;
+    }
+    if (section) {
+        dic[@"section"] = section;
     }
 	[self get:@"venues/explore" withParams:dic callback:callback];
 }
