@@ -603,6 +603,7 @@ static NSMutableDictionary *attributes;
                                       novelty:(NSString *)novelty
                                sortByDistance:(BOOL)sortByDistance
                                       openNow:(BOOL)openNow
+                                  venuePhotos:(BOOL)venuePhotos
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -648,6 +649,9 @@ static NSMutableDictionary *attributes;
     if (section) {
         dic[@"section"] = section;
     }
+    if (venuePhotos) {
+		dic[@"venuePhotos"] = @(venuePhotos);
+	}
     if (price) {
         dic[@"price"] = price;
     }
