@@ -1300,7 +1300,7 @@ static NSMutableDictionary *attributes;
     self = [super init];
     if (self) {
         self.operationQueue = [[NSOperationQueue alloc] init];
-        self.operationQueue.maxConcurrentOperationCount = 5;
+        self.operationQueue.maxConcurrentOperationCount = 7;
     }
     return self;
 }
