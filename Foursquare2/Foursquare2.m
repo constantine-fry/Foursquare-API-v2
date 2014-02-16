@@ -26,7 +26,9 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
-@interface Foursquare2 ()
+@interface Foursquare2 () <FSWebLoginDelegate>
+
+@property (nonatomic, copy) Foursquare2Callback authorizationCallback;
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
@@ -1404,8 +1406,8 @@ static NSMutableDictionary *attributes;
 
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
-+ (BOOL)nativeAuthorization {
-    NSDictionary *dic = [self classAttributes];
+- (BOOL)nativeAuthorization {
+    NSDictionary *dic = [Foursquare2 classAttributes];
     NSString *key = dic[kFOURSQUARE_CLIET_ID];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
     FSOAuthStatusCode statusCode = [FSOAuth authorizeUserUsingClientId:key callbackURIString:callbackURL];
@@ -1415,38 +1417,65 @@ static NSMutableDictionary *attributes;
     return NO;
 }
 
-+ (void)webAuthorization {
-    NSDictionary *dic = [self classAttributes];
+- (void)webAuthorization {
+    NSDictionary *dic = [Foursquare2 classAttributes];
     NSString *key = dic[kFOURSQUARE_CLIET_ID];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
 	NSString *url = [NSString stringWithFormat:
                      @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
                      key,callbackURL];
-	FSWebLogin *loginCon = [[FSWebLogin alloc] initWithUrl:url];
-	loginCon.delegate = self;
-	loginCon.selector = @selector(done:);
-	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
-	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
-    UIViewController *controller = [self topViewController:mainWindow.rootViewController];
-	[controller presentViewController:navCon animated:YES completion:nil];
+	FSWebLogin *loginViewControler = [[FSWebLogin alloc] initWithUrl:url
+                                               andDelegate:self];
+	UINavigationController *navigationController = [[UINavigationController alloc]
+                                                    initWithRootViewController:loginViewControler];
+	UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIViewController *controller = [self topViewController:keyWindow.rootViewController];
+	[controller presentViewController:navigationController animated:YES completion:nil];
 }
 
-Foursquare2Callback authorizeCallbackDelegate;
+
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
-	authorizeCallbackDelegate = [callback copy];
+	[Foursquare2 sharedInstance].authorizationCallback = [callback copy];
     
-    if ([self nativeAuthorization]) {
+    if ([[Foursquare2 sharedInstance] nativeAuthorization]) {
         return;
     }
     
-    [self webAuthorization];
+    [[Foursquare2 sharedInstance] webAuthorization];
+}
+
+- (void)webLogin:(FSWebLogin *)loginViewController didFinishWithError:(NSError *)error {
+    [loginViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if (error) {
+        [Foursquare2 callAuthorizationCallbackWithError:error];
+    }
+}
+
++ (void)callAuthorizationCallbackWithError:(NSError *)error {
+    if ([Foursquare2 isAuthorized]) {
+        [Foursquare2 sharedInstance].authorizationCallback(YES, error);
+    } else {
+        [Foursquare2 sharedInstance].authorizationCallback(NO, error);
+    }
+    [Foursquare2 sharedInstance].authorizationCallback = nil;
 }
 
 + (BOOL)handleURL:(NSURL *)url {
     NSDictionary *dic = [self classAttributes];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
-    BOOL isWebLoginURL = [url.absoluteString rangeOfString:@"#access_token"].length;
-    if ([callbackURL hasPrefix:[url scheme]] && !isWebLoginURL) {
+    
+    if ([callbackURL hasPrefix:[url scheme]]) {
+        
+        BOOL isWebLoginURL = [url.absoluteString rangeOfString:@"#access_token"].length;
+        if (isWebLoginURL) {
+            NSArray *array = [url.absoluteString componentsSeparatedByString:@"="];
+            NSString *accessToken = array.lastObject;
+            [Foursquare2 setAccessToken:accessToken];
+            [self callAuthorizationCallbackWithError:nil];
+            return YES;
+        }
+        
+        //then  it's native oauth.
         FSOAuthErrorCode errorCode;
         NSString *code = [FSOAuth accessCodeForFSOAuthURL:url
                                                     error:&errorCode];
@@ -1461,14 +1490,14 @@ Foursquare2Callback authorizeCallbackDelegate;
                                                  FSOAuthErrorCode errorCode) {
                                    if (errorCode  == FSOAuthErrorNone) {
                                        [Foursquare2 setAccessToken:authToken];
-                                       [self done:nil];
+                                       [self callAuthorizationCallbackWithError:nil];
                                    } else {
-                                       [self done:[self errorForCode:errorCode]];
+                                       [self callAuthorizationCallbackWithError:[self errorForCode:errorCode]];
                                    }
                                }];
             
         } else {
-            [self done:[self errorForCode:errorCode]];
+            [self callAuthorizationCallbackWithError:[self errorForCode:errorCode]];
         }
         return YES;
     }
@@ -1520,7 +1549,7 @@ Foursquare2Callback authorizeCallbackDelegate;
     return resultText;
 }
 
-+ (UIViewController *)topViewController:(UIViewController *)rootViewController {
+- (UIViewController *)topViewController:(UIViewController *)rootViewController {
     if (rootViewController.presentedViewController == nil) {
         return rootViewController;
     }
@@ -1535,14 +1564,7 @@ Foursquare2Callback authorizeCallbackDelegate;
     return [self topViewController:presentedViewController];
 }
 
-+ (void)done:(NSError *)error {
-    if ([Foursquare2 isAuthorized]) {
-        authorizeCallbackDelegate(YES, error);
-    } else {
-        authorizeCallbackDelegate(NO, error);
-    }
-    authorizeCallbackDelegate = nil;
-}
+
 #endif
 
 
