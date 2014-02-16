@@ -17,6 +17,7 @@
 		471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6616C0F17E009F88F9 /* pin@2x.png */; };
 		471EAC6916C0F41C009F88F9 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6816C0F41C009F88F9 /* pin.png */; };
 		471FC02B18B0FE7E00673945 /* FSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 471FC02A18B0FE7E00673945 /* FSOperation.m */; };
+		476459DC18B10AEE009141CF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 476459DB18B10AEE009141CF /* SearchViewController.m */; };
 		4779882716AC248800038756 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882016AC248800038756 /* Foursquare2.m */; };
 		4779882A16AC248800038756 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882616AC248800038756 /* FSWebLogin.m */; };
 		4779882C16AC25DF00038756 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779882B16AC25DF00038756 /* Default-568h@2x.png */; };
@@ -50,6 +51,8 @@
 		471EAC6816C0F41C009F88F9 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		471FC02918B0FE7E00673945 /* FSOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOperation.h; sourceTree = "<group>"; };
 		471FC02A18B0FE7E00673945 /* FSOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOperation.m; sourceTree = "<group>"; };
+		476459DA18B10AEE009141CF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		476459DB18B10AEE009141CF /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		4779881F16AC248800038756 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Foursquare2.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4779882016AC248800038756 /* Foursquare2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Foursquare2.m; sourceTree = "<group>"; };
 		4779882516AC248800038756 /* FSWebLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWebLogin.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 				4779884116AC623600038756 /* CheckinViewController.m */,
 				4779884516AC64CF00038756 /* SettingsViewController.h */,
 				4779884616AC64CF00038756 /* SettingsViewController.m */,
+				476459DA18B10AEE009141CF /* SearchViewController.h */,
+				476459DB18B10AEE009141CF /* SearchViewController.m */,
 				470849B817F4D5CD002538CA /* MainStoryboard.storyboard */,
 				470849BA17F607D6002538CA /* images */,
 			);
@@ -288,6 +293,7 @@
 				4779884316AC623600038756 /* CheckinViewController.m in Sources */,
 				4779884816AC64CF00038756 /* SettingsViewController.m in Sources */,
 				47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */,
+				476459DC18B10AEE009141CF /* SearchViewController.m in Sources */,
 				47A8F67B17D31F06007216AC /* FSOAuth.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

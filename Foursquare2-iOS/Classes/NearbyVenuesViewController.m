@@ -113,6 +113,11 @@
     [self setupMapForLocatoion:newLocation];
 }
 
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error {
+    [self.locationManager stopUpdatingLocation];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -127,17 +132,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:12];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    cell.textLabel.text = [self.nearbyVenues[indexPath.row] name];
+    static NSString *cellIdentifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     FSVenue *venue = self.nearbyVenues[indexPath.row];
+    cell.textLabel.text = [venue name];
     if (venue.location.address) {
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m, %@",
                                      venue.location.distance,
@@ -146,7 +144,6 @@
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@m",
                                      venue.location.distance];
     }
-
     return cell;
 }
 
