@@ -489,6 +489,7 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
                                       novelty:(NSString *)novelty
                                sortByDistance:(BOOL)sortByDistance
                                       openNow:(BOOL)openNow
+                                  venuePhotos:(BOOL)venuePhotos
                                         price:(NSString *)price
                                      callback:(Foursquare2Callback)callback;
 
