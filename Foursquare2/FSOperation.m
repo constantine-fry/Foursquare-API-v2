@@ -32,9 +32,18 @@
     id result;
     
     NSURLResponse *response;
+    
+    if ([self isCancelled]) {
+        return;
+    }
+    
     NSData *receivedData = [NSURLConnection sendSynchronousRequest:self.request
                                                  returningResponse:&response
                                                              error:&error];
+    
+    if ([self isCancelled]) {
+        return;
+    }
     
     if (receivedData) {
         result = [NSJSONSerialization JSONObjectWithData:receivedData
@@ -53,6 +62,11 @@
         }
     }
     
+    if ([self isCancelled]) {
+        return;
+    }
+    
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (error) {
             self.callbackBlock(NO, error);
@@ -60,7 +74,6 @@
             self.callbackBlock(YES, result);
         }
     });
-    
 }
 
 - (BOOL)isConcurrent {
