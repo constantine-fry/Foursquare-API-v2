@@ -44,11 +44,11 @@
             if ([result isKindOfClass:[NSError class]]) {
                 error = result;
             } else if ([result valueForKeyPath:@"meta.errorDetail"]) {
-#warning THINK about it.
+                NSString *detail = [result valueForKeyPath:@"meta.errorDetail"];
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey:detail};
                 error = [NSError errorWithDomain:@"Foursquare2"
-                                            code:-1
-                                        userInfo:nil];
-                //                target.callback(NO, [result valueForKeyPath:@"meta.errorDetail"]);
+                                            code:[result[@"meta"][@"code"] integerValue]
+                                        userInfo:userInfo];
             }
         }
     }
