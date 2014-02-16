@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FSRequester.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSWebLogin.h"
 #endif
 
-typedef void(^Foursquare2Callback)(BOOL success, id result);
+#import "FSOperation.h"
+
+
 
 typedef NS_OPTIONS(NSUInteger, FoursquareSortingType) {
 	sortRecent,
@@ -99,7 +100,7 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 /**
     @class Foursqure2
  */
-@interface Foursquare2 : FSRequester
+@interface Foursquare2 : NSObject
 
 /**
     Setup Foursqare2 with clientId, secret and callbackURL.

@@ -7,7 +7,6 @@
 //
 
 #import "Foursquare2.h"
-#import "FSTargetCallback.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSOAuth.h"
 #endif
@@ -16,6 +15,7 @@
 #ifndef FS2_API_VERSION
 #define FS2_API_VERSION (@"20131109")
 #endif
+
 
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
 
@@ -26,7 +26,10 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
-@interface Foursquare2 (PrivateAPI)
+@interface Foursquare2 ()
+
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+
 + (void)get:(NSString *)methodName
  withParams:(NSDictionary *)params
    callback:(Foursquare2Callback)callback;
@@ -93,8 +96,7 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)setAccessToken:(NSString *)token {
-  if (token)
-  {
+  if (token) {
     [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
     [[NSUserDefaults standardUserDefaults] setObject:token
                                               forKey:@"FOURSQUARE_ACCESS_TOKEN"];
@@ -103,7 +105,7 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)removeAccessToken {
-	[[self classAttributes]removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
+	[[self classAttributes] removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -1296,6 +1298,15 @@ static NSMutableDictionary *attributes;
     
 }
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = 5;
+    }
+    return self;
+}
+
 + (void)request:(NSString *)methodName
      withParams:(NSDictionary *)params
      httpMethod:(NSString *)httpMethod
@@ -1305,23 +1316,6 @@ static NSMutableDictionary *attributes;
                               withParams:params
                               httpMethod:httpMethod
                                 callback:callback];
-}
-
-- (void) callback: (id)result target:(FSTargetCallback *)target {
-    if ([result isKindOfClass:[NSError class]]) {
-        target.callback(NO,result);
-        return;
-    }
-    if (result[kFOURSQUARE_ACCESS_TOKEN]) {
-        target.callback(YES,result);
-        return;
-    }
-    NSNumber *code = [result valueForKeyPath:@"meta.code"];
-    if (result!= nil && (code.intValue == 200 || code.intValue == 201)) {
-        target.callback(YES,result);
-    } else {
-        target.callback(NO,[result valueForKeyPath:@"meta.errorDetail"]);
-    }
 }
 
 - (void)request:(NSString *)methodName
@@ -1334,13 +1328,9 @@ static NSMutableDictionary *attributes;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
     request.HTTPMethod = httpMethod;
 	
-    FSTargetCallback *target = [[FSTargetCallback alloc] initWithCallback:callback
-                                                           resultCallback:@selector(callback:target:)
-                                                               requestUrl: path
-                                                                 numTries: 2];
-	
-	[self makeAsyncRequestWithRequest:request
-                               target:target];
+    FSOperation *operation = [[FSOperation alloc] initWithRequest:request
+                                                         callback:callback];
+    [self.operationQueue addOperation:operation];
 }
 
 
@@ -1406,13 +1396,9 @@ static NSMutableDictionary *attributes;
 	[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setHTTPBody:body];
     
-    FSTargetCallback *target = [[FSTargetCallback alloc] initWithCallback:callback
-                                                           resultCallback:@selector(callback:target:)
-                                                               requestUrl: finalURL
-                                                                 numTries: 2];
-    
-    [self makeAsyncRequestWithRequest:request
-                               target:target];
+    FSOperation *operation = [[FSOperation alloc] initWithRequest:request
+                                                         callback:callback];
+    [self.operationQueue addOperation:operation];
 }
 
 
@@ -1555,7 +1541,7 @@ Foursquare2Callback authorizeCallbackDelegate;
     } else {
         authorizeCallbackDelegate(NO, error);
     }
-    
+    authorizeCallbackDelegate = nil;
 }
 #endif
 
