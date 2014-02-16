@@ -16,9 +16,9 @@
 		470849BC17F607D6002538CA /* testimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 470849BB17F607D6002538CA /* testimage@2x.png */; };
 		471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6616C0F17E009F88F9 /* pin@2x.png */; };
 		471EAC6916C0F41C009F88F9 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6816C0F41C009F88F9 /* pin.png */; };
+		471FC02B18B0FE7E00673945 /* FSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 471FC02A18B0FE7E00673945 /* FSOperation.m */; };
+		476459DC18B10AEE009141CF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 476459DB18B10AEE009141CF /* SearchViewController.m */; };
 		4779882716AC248800038756 /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882016AC248800038756 /* Foursquare2.m */; };
-		4779882816AC248800038756 /* FSRequester.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882216AC248800038756 /* FSRequester.m */; };
-		4779882916AC248800038756 /* FSTargetCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882416AC248800038756 /* FSTargetCallback.m */; };
 		4779882A16AC248800038756 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882616AC248800038756 /* FSWebLogin.m */; };
 		4779882C16AC25DF00038756 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4779882B16AC25DF00038756 /* Default-568h@2x.png */; };
 		4779883116AC536E00038756 /* NearbyVenuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4779882F16AC536E00038756 /* NearbyVenuesViewController.m */; };
@@ -49,12 +49,12 @@
 		470849BB17F607D6002538CA /* testimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testimage@2x.png"; sourceTree = "<group>"; };
 		471EAC6616C0F17E009F88F9 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
 		471EAC6816C0F41C009F88F9 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
+		471FC02918B0FE7E00673945 /* FSOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOperation.h; sourceTree = "<group>"; };
+		471FC02A18B0FE7E00673945 /* FSOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOperation.m; sourceTree = "<group>"; };
+		476459DA18B10AEE009141CF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		476459DB18B10AEE009141CF /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		4779881F16AC248800038756 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Foursquare2.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4779882016AC248800038756 /* Foursquare2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Foursquare2.m; sourceTree = "<group>"; };
-		4779882116AC248800038756 /* FSRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRequester.h; sourceTree = "<group>"; };
-		4779882216AC248800038756 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FSRequester.m; sourceTree = "<group>"; };
-		4779882316AC248800038756 /* FSTargetCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTargetCallback.h; sourceTree = "<group>"; };
-		4779882416AC248800038756 /* FSTargetCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTargetCallback.m; sourceTree = "<group>"; };
 		4779882516AC248800038756 /* FSWebLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWebLogin.h; sourceTree = "<group>"; };
 		4779882616AC248800038756 /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FSWebLogin.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4779882B16AC25DF00038756 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -109,6 +109,8 @@
 				4779884116AC623600038756 /* CheckinViewController.m */,
 				4779884516AC64CF00038756 /* SettingsViewController.h */,
 				4779884616AC64CF00038756 /* SettingsViewController.m */,
+				476459DA18B10AEE009141CF /* SearchViewController.h */,
+				476459DB18B10AEE009141CF /* SearchViewController.m */,
 				470849B817F4D5CD002538CA /* MainStoryboard.storyboard */,
 				470849BA17F607D6002538CA /* images */,
 			);
@@ -183,10 +185,8 @@
 				47A8F67A17D31BF5007216AC /* FSOAuth.m */,
 				4779881F16AC248800038756 /* Foursquare2.h */,
 				4779882016AC248800038756 /* Foursquare2.m */,
-				4779882116AC248800038756 /* FSRequester.h */,
-				4779882216AC248800038756 /* FSRequester.m */,
-				4779882316AC248800038756 /* FSTargetCallback.h */,
-				4779882416AC248800038756 /* FSTargetCallback.m */,
+				471FC02918B0FE7E00673945 /* FSOperation.h */,
+				471FC02A18B0FE7E00673945 /* FSOperation.m */,
 				4779882516AC248800038756 /* FSWebLogin.h */,
 				4779882616AC248800038756 /* FSWebLogin.m */,
 				4779884E16AC697200038756 /* FSWebLogin.xib */,
@@ -286,14 +286,14 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* FSAppDelegate.m in Sources */,
 				4779882716AC248800038756 /* Foursquare2.m in Sources */,
-				4779882816AC248800038756 /* FSRequester.m in Sources */,
-				4779882916AC248800038756 /* FSTargetCallback.m in Sources */,
+				471FC02B18B0FE7E00673945 /* FSOperation.m in Sources */,
 				4779882A16AC248800038756 /* FSWebLogin.m in Sources */,
 				4779883116AC536E00038756 /* NearbyVenuesViewController.m in Sources */,
 				4779883F16AC5A3900038756 /* FSVenue.m in Sources */,
 				4779884316AC623600038756 /* CheckinViewController.m in Sources */,
 				4779884816AC64CF00038756 /* SettingsViewController.m in Sources */,
 				47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */,
+				476459DC18B10AEE009141CF /* SearchViewController.m in Sources */,
 				47A8F67B17D31F06007216AC /* FSOAuth.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
