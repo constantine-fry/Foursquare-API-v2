@@ -4,7 +4,9 @@
 #import "FSTargetCallback.h"
 
 
-@implementation FSRequester
+@implementation FSRequester {
+	NSOperationQueue *_delegateQueue;
+}
 @synthesize asyncConnDict;
 @synthesize requestHistory;
 #pragma clang diagnostic push
@@ -13,6 +15,7 @@
 - (id)init {
     self = [super init];
     if (self) {
+        _delegateQueue = [[NSOperationQueue alloc] init];
         self.asyncConnDict = [NSMutableDictionary dictionary];
     }
     return self;
@@ -32,8 +35,10 @@
 
 
 - (void) makeAsyncRequestWithRequest:(NSURLRequest *)urlRequest target:(FSTargetCallback *)target {
-	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self] ;
-	
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO] ;
+	[connection setDelegateQueue:_delegateQueue];
+	[connection start];
+    
 	if (connection) {
 		// Create the NSMutableData that will hold the received data
 		target.receivedData = [NSMutableData data];
