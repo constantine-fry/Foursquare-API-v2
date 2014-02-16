@@ -38,6 +38,7 @@
            fromLocation:(CLLocation *)oldLocation {
     [self.locationManager stopUpdatingLocation];
     self.location = newLocation;
+    [self startSearchWithString:nil];
 }
 
 - (void)locationManager:(CLLocationManager *)manager
@@ -46,26 +47,30 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self startSearchWithString:searchText];
+}
+
+- (void)startSearchWithString:(NSString *)string {
     [self.lastSearchOperation cancel];
     self.lastSearchOperation = [Foursquare2
-                          venueSearchNearByLatitude:@(self.location.coordinate.latitude)
-                          longitude:@(self.location.coordinate.longitude)
-                          query:searchText
-                          limit:nil
-                          intent:intentCheckin
-                          radius:@(500)
-                          categoryId:nil
-                          callback:^(BOOL success, id result){
-                              if (success) {
-                                  NSDictionary *dic = result;
-                                  NSArray *venues = [dic valueForKeyPath:@"response.venues"];
-                                  FSConverter *converter = [[FSConverter alloc] init];
-                                  self.venues = [converter convertToObjects:venues];
-                                  [self.tableView reloadData];
-                              } else {
-                                  NSLog(@"%@",result);
-                              }
-                          }];
+                                venueSearchNearByLatitude:@(self.location.coordinate.latitude)
+                                longitude:@(self.location.coordinate.longitude)
+                                query:string
+                                limit:nil
+                                intent:intentCheckin
+                                radius:@(500)
+                                categoryId:nil
+                                callback:^(BOOL success, id result){
+                                    if (success) {
+                                        NSDictionary *dic = result;
+                                        NSArray *venues = [dic valueForKeyPath:@"response.venues"];
+                                        FSConverter *converter = [[FSConverter alloc] init];
+                                        self.venues = [converter convertToObjects:venues];
+                                        [self.tableView reloadData];
+                                    } else {
+                                        NSLog(@"%@",result);
+                                    }
+                                }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
