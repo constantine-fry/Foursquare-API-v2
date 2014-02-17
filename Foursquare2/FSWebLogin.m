@@ -66,7 +66,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)removeCookiesFromPreviousLogin {
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in [storage cookies]) {
-        if ([[cookie domain] isEqualToString:@"foursquare.com"]) {
+        if ([[cookie domain] rangeOfString:@"foursquare.com"].length) {
             [storage deleteCookie:cookie];
         }
     }
