@@ -14,14 +14,12 @@
 // limitations under the License.
 //
 
-#import "FSOAuth.h"
+#import "FSOAuthNoAppStore.h"
 
-#define kFoursquareOAuthRequiredVersion @"20130509"
-#define kFoursquareAppStoreURL @"https://itunes.apple.com/app/foursquare/id306934924?mt=8"
-#define kFoursquareAppStoreID @306934924
+#define kFoursquareNoAppstoreOAuthRequiredVersion @"20130509"
 
 
-@implementation FSOAuth
+@implementation FSOAuthNoAppStore
 
 + (FSOAuthStatusCode)authorizeUserUsingClientId:(NSString *)clientID
                               callbackURIString:(NSString *)callbackURIString {
@@ -44,7 +42,7 @@
                                                                                                                (CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                                                                                                kCFStringEncodingUTF8);
     
-    NSURL *authURL = [NSURL URLWithString:[NSString stringWithFormat:@"foursquareauth://authorize?client_id=%@&v=%@&redirect_uri=%@", clientID, kFoursquareOAuthRequiredVersion, urlEncodedCallbackString]];
+    NSURL *authURL = [NSURL URLWithString:[NSString stringWithFormat:@"foursquareauth://authorize?client_id=%@&v=%@&redirect_uri=%@", clientID, kFoursquareNoAppstoreOAuthRequiredVersion, urlEncodedCallbackString]];
     
     if (![sharedApplication canOpenURL:authURL]) {        
         return FSOAuthStatusErrorFoursquareOAuthNotSupported;

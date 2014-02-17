@@ -8,7 +8,7 @@
 
 #import "Foursquare2.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
-#import "FSOAuth.h"
+#import "FSOAuthNoAppStore.h"
 #endif
 
 //update this date to use up-to-date Foursquare API
@@ -1410,7 +1410,7 @@ static NSMutableDictionary *attributes;
     NSDictionary *dic = [Foursquare2 classAttributes];
     NSString *key = dic[kFOURSQUARE_CLIET_ID];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
-    FSOAuthStatusCode statusCode = [FSOAuth authorizeUserUsingClientId:key callbackURIString:callbackURL];
+    FSOAuthStatusCode statusCode = [FSOAuthNoAppStore authorizeUserUsingClientId:key callbackURIString:callbackURL];
     if (statusCode == FSOAuthStatusSuccess) {
         return YES;
     }
@@ -1477,12 +1477,12 @@ static NSMutableDictionary *attributes;
         
         //then  it's native oauth.
         FSOAuthErrorCode errorCode;
-        NSString *code = [FSOAuth accessCodeForFSOAuthURL:url
+        NSString *code = [FSOAuthNoAppStore accessCodeForFSOAuthURL:url
                                                     error:&errorCode];
         if (errorCode == FSOAuthErrorNone) {
             NSString *key = dic[kFOURSQUARE_CLIET_ID];
             NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
-            [FSOAuth requestAccessTokenForCode:code
+            [FSOAuthNoAppStore requestAccessTokenForCode:code
                                       clientId:key
                              callbackURIString:callbackURL
                                   clientSecret:secret

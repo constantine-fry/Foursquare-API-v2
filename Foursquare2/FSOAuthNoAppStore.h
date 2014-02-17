@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, FSOAuthErrorCode) {
  */
 typedef void (^FSTokenRequestCompletionBlock)(NSString *authToken, BOOL requestCompleted, FSOAuthErrorCode errorCode);
 
-@interface FSOAuth : NSObject
+@interface FSOAuthNoAppStore : NSObject
 
 /**
  Attempt to initiate OAuth request by bouncing user out to the native iOS Foursquare app.
