@@ -106,7 +106,6 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
  Setup Foursqare2 with clientId, secret and callbackURL.
  This parameters you can get on https://foursquare.com/developers/apps
  */
-
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
                         callbackURL:(NSString *)callbackURL;
@@ -121,9 +120,14 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 + (void)authorizeWithCallback:(Foursquare2Callback)callback;
 
 /**
- Remove access token from user defaults. In other words logout.
+ Removes access token from user defaults. In other words logout.
  */
 + (void)removeAccessToken;
+
+/**
+ Returns access token.
+ */
++ (NSString *)accessToken;
 
 /**
  @abstract Handle URL. You must call this method in

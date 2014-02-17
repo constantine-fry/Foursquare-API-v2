@@ -112,6 +112,10 @@ static NSMutableDictionary *attributes;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (NSString *)accessToken {
+    return [self classAttributes][kFOURSQUARE_ACCESS_TOKEN];
+}
+
 + (BOOL)isAuthorized {
     return ([self classAttributes][kFOURSQUARE_ACCESS_TOKEN] != nil);
 }
