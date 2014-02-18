@@ -24,7 +24,7 @@
     NSDictionary *keychainQuery =
     @{(__bridge id)kSecClass          : (__bridge id)kSecClassGenericPassword,
       (__bridge id)kSecAttrAccount    : @"AccessToken",
-      (__bridge id)kSecAttrService    : @"Foursquare2API",
+      (__bridge id)kSecAttrService    : @"Foursquare2API-FSKeychain",
       (__bridge id)kSecAttrAccessible :(__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly};
     return keychainQuery;
 }
