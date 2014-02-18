@@ -69,6 +69,7 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 static NSMutableDictionary *attributes;
 
 + (void)initialize {
+    //moving access token from NSUserDefault into keychain.
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *userDefaultsAccessToken = [userDefaults objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
 	if (userDefaultsAccessToken != nil) {
