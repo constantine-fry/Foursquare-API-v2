@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		370482AD18B29466005477A0 /* FSOAuthNoAppStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 370482AC18B29466005477A0 /* FSOAuthNoAppStore.m */; };
+		37101E6A18B3DCAD00F9EDBE /* FSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 37101E6918B3DCAD00F9EDBE /* FSKeychain.m */; };
+		37101E6C18B3E3E700F9EDBE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37101E6B18B3E3E700F9EDBE /* Security.framework */; };
 		470849B917F4D5CD002538CA /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 470849B817F4D5CD002538CA /* MainStoryboard.storyboard */; };
 		470849BC17F607D6002538CA /* testimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 470849BB17F607D6002538CA /* testimage@2x.png */; };
 		471EAC6716C0F17E009F88F9 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 471EAC6616C0F17E009F88F9 /* pin@2x.png */; };
@@ -47,6 +49,9 @@
 		32CA4F630368D1EE00C91783 /* Foursquare_API_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare_API_Prefix.pch; sourceTree = "<group>"; };
 		370482AB18B29466005477A0 /* FSOAuthNoAppStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOAuthNoAppStore.h; sourceTree = "<group>"; };
 		370482AC18B29466005477A0 /* FSOAuthNoAppStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOAuthNoAppStore.m; sourceTree = "<group>"; };
+		37101E6818B3DCAD00F9EDBE /* FSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSKeychain.h; sourceTree = "<group>"; };
+		37101E6918B3DCAD00F9EDBE /* FSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSKeychain.m; sourceTree = "<group>"; };
+		37101E6B18B3E3E700F9EDBE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		470849B817F4D5CD002538CA /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		470849BB17F607D6002538CA /* testimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testimage@2x.png"; sourceTree = "<group>"; };
 		471EAC6616C0F17E009F88F9 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37101E6C18B3E3E700F9EDBE /* Security.framework in Frameworks */,
 				4779883C16AC583900038756 /* MapKit.framework in Frameworks */,
 				4779883416AC53D600038756 /* CoreLocation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -161,6 +167,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37101E6B18B3E3E700F9EDBE /* Security.framework */,
 				4779883B16AC583800038756 /* MapKit.framework */,
 				4779883316AC53D600038756 /* CoreLocation.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -181,10 +188,12 @@
 		4779881E16AC248800038756 /* Foursquare2 */ = {
 			isa = PBXGroup;
 			children = (
-				370482AB18B29466005477A0 /* FSOAuthNoAppStore.h */,
-				370482AC18B29466005477A0 /* FSOAuthNoAppStore.m */,
 				4779881F16AC248800038756 /* Foursquare2.h */,
 				4779882016AC248800038756 /* Foursquare2.m */,
+				370482AB18B29466005477A0 /* FSOAuthNoAppStore.h */,
+				370482AC18B29466005477A0 /* FSOAuthNoAppStore.m */,
+				37101E6818B3DCAD00F9EDBE /* FSKeychain.h */,
+				37101E6918B3DCAD00F9EDBE /* FSKeychain.m */,
 				471FC02918B0FE7E00673945 /* FSOperation.h */,
 				471FC02A18B0FE7E00673945 /* FSOperation.m */,
 				4779882516AC248800038756 /* FSWebLogin.h */,
@@ -290,6 +299,7 @@
 				4779882A16AC248800038756 /* FSWebLogin.m in Sources */,
 				4779883116AC536E00038756 /* NearbyVenuesViewController.m in Sources */,
 				4779883F16AC5A3900038756 /* FSVenue.m in Sources */,
+				37101E6A18B3DCAD00F9EDBE /* FSKeychain.m in Sources */,
 				4779884316AC623600038756 /* CheckinViewController.m in Sources */,
 				4779884816AC64CF00038756 /* SettingsViewController.m in Sources */,
 				47ADFAC916C3C6D700891DCD /* FSConverter.m in Sources */,
