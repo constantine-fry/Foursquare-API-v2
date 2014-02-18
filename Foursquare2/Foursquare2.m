@@ -7,6 +7,7 @@
 //
 
 #import "Foursquare2.h"
+#import "FSKeychain.h"
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 #import "FSOAuthNoAppStore.h"
 #endif
@@ -68,11 +69,18 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 static NSMutableDictionary *attributes;
 
 + (void)initialize {
-	NSUserDefaults *usDef = [NSUserDefaults standardUserDefaults];
-	if ([usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"] != nil) {
-		[self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = [usDef objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-        
+    //moving access token from NSUserDefault into keychain.
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *userDefaultsAccessToken = [userDefaults objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
+	if (userDefaultsAccessToken != nil) {
+        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:userDefaultsAccessToken];
+        [userDefaults removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
 	}
+    
+    NSString *accessToken = [[FSKeychain sharedKeychain] readAccessTokenFromKeychain];
+    if (accessToken != nil) {
+        [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = accessToken;
+    }
 }
 
 + (void)setupFoursquareWithClientId:(NSString *)clientId
@@ -93,23 +101,20 @@ static NSMutableDictionary *attributes;
     } else {
         attributes = [[NSMutableDictionary alloc] init];
     }
-    
     return attributes;
 }
 
-+ (void)setAccessToken:(NSString *)token {
-    if (token) {
-        [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = token;
-        [[NSUserDefaults standardUserDefaults] setObject:token
-                                                  forKey:@"FOURSQUARE_ACCESS_TOKEN"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
++ (void)setAccessToken:(NSString *)accessToken {
+    NSString *existingAccessToken = [self accessToken];
+    if (![existingAccessToken isEqualToString:accessToken]) {
+        [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = accessToken;
+        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:accessToken];
     }
 }
 
 + (void)removeAccessToken {
 	[[self classAttributes] removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+    [[FSKeychain sharedKeychain] removeAccessTokenFromKeychain];
 }
 
 + (NSString *)accessToken {
