@@ -26,6 +26,7 @@
     }
     NSDictionary *keychainQuery =
     @{(__bridge id)kSecClass          : (__bridge id)kSecClassGenericPassword,
+      // use clientId to "invalidate" access token if developer changed clientId
       (__bridge id)kSecAttrAccount    : clientId,
       (__bridge id)kSecAttrService    : @"Foursquare2API-FSKeychain",
       (__bridge id)kSecAttrAccessible :(__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly};
