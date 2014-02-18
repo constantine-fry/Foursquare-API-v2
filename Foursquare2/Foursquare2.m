@@ -68,27 +68,26 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
 static NSMutableDictionary *attributes;
 
-+ (void)initialize {
-    //moving access token from NSUserDefault into keychain.
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *userDefaultsAccessToken = [userDefaults objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	if (userDefaultsAccessToken != nil) {
-        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:userDefaultsAccessToken];
-        [userDefaults removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	}
-    
-    NSString *accessToken = [[FSKeychain sharedKeychain] readAccessTokenFromKeychain];
-    if (accessToken != nil) {
-        [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = accessToken;
-    }
-}
-
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
                         callbackURL:(NSString *)callbackURL {
     [self classAttributes][kFOURSQUARE_CLIET_ID] = clientId;
     [self classAttributes][kFOURSQUARE_OAUTH_SECRET] = secret;
     [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
+    
+    //moving access token from NSUserDefault into keychain.
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *userDefaultsAccessToken = [userDefaults objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
+	if (userDefaultsAccessToken != nil) {
+        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:userDefaultsAccessToken
+                                                   forClientId:clientId];
+        [userDefaults removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
+	}
+    
+    NSString *accessToken = [[FSKeychain sharedKeychain] readAccessTokenFromKeychainWithClientId:clientId];
+    if (accessToken != nil) {
+        [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = accessToken;
+    }
 }
 
 + (void)setAttributeValue:(id)attr forKey:(NSString *)key {
@@ -108,13 +107,16 @@ static NSMutableDictionary *attributes;
     NSString *existingAccessToken = [self accessToken];
     if (![existingAccessToken isEqualToString:accessToken]) {
         [self classAttributes][kFOURSQUARE_ACCESS_TOKEN] = accessToken;
-        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:accessToken];
+        NSString *clientId = [self classAttributes][kFOURSQUARE_CLIET_ID];
+        [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:accessToken
+                                                   forClientId:clientId];
     }
 }
 
 + (void)removeAccessToken {
 	[[self classAttributes] removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
-    [[FSKeychain sharedKeychain] removeAccessTokenFromKeychain];
+    NSString *clientId = [self classAttributes][kFOURSQUARE_CLIET_ID];
+    [[FSKeychain sharedKeychain] removeAccessTokenFromKeychainWithClientId:clientId];
 }
 
 + (NSString *)accessToken {

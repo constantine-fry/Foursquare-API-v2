@@ -12,10 +12,10 @@
 
 + (instancetype)sharedKeychain;
 
-- (NSString *)readAccessTokenFromKeychain;
+- (NSString *)readAccessTokenFromKeychainWithClientId:(NSString *)clientId;
 
-- (void)saveAccessTokenInKeychain:(NSString *)accessToken;
+- (void)saveAccessTokenInKeychain:(NSString *)accessToken forClientId:(NSString *)clientId;
 
-- (void)removeAccessTokenFromKeychain;
+- (void)removeAccessTokenFromKeychainWithClientId:(NSString *)clientId;
 
 @end

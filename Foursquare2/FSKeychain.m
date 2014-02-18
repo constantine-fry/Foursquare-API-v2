@@ -20,30 +20,33 @@
     return instance;
 }
 
-+ (NSDictionary *)keychainQuery {
++ (NSDictionary *)keychainQueryWithClientId:(NSString *)clientId {
+    if (clientId == nil || clientId.length == 0) {
+        NSAssert(NO, @"client id could not be nil");
+    }
     NSDictionary *keychainQuery =
     @{(__bridge id)kSecClass          : (__bridge id)kSecClassGenericPassword,
-      (__bridge id)kSecAttrAccount    : @"AccessToken",
+      (__bridge id)kSecAttrAccount    : clientId,
       (__bridge id)kSecAttrService    : @"Foursquare2API-FSKeychain",
       (__bridge id)kSecAttrAccessible :(__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly};
     return keychainQuery;
 }
 
-- (void)removeAccessTokenFromKeychain {
-    NSDictionary *keychainQuery = [self.class keychainQuery];
+- (void)removeAccessTokenFromKeychainWithClientId:(NSString *)clientId {
+    NSDictionary *keychainQuery = [self.class keychainQueryWithClientId:clientId];
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)keychainQuery);
     if (status != errSecSuccess && status != errSecItemNotFound) {
         NSLog(@"Error deleting access token from keyching %li", (long int)status);
     }
 }
 
-- (void)saveAccessTokenInKeychain:(NSString *)accessToken {
+- (void)saveAccessTokenInKeychain:(NSString *)accessToken forClientId:(NSString *)clientId {
     if (accessToken == nil || accessToken.length == 0) {
         return;
     }
     
-    [self removeAccessTokenFromKeychain];
-    NSMutableDictionary *keychainQuery = [[self.class keychainQuery] mutableCopy];
+    [self removeAccessTokenFromKeychainWithClientId:clientId];
+    NSMutableDictionary *keychainQuery = [[self.class keychainQueryWithClientId:clientId] mutableCopy];
     NSData *passwordData = [accessToken dataUsingEncoding:NSUTF8StringEncoding];
     [keychainQuery setObject:passwordData forKey:(__bridge id)kSecValueData];
     OSStatus status = SecItemAdd((__bridge CFDictionaryRef)keychainQuery, NULL);
@@ -52,8 +55,8 @@
     }
 }
 
-- (NSString *)readAccessTokenFromKeychain {
-    NSMutableDictionary *keychainQuery = [[self.class keychainQuery] mutableCopy];
+- (NSString *)readAccessTokenFromKeychainWithClientId:(NSString *)clientId {
+    NSMutableDictionary *keychainQuery = [[self.class keychainQueryWithClientId:clientId] mutableCopy];
     [keychainQuery setObject:(__bridge id)kCFBooleanTrue forKey:(__bridge id)kSecReturnData];
     [keychainQuery setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
     CFDataRef passwordData = NULL;
