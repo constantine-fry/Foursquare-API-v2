@@ -1,5 +1,10 @@
 # Foursquare2 Changelog
 
+__v1.4.4__
+
+* Storing access token into keychain.
+* Add +accessToken method in Foursquare2 class.
+
 __v1.4.3__
 
 * Open web view if there is no foursquare app installed (it used to open appstore)
