@@ -7,21 +7,22 @@ methods to construct request with path and parameters, but you need to read onli
 constract NSDictionary with parameters on your own. This library provide concrete, ready-to-use method like this:
 
 
-    + (void)createCheckinAtVenue:(NSString *)venueID
-                           venue:(NSString *)venue
-                           shout:(NSString *)shout
-                        callback:(Foursquare2Callback)callback;
+    + (NSOperation *)createCheckinAtVenue:(NSString *)venueID
+                                    venue:(NSString *)venue
+                                    shout:(NSString *)shout
+                                 callback:(Foursquare2Callback)callback;
                         
-    + (void)userGetDetail:(NSString *)userID
-                 callback:(Foursquare2Callback)callback;
+    + (NSOperation *)userGetDetail:(NSString *)userID
+                          callback:(Foursquare2Callback)callback;
 
+Don't be scary of NSOperation:). Almost all the time you don't need to use them. But it could be very helpfull
+if you want to have more control and cancel operations. Checkout SearchViewController.m as example.
 
 ###Features
-* Native authentication with Foursquare app.
-* In-app authentication.
-* Asynchronous requests with blocks
-* Build-in image uploader for photos.
-* Made with native frameworks.
+* Native authentication with Foursquare app and in-app web view authentication.
+* Storing access token into keychain.
+* Asynchronous requests with blocks.
+* Build-in image uploader for adding photos for checkin.
 
 
 ###How To
@@ -69,8 +70,9 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
         CLLocationCoordinate2D neCoord;
         neCoord = [mapView convertPoint:nePoint toCoordinateFromView:mapView];
 
-
-
+2. Rate limits.
+    Some Foursquare API methods don't require authentication (such as venueSearch methods). 
+    But they have some limitations: https://developer.foursquare.com/overview/ratelimits
 
 
 
