@@ -41,7 +41,8 @@
 }
 
 - (void)cancelButtonTapped {
-    [self.delegate webLogin:self didFinishWithError:nil];
+    NSError *error = [NSError errorWithDomain:kFoursquare2ErrorDomain code:Foursquare2ErrorCancelled userInfo:@{ NSLocalizedFailureReasonErrorKey : @"Web login cancelled"}];
+    [self.delegate webLogin:self didFinishWithError:error];
 }
 
 - (BOOL)webView:(UIWebView *)webView
@@ -57,7 +58,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	if ([urlString rangeOfString:@"error="].length != 0) {
 		NSArray *array = [urlString componentsSeparatedByString:@"="];
         NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey:array[1]};
-        error = [NSError errorWithDomain:@"Foursquare2" code:-1 userInfo:userInfo];
+        error = [NSError errorWithDomain:kFoursquare2ErrorDomain code:Foursquare2ErrorUnknown userInfo:userInfo];
 	}
     [self.delegate webLogin:self didFinishWithError:error];
 	return YES;

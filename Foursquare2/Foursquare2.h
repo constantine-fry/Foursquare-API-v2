@@ -84,6 +84,13 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
     FoursquareListGroupSuggested
 };
 
+typedef NS_ENUM(NSInteger, Foursquare2Error) {
+    Foursquare2ErrorUnknown = -1,
+    Foursquare2ErrorCancelled
+};
+
+FOUNDATION_EXPORT NSString * const kFoursquare2ErrorDomain;
+FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  End points coverage.
