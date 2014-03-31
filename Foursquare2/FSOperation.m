@@ -12,7 +12,7 @@
 
 @property (nonatomic, copy) Foursquare2Callback callbackBlock;
 @property (nonatomic, strong) NSURLRequest *request;
-@property (nonatomic, strong) dispatch_queue_t callbackQueue;
+@property (nonatomic) dispatch_queue_t callbackQueue;
 
 @end
 
