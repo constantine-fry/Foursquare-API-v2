@@ -20,7 +20,6 @@
 
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
 
-
 static NSString const * kFOURSQUARE_CLIET_ID = @"FOURSQUARE_CLIET_ID";
 static NSString const * kFOURSQUARE_OAUTH_SECRET = @"FOURSQUARE_OAUTH_SECRET";
 static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
@@ -1314,6 +1313,7 @@ static NSMutableDictionary *attributes;
     if (self) {
         self.operationQueue = [[NSOperationQueue alloc] init];
         self.operationQueue.maxConcurrentOperationCount = 7;
+        _callbackQueue = dispatch_get_main_queue();
     }
     return self;
 }
@@ -1338,9 +1338,10 @@ static NSMutableDictionary *attributes;
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
     request.HTTPMethod = httpMethod;
-	
+
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
-                                                         callback:callback];
+                                                         callback:callback 
+                                                    callbackQueue:_callbackQueue];
     [self.operationQueue addOperation:operation];
     return operation;
 }
@@ -1409,7 +1410,8 @@ static NSMutableDictionary *attributes;
 	[request setHTTPBody:body];
     
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
-                                                         callback:callback];
+                                                         callback:callback
+                                                    callbackQueue:_callbackQueue];
     [self.operationQueue addOperation:operation];
     return operation;
 }
