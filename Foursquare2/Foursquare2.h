@@ -111,7 +111,7 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
  Returns the dispatch queue in which request callbacks are called.
  */
  
-+ (dispatch_queue_T)callbackQueue;
++ (dispatch_queue_t)callbackQueue;
  
 /**
  Setup Foursqare2 with clientId, secret and callbackURL.
