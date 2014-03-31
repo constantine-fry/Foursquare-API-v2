@@ -12,17 +12,21 @@
 
 @property (nonatomic, copy) Foursquare2Callback callbackBlock;
 @property (nonatomic, strong) NSURLRequest *request;
+@property (nonatomic, strong) dispatch_queue_t callbackQueue;
 
 @end
 
 @implementation FSOperation
 
 - (id)initWithRequest:(NSURLRequest *)request
-             callback:(Foursquare2Callback)block {
+             callback:(Foursquare2Callback)block 
+        callbackQueue:(dispatch_queue_t)callbackQueue {
+                     
     self = [super init];
     if (self) {
         self.callbackBlock = block;
         self.request = request;
+        self.callbackQueue = callbackQueue;
     }
     return self;
 }
@@ -67,7 +71,7 @@
     }
     
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(self.callbackQueue, ^{
         if (error) {
             self.callbackBlock(NO, error);
         } else {
