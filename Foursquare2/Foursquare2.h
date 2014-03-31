@@ -103,6 +103,17 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 @interface Foursquare2 : NSObject
 
 /**
+ Set the dispatch queue in which request callbacks are called (defaults to the main queue).
+ */
++ (void)setCallbackQueue:(dispatch_queue_t)callbackQueue;
+
+/**
+ Returns the dispatch queue in which request callbacks are called.
+ */
+ 
++ (dispatch_queue_T)callbackQueue;
+ 
+/**
  Setup Foursqare2 with clientId, secret and callbackURL.
  This parameters you can get on https://foursquare.com/developers/apps
  */
