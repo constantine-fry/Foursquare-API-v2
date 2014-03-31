@@ -31,6 +31,7 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 @property (nonatomic, copy) Foursquare2Callback authorizationCallback;
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) dispatch_queue_t callbackQueue;
 
 + (NSOperation *)get:(NSString *)methodName
           withParams:(NSDictionary *)params
@@ -66,6 +67,13 @@ static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 @implementation Foursquare2
 
 static NSMutableDictionary *attributes;
+
++ (void)setCallbackQueue:(dispatch_queue_t)callbackQueue {
+    [self sharedInstance].callbackQueue = callbackQueue;
+}
++ (dispatch_queue_t)callbackQueue {
+    return [self sharedInstance].callbackQueue;
+}
 
 + (void)setupFoursquareWithClientId:(NSString *)clientId
                              secret:(NSString *)secret
