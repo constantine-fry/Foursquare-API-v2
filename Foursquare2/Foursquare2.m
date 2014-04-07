@@ -719,6 +719,12 @@ static NSMutableDictionary *attributes;
 	return [self get:path withParams:dic callback:callback];
 }
 
++ (NSOperation *)venueGetMenu:(NSString *)venueID
+                     callback:(Foursquare2Callback)callback {
+	NSString *path = [NSString stringWithFormat:@"venues/%@/menu",venueID];
+	return [self get:path withParams:nil callback:callback];
+}
+
 #pragma mark Actions
 
 + (NSOperation *)venueFlag:(NSString *)venueID

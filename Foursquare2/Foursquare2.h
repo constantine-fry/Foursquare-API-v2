@@ -596,6 +596,17 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
                        offset:(NSNumber *)offset
                      callback:(Foursquare2Callback)callback;
 
+/**
+ Returns menu for a venue.
+ @param venueID ID of venue to revrieve.
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ @discussion returns in callback block "menu" field.
+ A complete menu object: https://developer.foursquare.com/docs/responses/menu
+ */
++ (NSOperation *)venueGetMenu:(NSString *)venueID
+                     callback:(Foursquare2Callback)callback;
+
 #pragma mark Actions
 
 
