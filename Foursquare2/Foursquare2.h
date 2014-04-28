@@ -330,6 +330,11 @@ typedef enum {
 
 #pragma mark -
 
+#pragma mark ---------------------------- Lists -----------------------------------------------------------------------
+
++ (NSOperation *)listGetDetail:(NSString *)listID
+                      callback:(Foursquare2Callback)callback;
+
 
 
 
