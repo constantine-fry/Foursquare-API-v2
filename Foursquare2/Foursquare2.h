@@ -388,6 +388,17 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 
 #pragma mark -
 
+#pragma mark ---------------------------- Lists -----------------------------------------------------------------------
+
+/**
+    Get the venues on a list
+    @param string ID for the given list
+    @returns array of "listitems"
+    https://developer.foursquare.com/docs/responses/item.html
+ */
++ (NSOperation *)listGetDetail:(NSString *)listID
+                      callback:(Foursquare2Callback)callback;
+
 
 
 

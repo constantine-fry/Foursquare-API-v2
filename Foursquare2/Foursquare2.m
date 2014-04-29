@@ -390,9 +390,17 @@ static NSMutableDictionary *attributes;
                    withImage:image
                     callback:callback];
 }
+
 #pragma mark -
+#pragma mark Lists
 
++ (NSOperation *)listGetDetail:(NSString *)listID
+                      callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/%@", listID];
+    return [self get:path withParams:nil callback:callback];
+}
 
+#pragma mark -
 #pragma mark Venues
 
 + (NSOperation *)venueGetDetail:(NSString *)venueID
