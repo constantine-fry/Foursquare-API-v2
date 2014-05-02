@@ -1460,6 +1460,8 @@ static NSMutableDictionary *attributes;
 
 
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
+    NSAssert([Foursquare2 sharedInstance].authorizationCallback == nil, @"Resetting callback that has not been called");
+
 	[Foursquare2 sharedInstance].authorizationCallback = [callback copy];
     
     if ([[Foursquare2 sharedInstance] nativeAuthorization]) {
