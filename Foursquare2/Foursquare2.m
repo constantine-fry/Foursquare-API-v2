@@ -1495,16 +1495,13 @@ static NSMutableDictionary *attributes;
 + (void)callAuthorizationCallbackWithError:(NSError *)error {
     Foursquare2Callback callback = [Foursquare2 sharedInstance].authorizationCallback;
     NSAssert(callback != nil, @"Authorization callback should not be possible without setting a callback");
-
-    if ([Foursquare2 isAuthorized]) {
-        if (callback) {
-            callback(YES, error);
-        }
-    } else {
-        if (callback) {
-            callback(NO, error);
-        }
+    if (!callback) {
+        return;
     }
+    dispatch_async([Foursquare2 sharedInstance].callbackQueue, ^{
+        BOOL result = [Foursquare2 isAuthorized];
+        callback(result, error);
+    });
     [Foursquare2 sharedInstance].authorizationCallback = nil;
 }
 
