@@ -162,11 +162,11 @@
     if ([Foursquare2 isAuthorized]) {
         [self checkin];
 	} else {
-        [Foursquare2 authorizeWithCallback:^(BOOL success, id result) {
-            if (success) {
+        [Foursquare2 authorizeWithCallback:^(BOOL firstSuccess, id firstResult) {
+            if (firstSuccess) {
 				[Foursquare2  userGetDetail:@"self"
-                                   callback:^(BOOL success, id result){
-                                       if (success) {
+                                   callback:^(BOOL secondSuccess, id secondResult){
+                                       if (secondSuccess) {
                                            [self updateRightBarButtonStatus];
                                            [self checkin];
                                        }

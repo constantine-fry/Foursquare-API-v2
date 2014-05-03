@@ -1277,30 +1277,30 @@ static NSMutableDictionary *attributes;
 
 + (NSString *)constructRequestUrlForMethod:(NSString *)methodName
                                     params:(NSDictionary *)paramMap {
-    NSMutableString *paramStr = [NSMutableString stringWithString: kFOURSQUARE_BASE_URL];
+    NSMutableString *parametersString = [NSMutableString stringWithString: kFOURSQUARE_BASE_URL];
     
-    [paramStr appendString:methodName];
+    [parametersString appendString:methodName];
     NSDictionary *dic = [self classAttributes];
     NSString *key = dic[kFOURSQUARE_CLIET_ID];
     NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
-	[paramStr appendFormat:@"?client_id=%@",key];
-    [paramStr appendFormat:@"&client_secret=%@",secret];
-    [paramStr appendFormat:@"&v=%@",FS2_API_VERSION];
+	[parametersString appendFormat:@"?client_id=%@",key];
+    [parametersString appendFormat:@"&client_secret=%@",secret];
+    [parametersString appendFormat:@"&v=%@",FS2_API_VERSION];
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
-    [paramStr appendFormat:@"&locale=%@",countryCode];
+    [parametersString appendFormat:@"&locale=%@",countryCode];
     
 	NSString *accessToken  = [self classAttributes][kFOURSQUARE_ACCESS_TOKEN];
 	if ([accessToken length] > 0)
-        [paramStr appendFormat:@"&oauth_token=%@",accessToken];
+        [parametersString appendFormat:@"&oauth_token=%@",accessToken];
 	
 	if(paramMap) {
 		NSEnumerator *enumerator = [paramMap keyEnumerator];
-		NSString *key;
+		NSString *enumerationKey;
         id value;
 		
-		while ((key = (NSString *)[enumerator nextObject])) {
-			value = paramMap[key];
+		while ((enumerationKey = (NSString *)[enumerator nextObject])) {
+			value = paramMap[enumerationKey];
 			//DLog(@"value: " @"%@", value);
 			
 			NSString *urlEncodedValue;
@@ -1313,11 +1313,11 @@ static NSMutableDictionary *attributes;
 			if(!urlEncodedValue) {
 				urlEncodedValue = @"";
 			}
-			[paramStr appendFormat:@"&%@=%@",key,urlEncodedValue];
+			[parametersString appendFormat:@"&%@=%@",enumerationKey,urlEncodedValue];
 		}
 	}
 	
-	return paramStr;
+	return parametersString;
 }
 
 
@@ -1530,12 +1530,12 @@ static NSMutableDictionary *attributes;
                                         clientSecret:secret
                                      completionBlock:^(NSString *authToken,
                                                        BOOL requestCompleted,
-                                                       FSOAuthErrorCode errorCode) {
-                                         if (errorCode == FSOAuthErrorNone) {
+                                                       FSOAuthErrorCode blockErrorCode) {
+                                         if (blockErrorCode == FSOAuthErrorNone) {
                                              [Foursquare2 setAccessToken:authToken];
                                              [self callAuthorizationCallbackWithError:nil];
                                          } else {
-                                             NSError *error = [self errorForCode:errorCode];
+                                             NSError *error = [self errorForCode:blockErrorCode];
                                              [self callAuthorizationCallbackWithError:error];
                                          }
                                      }];
