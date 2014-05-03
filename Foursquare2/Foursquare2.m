@@ -1598,7 +1598,8 @@ static NSMutableDictionary *attributes;
     }
     
     if ([rootViewController.presentedViewController isMemberOfClass:[UINavigationController class]]) {
-        UINavigationController *navigationController = (UINavigationController *)rootViewController.presentedViewController;
+        UINavigationController *navigationController =
+        (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *lastViewController = [[navigationController viewControllers] lastObject];
         return [self topViewController:lastViewController];
     }
