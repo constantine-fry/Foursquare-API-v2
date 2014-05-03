@@ -14,7 +14,7 @@
 
 //update this date to use up-to-date Foursquare API
 #ifndef FS2_API_VERSION
-#define FS2_API_VERSION (@"20131109")
+#define FS2_API_VERSION (@"20140503")
 #endif
 
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
