@@ -1473,6 +1473,8 @@ static NSMutableDictionary *attributes;
 
 
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
+    NSAssert([Foursquare2 sharedInstance].authorizationCallback == nil, @"Resetting callback that has not been called");
+
 	[Foursquare2 sharedInstance].authorizationCallback = [callback copy];
     
     if ([[Foursquare2 sharedInstance] nativeAuthorization]) {
@@ -1490,10 +1492,17 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)callAuthorizationCallbackWithError:(NSError *)error {
+    Foursquare2Callback callback = [Foursquare2 sharedInstance].authorizationCallback;
+    NSAssert(callback != nil, @"Authorization callback should not be possible without setting a callback");
+
     if ([Foursquare2 isAuthorized]) {
-        [Foursquare2 sharedInstance].authorizationCallback(YES, error);
+        if (callback) {
+            callback(YES, error);
+        }
     } else {
-        [Foursquare2 sharedInstance].authorizationCallback(NO, error);
+        if (callback) {
+            callback(NO, error);
+        }
     }
     [Foursquare2 sharedInstance].authorizationCallback = nil;
 }
