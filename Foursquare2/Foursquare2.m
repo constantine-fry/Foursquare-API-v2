@@ -27,6 +27,9 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
+NSString * const kFoursquare2NativeAuthErrorDomain = @"fs.native.auth";
+NSString * const kFoursquare2ErrorDomain = @"Foursquare2";
+
 @interface Foursquare2 () <FSWebLoginDelegate>
 
 @property (nonatomic, copy) Foursquare2Callback authorizationCallback;
@@ -1531,7 +1534,7 @@ static NSMutableDictionary *attributes;
 
 + (NSError *)errorForCode:(FSOAuthErrorCode)errorCode {
     NSString *msg = [self errorMessageForCode:errorCode];
-    NSError *error = [NSError errorWithDomain:@"fs.native.auth"
+    NSError *error = [NSError errorWithDomain:kFoursquare2NativeAuthErrorDomain
                                          code:-1
                                      userInfo:@{@"error":msg}];
     return error;

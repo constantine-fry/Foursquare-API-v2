@@ -7,6 +7,7 @@
 //
 
 #import "FSOperation.h"
+#import "Foursquare2.h"
 
 @interface FSOperation ()
 
@@ -55,7 +56,7 @@
             } else if ([result valueForKeyPath:@"meta.errorDetail"]) {
                 NSString *detail = [result valueForKeyPath:@"meta.errorDetail"];
                 NSDictionary *userInfo = @{NSLocalizedDescriptionKey:detail};
-                error = [NSError errorWithDomain:@"Foursquare2"
+                error = [NSError errorWithDomain:kFoursquare2ErrorDomain
                                             code:[result[@"meta"][@"code"] integerValue]
                                         userInfo:userInfo];
             }
