@@ -2,11 +2,12 @@
 
 __v1.4.5__
 
-* Add possibility to set queue for callbacks.
+* Add possibility to specify queue for callbacks.
 * Add method to get list detail (listGetDetail:callback:)
 * Add method to get menu for a venue (venueGetMenu:callback:)
 * Fix authorizeWithCallback: method to call back when user cancels web view authorization.
 * Fix crash in case of nil authorization callback
+* Remove depricated methods
 
 Thanks to @matehat @imownbey @mzsanford @rodericj @lschwe @ciryx
 
