@@ -17,7 +17,6 @@
 #define FS2_API_VERSION (@"20131109")
 #endif
 
-
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
 
 static NSString const * kFOURSQUARE_CLIET_ID = @"FOURSQUARE_CLIET_ID";
@@ -138,7 +137,6 @@ static NSMutableDictionary *attributes;
     return ([self classAttributes][kFOURSQUARE_ACCESS_TOKEN] != nil);
 }
 
-
 + (NSString *)stringFromArray:(NSArray *)array {
     if (array.count) {
         return [array componentsJoinedByString:@","];
@@ -185,7 +183,6 @@ static NSMutableDictionary *attributes;
 }
 
 #pragma mark Aspects
-
 
 + (NSOperation *)userGetBadges:(NSString *)userID
                       callback:(Foursquare2Callback)callback {
@@ -237,8 +234,6 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
-
-
 + (NSOperation *)userGetTips:(NSString *)userID
                        limit:(NSNumber *)limit
                       offset:(NSNumber *)offset
@@ -288,7 +283,6 @@ static NSMutableDictionary *attributes;
     NSString *path = [NSString stringWithFormat:@"users/%@/todos",userID];
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
-
 
 + (NSOperation *)userGetVenueHistory:(NSString *)userID
                                after:(NSDate *)after
@@ -385,8 +379,6 @@ static NSMutableDictionary *attributes;
     return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
-
-
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
 + (void)userUpdatePhoto:(NSImage *)image
                callback:(Foursquare2Callback)callback
@@ -419,7 +411,6 @@ static NSMutableDictionary *attributes;
     NSString *path = [NSString stringWithFormat:@"venues/%@",venueID];
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
-
 
 + (NSOperation *)venueAddWithName:(NSString *)name
                           address:(NSString *)address
@@ -757,7 +748,6 @@ static NSMutableDictionary *attributes;
     return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
-
 + (NSOperation *)venueProposeEdit:(NSString *)venueID
                              name:(NSString *)name
                           address:(NSString *)address
@@ -852,8 +842,6 @@ static NSMutableDictionary *attributes;
                               accuracyAlt:nil
                                  callback:callback];
 }
-
-
 
 + (NSOperation *)checkinAddAtVenue:(NSString *)venueID
                              event:(NSString *)eventID
@@ -980,13 +968,11 @@ static NSMutableDictionary *attributes;
 
 #pragma mark Tips
 
-
 + (NSOperation *)tipGetDetail:(NSString *)tipID
                      callback:(Foursquare2Callback)callback {
     NSString *path = [NSString stringWithFormat:@"tips/%@/",tipID];
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
-
 
 + (NSOperation *)tipAdd:(NSString *)tip
                forVenue:(NSString *)venueID
@@ -1037,7 +1023,6 @@ static NSMutableDictionary *attributes;
 }
 
 #pragma mark -
-
 
 #pragma mark Photos
 
@@ -1252,7 +1237,6 @@ static NSMutableDictionary *attributes;
     }
 }
 
-
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback {
@@ -1310,8 +1294,6 @@ static NSMutableDictionary *attributes;
     return [NSURL URLWithString:parametersString];
 }
 
-
-
 #pragma -
 
 + (Foursquare2 *)sharedInstance {
@@ -1358,7 +1340,6 @@ static NSMutableDictionary *attributes;
     return operation;
 }
 
-
 + (NSOperation *)    uploadPhoto:(NSString *)methodName
                   withParameters:(NSDictionary *)parameters
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
@@ -1373,7 +1354,6 @@ static NSMutableDictionary *attributes;
                                            withImage:image
                                             callback:callback];
 }
-
 
 - (NSOperation *)    uploadPhoto:(NSString *)methodName
                   withParameters:(NSDictionary *)parameters
@@ -1421,7 +1401,6 @@ static NSMutableDictionary *attributes;
     return operation;
 }
 
-
 #ifndef __MAC_OS_X_VERSION_MAX_ALLOWED
 
 - (BOOL)nativeAuthorization {
@@ -1449,7 +1428,6 @@ static NSMutableDictionary *attributes;
     UIViewController *controller = [self topViewController:keyWindow.rootViewController];
     [controller presentViewController:navigationController animated:YES completion:nil];
 }
-
 
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
     NSAssert([Foursquare2 sharedInstance].authorizationCallback == nil, @"Resetting callback that has not been called");
@@ -1586,7 +1564,6 @@ static NSMutableDictionary *attributes;
     UIViewController *presentedViewController = (UIViewController *)rootViewController.presentedViewController;
     return [self topViewController:presentedViewController];
 }
-
 
 #endif
 
