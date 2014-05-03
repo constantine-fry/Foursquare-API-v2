@@ -95,12 +95,13 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  End points coverage.
  Users 19 from 19.
- Venues 10 from 26.
+ Venues 11 from 26.
  Checkins 6 from 7.
  Photos 1 from 1
  Settings 2 from 2.
+ Lists 1 from 15.
  
- 38 covered endpoints.
+ 40 covered endpoints.
  */
 
 
