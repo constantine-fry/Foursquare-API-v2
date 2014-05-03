@@ -1463,8 +1463,7 @@ static NSMutableDictionary *attributes;
 	NSString *url = [NSString stringWithFormat:
                      @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
                      key,callbackURL];
-	FSWebLogin *loginViewControler = [[FSWebLogin alloc] initWithUrl:url
-                                               andDelegate:self];
+	FSWebLogin *loginViewControler = [[FSWebLogin alloc] initWithUrl:url andDelegate:self];
 	UINavigationController *navigationController = [[UINavigationController alloc]
                                                     initWithRootViewController:loginViewControler];
 	UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -1475,13 +1474,10 @@ static NSMutableDictionary *attributes;
 
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
     NSAssert([Foursquare2 sharedInstance].authorizationCallback == nil, @"Resetting callback that has not been called");
-
 	[Foursquare2 sharedInstance].authorizationCallback = [callback copy];
-    
     if ([[Foursquare2 sharedInstance] nativeAuthorization]) {
         return;
     }
-    
     [[Foursquare2 sharedInstance] webAuthorization];
 }
 
@@ -1509,51 +1505,53 @@ static NSMutableDictionary *attributes;
     NSDictionary *dic = [self classAttributes];
     NSString *callbackURL = dic[kFOURSQUARE_CALLBACK_URL];
     
-    if ([callbackURL hasPrefix:[url scheme]]) {
-        
-        BOOL isWebLoginURL = [url.absoluteString rangeOfString:@"#access_token"].length;
-        if (isWebLoginURL) {
-            NSArray *array = [url.absoluteString componentsSeparatedByString:@"="];
-            NSString *accessToken = array.lastObject;
-            [Foursquare2 setAccessToken:accessToken];
-            [self callAuthorizationCallbackWithError:nil];
-            return YES;
-        }
-        
-        //then  it's native oauth.
-        FSOAuthErrorCode errorCode;
-        NSString *code = [FSOAuthNoAppStore accessCodeForFSOAuthURL:url
-                                                    error:&errorCode];
-        if (errorCode == FSOAuthErrorNone) {
-            NSString *key = dic[kFOURSQUARE_CLIET_ID];
-            NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
-            [FSOAuthNoAppStore requestAccessTokenForCode:code
-                                      clientId:key
-                             callbackURIString:callbackURL
-                                  clientSecret:secret
-                               completionBlock:^(NSString *authToken, BOOL requestCompleted,
-                                                 FSOAuthErrorCode errorCode) {
-                                   if (errorCode  == FSOAuthErrorNone) {
-                                       [Foursquare2 setAccessToken:authToken];
-                                       [self callAuthorizationCallbackWithError:nil];
-                                   } else {
-                                       [self callAuthorizationCallbackWithError:[self errorForCode:errorCode]];
-                                   }
-                               }];
-            
-        } else {
-            [self callAuthorizationCallbackWithError:[self errorForCode:errorCode]];
-        }
+    if (![callbackURL hasPrefix:[url scheme]]) {
+        return NO;
+    }
+    
+    BOOL isWebLoginURL = [url.absoluteString rangeOfString:@"#access_token"].length;
+    if (isWebLoginURL) {
+        NSArray *array = [url.absoluteString componentsSeparatedByString:@"="];
+        NSString *accessToken = array.lastObject;
+        [Foursquare2 setAccessToken:accessToken];
+        [self callAuthorizationCallbackWithError:nil];
         return YES;
     }
-    return NO;
+    
+    //then it's native oauth.
+    FSOAuthErrorCode errorCode;
+    NSString *code = [FSOAuthNoAppStore accessCodeForFSOAuthURL:url error:&errorCode];
+    if (errorCode == FSOAuthErrorNone) {
+        NSString *key = dic[kFOURSQUARE_CLIET_ID];
+        NSString *secret = dic[kFOURSQUARE_OAUTH_SECRET];
+        [FSOAuthNoAppStore requestAccessTokenForCode:code
+                                            clientId:key
+                                   callbackURIString:callbackURL
+                                        clientSecret:secret
+                                     completionBlock:^(NSString *authToken,
+                                                       BOOL requestCompleted,
+                                                       FSOAuthErrorCode errorCode) {
+                                         if (errorCode == FSOAuthErrorNone) {
+                                             [Foursquare2 setAccessToken:authToken];
+                                             [self callAuthorizationCallbackWithError:nil];
+                                         } else {
+                                             NSError *error = [self errorForCode:errorCode];
+                                             [self callAuthorizationCallbackWithError:error];
+                                         }
+                                     }];
+        
+    } else {
+        NSError *error = [self errorForCode:errorCode];
+        [self callAuthorizationCallbackWithError:error];
+    }
+    return YES;
 }
 
 + (NSError *)errorForCode:(FSOAuthErrorCode)errorCode {
-    NSString *msg = [self errorMessageForCode:errorCode];
+    NSString *message = [self errorMessageForCode:errorCode];
     NSError *error = [NSError errorWithDomain:kFoursquare2NativeAuthErrorDomain
-                                         code:-1
-                                     userInfo:@{@"error":msg}];
+                                         code:errorCode
+                                     userInfo:@{NSLocalizedFailureReasonErrorKey:message}];
     return error;
 }
 
@@ -1573,20 +1571,20 @@ static NSMutableDictionary *attributes;
             break;
         }
         case FSOAuthErrorInvalidRequest: {
-            resultText =  @"Invalid request error";
+            resultText = @"Invalid request error";
             break;
         }
         case FSOAuthErrorUnauthorizedClient: {
-            resultText =  @"Invalid unauthorized client error";
+            resultText = @"Invalid unauthorized client error";
             break;
         }
         case FSOAuthErrorUnsupportedGrantType: {
-            resultText =  @"Invalid unsupported grant error";
+            resultText = @"Invalid unsupported grant error";
             break;
         }
         case FSOAuthErrorUnknown:
         default: {
-            resultText =  @"Unknown error";
+            resultText = @"Unknown error";
             break;
         }
     }
