@@ -123,6 +123,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Authorize user with native foursquare if this application exist on his device, otherwise open in-app web dialog.
+ Method returns error if user cancels authorization.
  */
 + (void)authorizeWithCallback:(Foursquare2Callback)callback;
 
