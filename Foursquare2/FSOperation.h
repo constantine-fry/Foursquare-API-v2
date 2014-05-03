@@ -13,6 +13,7 @@ typedef void(^Foursquare2Callback)(BOOL success, id result);
 @interface FSOperation : NSOperation
 
 - (id)initWithRequest:(NSURLRequest *)request
-             callback:(Foursquare2Callback)block;
+             callback:(Foursquare2Callback)block
+        callbackQueue:(dispatch_queue_t)callbackQueue;
 
 @end
