@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "Foursquare-API-v2"
   s.version      = "1.4.5"
-  s.summary      = "Objective-C Foursquare API v2. With native authorisation now."
+  s.summary      = "Objective-C Foursquare API v2"
   s.homepage     = "https://github.com/Constantine-Fry/Foursquare-API-v2"
   s.screenshots  = "https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/photo2.PNG"
   s.license      = 'MIT'
