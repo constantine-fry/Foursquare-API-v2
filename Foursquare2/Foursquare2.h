@@ -117,7 +117,6 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Returns the dispatch queue in which request callbacks are called.
  */
- 
 + (dispatch_queue_t)callbackQueue;
  
 /**

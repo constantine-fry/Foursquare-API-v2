@@ -74,6 +74,7 @@ static NSMutableDictionary *attributes;
 + (void)setCallbackQueue:(dispatch_queue_t)callbackQueue {
     [self sharedInstance].callbackQueue = callbackQueue;
 }
+
 + (dispatch_queue_t)callbackQueue {
     return [self sharedInstance].callbackQueue;
 }
