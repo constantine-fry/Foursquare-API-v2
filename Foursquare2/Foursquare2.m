@@ -1337,8 +1337,8 @@ static NSMutableDictionary *attributes;
 - (id)init {
     self = [super init];
     if (self) {
-        self.operationQueue = [[NSOperationQueue alloc] init];
-        self.operationQueue.maxConcurrentOperationCount = 7;
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.maxConcurrentOperationCount = 7;
         _callbackQueue = dispatch_get_main_queue();
     }
     return self;
