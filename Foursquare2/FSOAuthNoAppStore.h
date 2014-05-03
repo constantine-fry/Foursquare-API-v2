@@ -53,9 +53,6 @@ typedef void (^FSTokenRequestCompletionBlock)(NSString *authToken, BOOL requestC
  
  @param clientID Your app's Foursquare clientID ( see http://foursquare.com/developers/apps )
  @param callbackURIString Your app's callback ( must be registered as a Redirect URI with Foursquare, see http://foursquare.com/developers/apps )
- @param allowShowingAppStore If YES and Foursquare is not installed or the installed version is outdated,
-                             it will launch into the app store (or open an app store modal sheet if running on iOS 6 or later)
-                             in addition to returning FSOAuthStatusErrorFoursquareNotInstalled or FSOAuthStatusErrorFoursquareOAuthNotSupported.
  @return Success or one of several failure codes. See enum definition above
  */
 + (FSOAuthStatusCode)authorizeUserUsingClientId:(NSString *)clientID

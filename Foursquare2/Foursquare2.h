@@ -50,17 +50,17 @@ typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
 
 
 /**
- @param intentCheckin Finds results that the current user is likely to check in to at the provided ll
+ intentCheckin Finds results that the current user is likely to check in to at the provided ll
  at the current moment in time.
  
- @param intentBrowse Find venues within a given area. Unlike the checkin intent, browse searches an entire
+ intentBrowse Find venues within a given area. Unlike the checkin intent, browse searches an entire
  region instead of only finding Venues closest to a point. You must define a region to search be including
  the ll and radius parameters
  
- @param intentGlobal Finds the most globally relevant venues for the search, independent of location.
+ intentGlobal Finds the most globally relevant venues for the search, independent of location.
  Ignores all other parameters other than query and limit.
  
- @param intentMatch Finds venues that are are nearly-exact matches for the given query and ll.
+ intentMatch Finds venues that are are nearly-exact matches for the given query and ll.
  This is helpful when trying to correlate an existing place database with foursquare's.
  */
 typedef NS_OPTIONS(NSUInteger, FoursquareIntentType) {
@@ -344,7 +344,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Sends a friend request to another user. If the other user is a page then the requesting user
  will automatically start following the page.
- @params userID required The user ID to which a request will be sent.
+ @param userID required The user ID to which a request will be sent.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field. A "user" object for pending user:
@@ -355,7 +355,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Unfriend user with userID.
- @params userID The user ID to unfriend.
+ @param userID The user ID to unfriend.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field.
@@ -366,7 +366,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Approve pending friend request.
- @param userId User ID to approve friendship.
+ @param userID User ID to approve friendship.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field. User object of approved user.
@@ -377,7 +377,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Deny pending friend reques.
- @param userId User ID to deny friendship.
+ @param userID User ID to deny friendship.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field. User object of denied user.
@@ -419,7 +419,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
     Get the venues on a list
-    @param string ID for the given list
+    @param listID ID for the given list
     @returns array of "listitems"
     https://developer.foursquare.com/docs/responses/item.html
  */
@@ -476,7 +476,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Returns a list of venues near the current location, optionally matching a search term. llAcc, alt, altAcc are not
  included because they do not currently affect search results.
- @parm query A search term to be applied against venue names.
+ @param query A search term to be applied against venue names.
  @param limit Number of results to return, up to 50.
  @discussion returns in callback block "venues" field. 
  @returns The instance of NSOperation already inqueued in internal operation queue.
@@ -517,10 +517,10 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Returns a list of minivenues near the current location, matching a required partial search term.
  llAcc, alt, altAcc are not included because they do not currently affect search results.
- @parm query A required search term of at least 3 characters to be applied against venue names.
+ @param query A required search term of at least 3 characters to be applied against venue names.
  @param limit Number of results to return, up to 100.
  @param radius Limit results to venues within this many meters of the specified location
- @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. 
+ @param s , w , n , e limits results to the bounding quadrangle defined by the latitude and longitude.
  see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
@@ -544,7 +544,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Returns a list of venues near the current location, optionally matching a search term
- @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. 
+ @param s , w , n , e limits results to the bounding quadrangle defined by the latitude and longitude.
  see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
  given by sw as its south-west corner, and ne as its north-east corner.
  @param query A search term to be applied against venue names.
@@ -576,7 +576,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Returns a list of recommended venues near the current location.
- @param latitude,longitude required unless near is provided. Latitude and longitude of the user's location.
+ @param latitude ,longitude required unless near is provided. Latitude and longitude of the user's location.
  @param near required unless lat and lon are provided. A string naming a place in the world.
  If the near string is not geocodable, returns a failed_geocode error.
  @param limit Number of results to return, up to 50.
@@ -768,7 +768,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Returns friends and a total count of users who have liked this checkin.
- @param The ID of the checkin to get likes for.
+ @param checkinID The ID of the checkin to get likes for.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "likes" field. A "count" and "groups" of users who like this checkin.
@@ -845,7 +845,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Returns a list of tips near the area specified.
- @param lat and lon required unless near is provided. Latitude and longitude of the user's location.
+ @param latitude and longitude required unless near is provided. Latitude and longitude of the user's location.
  @param near required unless lat and lon are provided. A string naming a place in the world.
  @param limit Number of result to return, up to 500.
  @param offset The number of results to skip. Used for paging.
