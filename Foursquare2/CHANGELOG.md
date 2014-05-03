@@ -2,6 +2,7 @@
 
 __v1.4.5__
 
+* Fix authorizeWithCallback: method to call back when user cancels web view authorization.
 * Add method to get list detail (listGetDetail:callback:)
 * Add method to get menu for a venue (venueGetMenu:callback:)
 
