@@ -163,7 +163,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param userID Valid user ID to get detail for. Pass "self" to get detail of the acting user.
  @returns The instance of NSOperation already inqueued in internal operation queue. 
  Callback will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "user" field. User detail for user with userID: https://developer.foursquare.com/docs/responses/user
+ @discussion returns in callback block "user" field. User detail for user with userID:
+ https://developer.foursquare.com/docs/responses/user
  */
 + (NSOperation *)userGetDetail:(NSString *)userID
                       callback:(Foursquare2Callback)callback;
@@ -172,7 +173,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "results" and "unmatched" fields. Where "results" is an array of compact user objects:
+ @discussion returns in callback block "results" and "unmatched" fields.
+ Where "results" is an array of compact user objects:
  https://developer.foursquare.com/docs/responses/user
  */
 + (NSOperation *)userSearchWithPhone:(NSArray *)phones
@@ -185,7 +187,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "requests" field. Array of compact user object: https://developer.foursquare.com/docs/responses/user
+ @discussion returns in callback block "requests" field. Array of compact user object:
+ https://developer.foursquare.com/docs/responses/user
  */
 + (NSOperation *)userGetFriendRequestsCallback:(Foursquare2Callback)callback;
 
@@ -254,7 +257,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param sort sortNearby requires latitude and longitude to be provided.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "tips" field. A count and items of tips: https://developer.foursquare.com/docs/responses/tip
+ @discussion returns in callback block "tips" field. A count and items of tips:
+ https://developer.foursquare.com/docs/responses/tip
  */
 + (NSOperation *)userGetTips:(NSString *)userID
                        limit:(NSNumber *)limit
@@ -270,7 +274,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param sort Only sortNearby and sortRecent are supported. sortNearby requires latitude and longitude to be provided.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "todos" field. A count and items of todos: https://developer.foursquare.com/docs/responses/todo
+ @discussion returns in callback block "todos" field. A count and items of todos:
+ https://developer.foursquare.com/docs/responses/todo
  */
 + (NSOperation *)userGetTodos:(NSString *)userID
                          sort:(FoursquareSortingType)sort
@@ -286,7 +291,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  sub-categories will also match the query.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "venues" field. A count and items of objects containing a beenHere count and venue compact venues:
+ @discussion returns in callback block "venues" field.
+ A count and items of objects containing a beenHere count and venue compact venues:
  https://developer.foursquare.com/docs/responses/venue
  */
 + (NSOperation *)userGetVenueHistory:(NSString *)userID
@@ -314,7 +320,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param userID Valid user ID to get mayorships for. Pass "self" to get mayorships of the acting user.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback "mayorships" field. A count and items of objects which currently only contain compact venue objects:
+ @discussion returns in callback "mayorships" field. 
+ A count and items of objects which currently only contain compact venue objects:
  https://developer.foursquare.com/docs/responses/venue
  */
 + (NSOperation *)userGetMayorships:(NSString *)userID
@@ -325,7 +332,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param userID For now, only self is supported.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "photos" field. A count and items of photos: https://developer.foursquare.com/docs/responses/photo
+ @discussion returns in callback block "photos" field. A count and items of photos:
+ https://developer.foursquare.com/docs/responses/photo
  */
 + (NSOperation *)userGetPhotos:(NSString *)userID
                          limit:(NSNumber *)limit
@@ -459,7 +467,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  Returns a hierarchical list of categories applied to venues.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "categories" field. An array of categories containing sub- and sub-sub-categories.
+ @discussion returns in callback block "categories" field.
+ An array of categories containing sub- and sub-sub-categories.
  https://developer.foursquare.com/docs/responses/category
  */
 + (NSOperation *)venueGetCategoriesCallback:(Foursquare2Callback)callback;
@@ -486,11 +495,13 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Returns a list of venues near the specified location, optionally matching a search term.
  
- @param location   A string naming a place in the world. If the near string is not geocodable, returns a failed_geocode error.
+ @param location   A string naming a place in the world. 
+ If the near string is not geocodable, returns a failed_geocode error.
  @param query      A search term to be applied against venue names.
  @param limit      Number of results to return, up to 50.
  @param intent     A value defined by FoursquareIntentType.
- @param radius     Limit results to venues within this many meters of the specified location. Defaults to a city-wide area.
+ @param radius     Limit results to venues within this many meters of the specified location.
+ Defaults to a city-wide area.
  @discussion returns in callback block "venues" field.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
@@ -504,8 +515,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
                               categoryId:(NSString *)categoryId
                                 callback:(Foursquare2Callback)callback;
 /**
- Returns a list of minivenues near the current location, matching a required partial search term. llAcc, alt, altAcc are not
- included because they do not currently affect search results.
+ Returns a list of minivenues near the current location, matching a required partial search term.
+ llAcc, alt, altAcc are not included because they do not currently affect search results.
  @parm query A required search term of at least 3 characters to be applied against venue names.
  @param limit Number of results to return, up to 100.
  @param radius Limit results to venues within this many meters of the specified location
@@ -533,7 +544,8 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Returns a list of venues near the current location, optionally matching a search term
- @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
+ @param s,w,n,e limits results to the bounding quadrangle defined by the latitude and longitude. 
+ see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
  given by sw as its south-west corner, and ne as its north-east corner.
  @param query A search term to be applied against venue names.
  @param limit Number of results to return, up to 50.
