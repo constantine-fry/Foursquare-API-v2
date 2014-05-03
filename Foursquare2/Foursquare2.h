@@ -16,36 +16,36 @@
 
 
 typedef NS_OPTIONS(NSUInteger, FoursquareSortingType) {
-	sortRecent,
-	sortNearby,
-	sortPopular,
+    sortRecent,
+    sortNearby,
+    sortPopular,
     sortFriends
 };
 
 typedef NS_OPTIONS(NSUInteger, FoursquareProblemType) {
-	problemMislocated,
-	problemClosed,
-	problemDuplicate,
+    problemMislocated,
+    problemClosed,
+    problemDuplicate,
     problemInappropriate,
     problemDoesntExist,
     problemEventOver
 };
 
 typedef NS_OPTIONS(NSUInteger, FoursquareSettingName) {
-	FoursquareSettingNameSendMayorshipsToTwitter = 1,
+    FoursquareSettingNameSendMayorshipsToTwitter = 1,
     FoursquareSettingNameSendBadgesToTwitter,
-	FoursquareSettingNameSendMayorshipsToFacebook,
-	FoursquareSettingNameSendBadgesToFacebook,
-	FoursquareSettingNameReceivePings,
+    FoursquareSettingNameSendMayorshipsToFacebook,
+    FoursquareSettingNameSendBadgesToFacebook,
+    FoursquareSettingNameReceivePings,
     FoursquareSettingNameReceiveCommentPings
 };
 
 typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
-	broadcastPrivate    = 1 << 0,
+    broadcastPrivate    = 1 << 0,
     broadcastFollowers  = 1 << 1,
-	broadcastPublic     = 1 << 2,
-	broadcastFacebook   = 1 << 3,
-	broadcastTwitter    = 1 << 4
+    broadcastPublic     = 1 << 2,
+    broadcastFacebook   = 1 << 3,
+    broadcastTwitter    = 1 << 4
 };
 
 
@@ -64,21 +64,21 @@ typedef NS_OPTIONS(NSUInteger, FoursquareBroadcastType) {
  This is helpful when trying to correlate an existing place database with foursquare's.
  */
 typedef NS_OPTIONS(NSUInteger, FoursquareIntentType) {
-	intentCheckin,
-	intentBrowse,
-	intentGlobal,
-	intentMatch
+    intentCheckin,
+    intentBrowse,
+    intentGlobal,
+    intentMatch
 };
 
 typedef NS_OPTIONS(NSUInteger, FoursquareCheckinsSort) {
-	FoursquareCheckinsNewestFirst,
-	FoursquareCheckinsOldestFirst,
+    FoursquareCheckinsNewestFirst,
+    FoursquareCheckinsOldestFirst,
 };
 
 typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
     FoursquareListGroupNone,
-	FoursquareListGroupCreated,
-	FoursquareListGroupEdited,
+    FoursquareListGroupCreated,
+    FoursquareListGroupEdited,
     FoursquareListGroupFollowed,
     FoursquareListGroupFriends,
     FoursquareListGroupSuggested

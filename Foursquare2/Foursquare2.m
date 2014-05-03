@@ -87,13 +87,13 @@ static NSMutableDictionary *attributes;
     [self classAttributes][kFOURSQUARE_CALLBACK_URL] = callbackURL;
     
     //moving access token from NSUserDefault into keychain.
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *userDefaultsAccessToken = [userDefaults objectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	if (userDefaultsAccessToken != nil) {
+    if (userDefaultsAccessToken != nil) {
         [[FSKeychain sharedKeychain] saveAccessTokenInKeychain:userDefaultsAccessToken
                                                    forClientId:clientId];
         [userDefaults removeObjectForKey:@"FOURSQUARE_ACCESS_TOKEN"];
-	}
+    }
     
     NSString *accessToken = [[FSKeychain sharedKeychain] readAccessTokenFromKeychainWithClientId:clientId];
     if (accessToken != nil) {
@@ -125,7 +125,7 @@ static NSMutableDictionary *attributes;
 }
 
 + (void)removeAccessToken {
-	[[self classAttributes] removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
+    [[self classAttributes] removeObjectForKey:kFOURSQUARE_ACCESS_TOKEN];
     NSString *clientId = [self classAttributes][kFOURSQUARE_CLIET_ID];
     [[FSKeychain sharedKeychain] removeAccessTokenFromKeychainWithClientId:clientId];
 }
@@ -140,19 +140,19 @@ static NSMutableDictionary *attributes;
 
 
 + (NSString *)stringFromArray:(NSArray *)array {
-	if (array.count) {
+    if (array.count) {
         return [array componentsJoinedByString:@","];
     }
     return @"";
-	
+    
 }
 #pragma mark -
 #pragma mark Users
 
 + (NSOperation *)userGetDetail:(NSString *)userID
                       callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@",userID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@",userID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userSearchWithPhone:(NSArray *)phones
@@ -162,18 +162,18 @@ static NSMutableDictionary *attributes;
                          facebookIDs:(NSArray *)fbid
                                 name:(NSString *)name
                             callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	parameters[@"phone"] = [self stringFromArray:phones];
-	parameters[@"email"] = [self stringFromArray:emails];
-	parameters[@"twitter"] = [self stringFromArray:twitters];
-	if (twitterSource) {
-		parameters[@"twitterSource"] = twitterSource;
-	}
-	parameters[@"fbid"] = [self stringFromArray:fbid];
-	if (name) {
-		parameters[@"name"] = name;
-	}
-	return [self sendGetRequestWithPath:@"users/search" parameters:parameters callback:callback];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"phone"] = [self stringFromArray:phones];
+    parameters[@"email"] = [self stringFromArray:emails];
+    parameters[@"twitter"] = [self stringFromArray:twitters];
+    if (twitterSource) {
+        parameters[@"twitterSource"] = twitterSource;
+    }
+    parameters[@"fbid"] = [self stringFromArray:fbid];
+    if (name) {
+        parameters[@"name"] = name;
+    }
+    return [self sendGetRequestWithPath:@"users/search" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)userGetFriendRequestsCallback:(Foursquare2Callback)callback {
@@ -189,8 +189,8 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)userGetBadges:(NSString *)userID
                       callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/badges",userID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/badges",userID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userGetCheckins:(NSString *)userID
@@ -200,33 +200,33 @@ static NSMutableDictionary *attributes;
                            after:(NSDate *)after
                           before:(NSDate *)before
                         callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (sort == FoursquareCheckinsNewestFirst) {
         parameters[@"sort"] = @"newestfirst";
     } else if (sort == FoursquareCheckinsOldestFirst) {
         parameters[@"sort"] = @"oldestfirst";
     }
-	if (offset) {
-		parameters[@"offset"] = [offset stringValue];
-	}
+    if (offset) {
+        parameters[@"offset"] = [offset stringValue];
+    }
     if (limit) {
-		parameters[@"limit"] = [limit stringValue];
-	}
-	if (after) {
-		parameters[@"afterTimestamp"] = [self timeStampStringFromDate:after];
-	}
-	if (before) {
-		parameters[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
-	}
-	NSString *path = [NSString stringWithFormat:@"users/%@/checkins",userID];
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+        parameters[@"limit"] = [limit stringValue];
+    }
+    if (after) {
+        parameters[@"afterTimestamp"] = [self timeStampStringFromDate:after];
+    }
+    if (before) {
+        parameters[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
+    }
+    NSString *path = [NSString stringWithFormat:@"users/%@/checkins",userID];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)userGetFriends:(NSString *)userID
                           limit:(NSNumber *)limit
                          offset:(NSNumber *)offset
                        callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
+    NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (limit) {
         parameters[@"limit"] = [limit stringValue];
@@ -234,7 +234,7 @@ static NSMutableDictionary *attributes;
     if (offset) {
         parameters[@"offset"] = [offset stringValue];
     }
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 
@@ -248,9 +248,9 @@ static NSMutableDictionary *attributes;
                     callback:(Foursquare2Callback)callback {
     if (sort == sortNearby && (!latitude || !longitude)) {
         NSAssert(NO, @"Foursqure2 getTipsFromUser: Nearby requires geolat and geolong to be provided.");
-	}
+    }
     
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"sort"] = [self sortTypeToString:sort];
     if (limit) {
         parameters[@"limit"] = [limit stringValue];
@@ -259,11 +259,11 @@ static NSMutableDictionary *attributes;
         parameters[@"offset"] = [offset stringValue];
     }
     
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	NSString *path = [NSString stringWithFormat:@"users/%@/tips",userID];
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    NSString *path = [NSString stringWithFormat:@"users/%@/tips",userID];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)userGetTodos:(NSString *)userID
@@ -271,22 +271,22 @@ static NSMutableDictionary *attributes;
                      latitude:(NSNumber *)latitude
                     longitude:(NSNumber *)longitude
                      callback:(Foursquare2Callback)callback {
-	if (sort == sortNearby && (!latitude || !longitude)) {
+    if (sort == sortNearby && (!latitude || !longitude)) {
         NSAssert(NO, @"Foursqure2 getTodosFromUser: Nearby requires geolat and geolong to be provided.");
-	}
+    }
     
     if (sort == sortPopular) {
         NSAssert(NO, @"Foursqure2 getTodosFromUser: sortPopular is not supported in this method.");
-	}
+    }
     
-	
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"sort"] = [self sortTypeToString:sort];
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	NSString *path = [NSString stringWithFormat:@"users/%@/todos",userID];
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    NSString *path = [NSString stringWithFormat:@"users/%@/todos",userID];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 
@@ -295,18 +295,18 @@ static NSMutableDictionary *attributes;
                               before:(NSDate *)before
                           categoryID:(NSString *)categoryID
                             callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/venuehistory",userID];
+    NSString *path = [NSString stringWithFormat:@"users/%@/venuehistory",userID];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (after) {
-		parameters[@"afterTimestamp"] = [self timeStampStringFromDate:after];
-	}
-	if (before) {
-		parameters[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
-	}
+        parameters[@"afterTimestamp"] = [self timeStampStringFromDate:after];
+    }
+    if (before) {
+        parameters[@"beforeTimestamp"] = [self timeStampStringFromDate:before];
+    }
     if (categoryID) {
         parameters[@"categoryId"] = categoryID;
     }
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)userGetLists:(NSString *)userID
@@ -320,9 +320,9 @@ static NSMutableDictionary *attributes;
         parameters[@"group"] = [self listGroupTypeToString:groupType];
     }
     if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)userGetMayorships:(NSString *)userID
@@ -352,26 +352,26 @@ static NSMutableDictionary *attributes;
     if (!userID || !userID.length) {
         NSAssert(NO, @"Foursqure2 sendFriendRequestToUser: userID can't be nil or empty.");
     }
-	NSString *path = [NSString stringWithFormat:@"users/%@/request",userID];
-	return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/request",userID];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userUnfriend:(NSString *)userID
                      callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/unfriend",userID];
-	return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/unfriend",userID];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userApproveFriend:(NSString *)userID
                           callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/approve",userID];
-	return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/approve",userID];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userDenyFriend:(NSString *)userID
                        callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"users/%@/deny",userID];
-	return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/deny",userID];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)userSetPings:(BOOL)value
@@ -380,9 +380,9 @@ static NSMutableDictionary *attributes;
     if (!userID || !userID.length) {
         NSAssert(NO, @"Foursqure2 setPings: userID can't be nil or empty.");
     }
-	NSString *path = [NSString stringWithFormat:@"users/%@/setpings",userID];
-	NSDictionary *parameters = @{@"value":(value?@"true":@"false")};
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    NSString *path = [NSString stringWithFormat:@"users/%@/setpings",userID];
+    NSDictionary *parameters = @{@"value":(value?@"true":@"false")};
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 
@@ -416,8 +416,8 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)venueGetDetail:(NSString *)venueID
                        callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"venues/%@",venueID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"venues/%@",venueID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 
@@ -438,45 +438,45 @@ static NSMutableDictionary *attributes;
         NSAssert(NO, @"Forusquare2 venueAddWithName: name, latitude, longitude are required parameters.");
     }
     
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (name) {
-		parameters[@"name"] = name;
-	}
-	if (address) {
-		parameters[@"address"] = address;
-	}
-	if (crossStreet) {
-		parameters[@"crossStreet"] = crossStreet;
-	}
-	if (city) {
-		parameters[@"city"] = city;
-	}
-	if (state) {
-		parameters[@"state"] = state;
-	}
-	if (zip) {
-		parameters[@"zip"] = zip;
-	}
-	if (phone) {
-		parameters[@"phone"] = phone;
-	}
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (name) {
+        parameters[@"name"] = name;
+    }
+    if (address) {
+        parameters[@"address"] = address;
+    }
+    if (crossStreet) {
+        parameters[@"crossStreet"] = crossStreet;
+    }
+    if (city) {
+        parameters[@"city"] = city;
+    }
+    if (state) {
+        parameters[@"state"] = state;
+    }
+    if (zip) {
+        parameters[@"zip"] = zip;
+    }
+    if (phone) {
+        parameters[@"phone"] = phone;
+    }
     if (twitter) {
         parameters[@"twitter"] = twitter;
     }
     if (description) {
         parameters[@"description"] = description;
     }
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@", latitude, longitude];
-	}
-	if (primaryCategoryId) {
-		parameters[@"primaryCategoryId"] = primaryCategoryId;
-	}
-	return [self sendPostRequestWithPath:@"venues/add" parameters:parameters callback:callback];
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@", latitude, longitude];
+    }
+    if (primaryCategoryId) {
+        parameters[@"primaryCategoryId"] = primaryCategoryId;
+    }
+    return [self sendPostRequestWithPath:@"venues/add" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueGetCategoriesCallback:(Foursquare2Callback)callback {
-	return [self sendGetRequestWithPath:@"venues/categories" parameters:nil callback:callback];
+    return [self sendGetRequestWithPath:@"venues/categories" parameters:nil callback:callback];
 }
 
 + (NSOperation *)venueSearchNearByLatitude:(NSNumber *)latitude
@@ -487,26 +487,26 @@ static NSMutableDictionary *attributes;
                                     radius:(NSNumber *)radius
                                 categoryId:(NSString *)categoryId
                                   callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	if (query) {
-		parameters[@"query"] = query;
-	}
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
-	if (intent) {
-		parameters[@"intent"] = [self inentTypeToString:intent];
-	}
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    if (query) {
+        parameters[@"query"] = query;
+    }
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
+    if (intent) {
+        parameters[@"intent"] = [self inentTypeToString:intent];
+    }
     if (radius) {
-		parameters[@"radius"] = radius.stringValue;
-	}
+        parameters[@"radius"] = radius.stringValue;
+    }
     if (categoryId) {
         parameters[@"categoryId"] = categoryId;
     }
-	return [self sendGetRequestWithPath:@"venues/search" parameters:parameters callback:callback];
+    return [self sendGetRequestWithPath:@"venues/search" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueSearchNearLocation:(NSString *)location
@@ -516,7 +516,7 @@ static NSMutableDictionary *attributes;
                                   radius:(NSNumber *)radius
                               categoryId:(NSString *)categoryId
                                 callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (location) {
         parameters[@"near"] = location;
     }
@@ -554,27 +554,26 @@ static NSMutableDictionary *attributes;
                                          callback:(Foursquare2Callback)callback {
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
     if (near) {
         parameters[@"near"] = near;
     }
-	if (query) {
-		parameters[@"query"] = query;
-	}
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
+    if (query) {
+        parameters[@"query"] = query;
+    }
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
     if (radius) {
-		parameters[@"radius"] = radius.stringValue;
-	}
+        parameters[@"radius"] = radius.stringValue;
+    }
     if (s && w && n && e) {
-		parameters[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
+        parameters[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
         parameters[@"ne"] = [NSString stringWithFormat:@"%@,%@",n, e];
-	}
-	return [self sendGetRequestWithPath:@"venues/suggestcompletion" parameters:parameters callback:callback];
-    
+    }
+    return [self sendGetRequestWithPath:@"venues/suggestcompletion" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueSearchInBoundingQuadrangleS:(NSNumber *)s
@@ -584,20 +583,19 @@ static NSMutableDictionary *attributes;
                                             query:(NSString *)query
                                             limit:(NSNumber *)limit
                                          callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (s && w && n && e) {
-		parameters[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (s && w && n && e) {
+        parameters[@"sw"] = [NSString stringWithFormat:@"%@,%@",s, w];
         parameters[@"ne"] = [NSString stringWithFormat:@"%@,%@",n, e];
-	}
-	if (query) {
-		parameters[@"query"] = query;
-	}
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
+    }
+    if (query) {
+        parameters[@"query"] = query;
+    }
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
     parameters[@"intent"] = [self inentTypeToString:intentBrowse];
-    
-	return [self sendGetRequestWithPath:@"venues/search" parameters:parameters callback:callback];
+    return [self sendGetRequestWithPath:@"venues/search" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueTrendingNearByLatitude:(NSNumber *)latitude
@@ -608,17 +606,17 @@ static NSMutableDictionary *attributes;
     if (!latitude || !longitude) {
         NSAssert(NO, @"Foursqure2 venueTrendingNearByLatitude: latitude and longitude are required parameters.");
     }
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
     if (radius) {
-		parameters[@"radius"] = radius.stringValue;
-	}
-	return [self sendGetRequestWithPath:@"venues/trending" parameters:parameters callback:callback];
+        parameters[@"radius"] = radius.stringValue;
+    }
+    return [self sendGetRequestWithPath:@"venues/trending" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueExploreRecommendedNearByLatitude:(NSNumber *)latitude
@@ -638,37 +636,37 @@ static NSMutableDictionary *attributes;
                                            venuePhotos:(BOOL)venuePhotos
                                                  price:(NSString *)price
                                               callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (!near && !near.length && (!latitude && !longitude)) {
         NSAssert(NO, @"Foursqure2 venueExploreRecommendedNearByLatitude: near or ll are required parameters.");
     }
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
     if (near) {
         parameters[@"near"] = near;
     }
-	if (accuracyLL) {
-		parameters[@"llAcc"] = accuracyLL.stringValue;
-	}
-	if (altitude) {
-		parameters[@"alt"] = altitude.stringValue;
-	}
-	if (accuracyAlt) {
-		parameters[@"altAcc"] = accuracyAlt.stringValue;
-	}
-	if (query) {
-		parameters[@"query"] = query;
-	}
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
+    if (accuracyLL) {
+        parameters[@"llAcc"] = accuracyLL.stringValue;
+    }
+    if (altitude) {
+        parameters[@"alt"] = altitude.stringValue;
+    }
+    if (accuracyAlt) {
+        parameters[@"altAcc"] = accuracyAlt.stringValue;
+    }
+    if (query) {
+        parameters[@"query"] = query;
+    }
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
     if (offset) {
         parameters[@"offset"] = offset.stringValue;
     }
     if (radius) {
-		parameters[@"radius"] = radius.stringValue;
-	}
+        parameters[@"radius"] = radius.stringValue;
+    }
     if (novelty) {
         parameters[@"novelty"] = novelty;
     }
@@ -682,12 +680,12 @@ static NSMutableDictionary *attributes;
         parameters[@"section"] = section;
     }
     if (venuePhotos) {
-		parameters[@"venuePhotos"] = @(venuePhotos);
-	}
+        parameters[@"venuePhotos"] = @(venuePhotos);
+    }
     if (price) {
         parameters[@"price"] = price;
     }
-	return [self sendGetRequestWithPath:@"venues/explore" parameters:parameters callback:callback];
+    return [self sendGetRequestWithPath:@"venues/explore" parameters:parameters callback:callback];
 }
 
 #pragma mark Aspects
@@ -696,23 +694,23 @@ static NSMutableDictionary *attributes;
                           offset:(NSString *)offset
                   afterTimestamp:(NSString *)afterTimestamp
                         callback:(Foursquare2Callback)callback {
-	if(!venueID || !venueID.length){
+    if(!venueID || !venueID.length){
         NSAssert(NO, @"Foursquare2 venueGetHereNow: venueID is required parameter.");
-		return nil;
-	}
-	
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (limit) {
-		parameters[@"limit"] = limit;
-	}
-	if (offset) {
-		parameters[@"offset"] = offset;
-	}
-	if (afterTimestamp) {
-		parameters[@"afterTimestamp"] = afterTimestamp;
-	}
-	NSString *path = [NSString stringWithFormat:@"venues/%@/herenow",venueID];
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+        return nil;
+    }
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (limit) {
+        parameters[@"limit"] = limit;
+    }
+    if (offset) {
+        parameters[@"offset"] = offset;
+    }
+    if (afterTimestamp) {
+        parameters[@"afterTimestamp"] = afterTimestamp;
+    }
+    NSString *path = [NSString stringWithFormat:@"venues/%@/herenow",venueID];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueGetTips:(NSString *)venueID
@@ -720,28 +718,28 @@ static NSMutableDictionary *attributes;
                         limit:(NSNumber *)limit
                        offset:(NSNumber *)offset
                      callback:(Foursquare2Callback)callback {
-	if (!venueID || !venueID.length) {
-		NSAssert(NO, @"Foursqare2 venueGetTips: venueID is required parameter");
-	}
+    if (!venueID || !venueID.length) {
+        NSAssert(NO, @"Foursqare2 venueGetTips: venueID is required parameter");
+    }
     if (sort == sortNearby) {
         NSAssert(NO, @"Foursqare2 venueGetTips: sort can only be sortFriends, sortRecent, or sortPopular.");
     }
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	parameters[@"sort"] = [self sortTypeToString:sort];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"sort"] = [self sortTypeToString:sort];
     if (limit) {
         parameters[@"limit"] = limit.stringValue;
     }
     if (offset) {
         parameters[@"offset"] = offset.stringValue;
     }
-	NSString *path = [NSString stringWithFormat:@"venues/%@/tips",venueID];
-	return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+    NSString *path = [NSString stringWithFormat:@"venues/%@/tips",venueID];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueGetMenu:(NSString *)venueID
                      callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"venues/%@/menu",venueID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"venues/%@/menu",venueID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 #pragma mark Actions
@@ -750,13 +748,13 @@ static NSMutableDictionary *attributes;
                    problem:(FoursquareProblemType)problem
           duplicateVenueID:(NSString *)duplicateVenueID
                   callback:(Foursquare2Callback)callback {
-	if (!venueID || !venueID.length) {
+    if (!venueID || !venueID.length) {
         NSAssert(NO, @"Foursqure2 venueFlag: venueID is required parameter");
-	}
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	parameters[@"problem"] = [self problemTypeToString:problem];
-	NSString *path = [NSString stringWithFormat:@"venues/%@/flag",venueID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"problem"] = [self problemTypeToString:problem];
+    NSString *path = [NSString stringWithFormat:@"venues/%@/flag",venueID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 
@@ -774,37 +772,37 @@ static NSMutableDictionary *attributes;
                          callback:(Foursquare2Callback)callback {
     if (!venueID || !venueID.length) {
         NSAssert(NO, @"Foursqure2 proposeEditVenue: venueID is required parameter");
-	}
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (name) {
-		parameters[@"name"] = name;
-	}
-	if (address) {
-		parameters[@"address"] = address;
-	}
-	if (crossStreet) {
-		parameters[@"crossStreet"] = crossStreet;
-	}
-	if (city) {
-		parameters[@"city"] = city;
-	}
-	if (state) {
-		parameters[@"state"] = state;
-	}
-	if (zip) {
-		parameters[@"zip"] = zip;
-	}
-	if (phone) {
-		parameters[@"phone"] = phone;
-	}
-	if (lat && lon) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
-	}
-	if (primaryCategoryId) {
-		parameters[@"primaryCategoryId"] = primaryCategoryId;
-	}
-	NSString *path = [NSString stringWithFormat:@"venues/%@/proposeedit",venueID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (name) {
+        parameters[@"name"] = name;
+    }
+    if (address) {
+        parameters[@"address"] = address;
+    }
+    if (crossStreet) {
+        parameters[@"crossStreet"] = crossStreet;
+    }
+    if (city) {
+        parameters[@"city"] = city;
+    }
+    if (state) {
+        parameters[@"state"] = state;
+    }
+    if (zip) {
+        parameters[@"zip"] = zip;
+    }
+    if (phone) {
+        parameters[@"phone"] = phone;
+    }
+    if (lat && lon) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",lat,lon];
+    }
+    if (primaryCategoryId) {
+        parameters[@"primaryCategoryId"] = primaryCategoryId;
+    }
+    NSString *path = [NSString stringWithFormat:@"venues/%@/proposeedit",venueID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)venueGetPhotos:(NSString *)venueID
@@ -835,8 +833,8 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)checkinGetDetail:(NSString *)checkinID
                          callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"checkins/%@",checkinID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"checkins/%@",checkinID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 + (NSOperation *)checkinAddAtVenue:(NSString *)venueID
@@ -867,33 +865,33 @@ static NSMutableDictionary *attributes;
                           altitude:(NSNumber *)altitude
                        accuracyAlt:(NSNumber *)accuracyAlt
                           callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (venueID) {
-		parameters[@"venueId"] = venueID;
-	} else {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (venueID) {
+        parameters[@"venueId"] = venueID;
+    } else {
         NSAssert(NO, @"Foursqure2 checkinAddAtVenue: venueID is required.");
     }
-	if (eventID) {
-		parameters[@"eventId"] = eventID;
-	}
-	if (shout) {
-		parameters[@"shout"] = shout;
-	}
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	if (accuracyLL) {
-		parameters[@"llAcc"] = accuracyLL.stringValue;
-	}
-	if (altitude) {
-		parameters[@"alt"] = altitude.stringValue;
-	}
-	if (accuracyAlt) {
-		parameters[@"altAcc"] = accuracyAlt.stringValue;
-	}
-	
-	parameters[@"broadcast"] = [self broadcastTypeToString:broadcast];
-	return [self sendPostRequestWithPath:@"checkins/add" parameters:parameters callback:callback];
+    if (eventID) {
+        parameters[@"eventId"] = eventID;
+    }
+    if (shout) {
+        parameters[@"shout"] = shout;
+    }
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    if (accuracyLL) {
+        parameters[@"llAcc"] = accuracyLL.stringValue;
+    }
+    if (altitude) {
+        parameters[@"alt"] = altitude.stringValue;
+    }
+    if (accuracyAlt) {
+        parameters[@"altAcc"] = accuracyAlt.stringValue;
+    }
+    
+    parameters[@"broadcast"] = [self broadcastTypeToString:broadcast];
+    return [self sendPostRequestWithPath:@"checkins/add" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)checkinGetRecentsByFriends:(NSNumber *)latitude
@@ -901,18 +899,18 @@ static NSMutableDictionary *attributes;
                                       limit:(NSNumber *)limit
                              afterTimestamp:(NSString *)afterTimestamp
                                    callback:(Foursquare2Callback)callback {
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
-	if (afterTimestamp) {
-		parameters[@"afterTimestamp"] = afterTimestamp;
-	}
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	
-	return [self sendGetRequestWithPath:@"checkins/recent" parameters:parameters callback:callback];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
+    if (afterTimestamp) {
+        parameters[@"afterTimestamp"] = afterTimestamp;
+    }
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    
+    return [self sendGetRequestWithPath:@"checkins/recent" parameters:parameters callback:callback];
 }
 
 #pragma mark Aspects
@@ -923,11 +921,11 @@ static NSMutableDictionary *attributes;
         NSAssert(NO, @"Foursqure2 checkinGetLikes: checkinID is required.");
     }
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (checkinID) {
-		parameters[@"checkinId"] = checkinID;
-	}
-	NSString *path = [NSString stringWithFormat:@"checkins/%@/likes",checkinID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    if (checkinID) {
+        parameters[@"checkinId"] = checkinID;
+    }
+    NSString *path = [NSString stringWithFormat:@"checkins/%@/likes",checkinID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 #pragma -
@@ -936,31 +934,31 @@ static NSMutableDictionary *attributes;
 + (NSOperation *)checkinAddComment:(NSString *)checkinID
                               text:(NSString *)text
                           callback:(Foursquare2Callback)callback {
-	if (nil == checkinID) {
-		callback(NO, nil);
-		return nil;
-	}
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (text) {
-		parameters[@"text"] = text;
-	}
-	NSString *path = [NSString stringWithFormat:@"checkins/%@/addcomment",checkinID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    if (nil == checkinID) {
+        callback(NO, nil);
+        return nil;
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (text) {
+        parameters[@"text"] = text;
+    }
+    NSString *path = [NSString stringWithFormat:@"checkins/%@/addcomment",checkinID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)checkinDeleteComment:(NSString *)commentID
                            forCheckin:(NSString *)checkinID
                              callback:(Foursquare2Callback)callback {
-	if (nil == checkinID) {
-		callback(NO, nil);
-		return nil;
-	}
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (commentID) {
-		parameters[@"commentId"] = commentID;
-	}
-	NSString *path = [NSString stringWithFormat:@"checkins/%@/deletecomment",checkinID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    if (nil == checkinID) {
+        callback(NO, nil);
+        return nil;
+    }
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (commentID) {
+        parameters[@"commentId"] = commentID;
+    }
+    NSString *path = [NSString stringWithFormat:@"checkins/%@/deletecomment",checkinID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 + (NSOperation *)checkinLike:(NSString *)checkinID
@@ -970,12 +968,12 @@ static NSMutableDictionary *attributes;
         NSAssert(NO, @"Foursqure2 checkinLike: checkinID is required.");
     }
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	if (checkinID) {
-		parameters[@"checkinId"] = checkinID;
-	}
+    if (checkinID) {
+        parameters[@"checkinId"] = checkinID;
+    }
     parameters[@"set"] = like?@"1":@"0";
-	NSString *path = [NSString stringWithFormat:@"checkins/%@/like",checkinID];
-	return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+    NSString *path = [NSString stringWithFormat:@"checkins/%@/like",checkinID];
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
 #pragma mark -
@@ -985,8 +983,8 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)tipGetDetail:(NSString *)tipID
                      callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"tips/%@/",tipID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"tips/%@/",tipID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 
@@ -994,16 +992,16 @@ static NSMutableDictionary *attributes;
                forVenue:(NSString *)venueID
                 withURL:(NSString *)url
                callback:(Foursquare2Callback)callback {
-	if (!venueID || !tip) {
-		NSAssert(NO, @"Foursqure2 tipAdd: tip and venueID are required parameters.");
-	}
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-	parameters[@"venueId"] = venueID;
-	parameters[@"text"] = tip;
-	if(url) {
-		parameters[@"url"] = url;
+    if (!venueID || !tip) {
+        NSAssert(NO, @"Foursqure2 tipAdd: tip and venueID are required parameters.");
     }
-	return [self sendPostRequestWithPath:@"tips/add" parameters:parameters callback:callback];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"venueId"] = venueID;
+    parameters[@"text"] = tip;
+    if(url) {
+        parameters[@"url"] = url;
+    }
+    return [self sendPostRequestWithPath:@"tips/add" parameters:parameters callback:callback];
 }
 
 + (NSOperation *)tipSearchNearbyLatitude:(NSNumber *)latitude
@@ -1017,25 +1015,25 @@ static NSMutableDictionary *attributes;
     if ((!latitude || !longitude)) {
         NSAssert(NO, @"Foursquare2 lat and lon are required parameters");
     }
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	if (limit) {
-		parameters[@"limit"] = limit.stringValue;
-	}
-	if (offset) {
-		parameters[@"offset"] = offset.stringValue;
-	}
+    if (limit) {
+        parameters[@"limit"] = limit.stringValue;
+    }
+    if (offset) {
+        parameters[@"offset"] = offset.stringValue;
+    }
     if (near) {
         parameters[@"near"] = near;
     }
-	if (friendsOnly) {
-		parameters[@"filter"] = @"friends";
-	}
-	if (query) {
-		parameters[@"query"] = query;
-	}
-	
-	return [self sendGetRequestWithPath:@"tips/search" parameters:parameters callback:callback];
+    if (friendsOnly) {
+        parameters[@"filter"] = @"friends";
+    }
+    if (query) {
+        parameters[@"query"] = query;
+    }
+    
+    return [self sendGetRequestWithPath:@"tips/search" parameters:parameters callback:callback];
 }
 
 #pragma mark -
@@ -1045,8 +1043,8 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)photoGetDetail:(NSString *)photoID
                        callback:(Foursquare2Callback)callback {
-	NSString *path = [NSString stringWithFormat:@"photos/%@",photoID];
-	return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+    NSString *path = [NSString stringWithFormat:@"photos/%@",photoID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
@@ -1085,35 +1083,35 @@ static NSMutableDictionary *attributes;
                    altitude:(NSNumber *)altitude
                 accuracyAlt:(NSNumber *)accuracyAlt
                    callback:(Foursquare2Callback)callback {
-	if (!checkinID && !tipID && !venueID) {
-		callback(NO,nil);
-		return nil;
-	}
-	
-	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (!checkinID && !tipID && !venueID) {
+        callback(NO,nil);
+        return nil;
+    }
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"broadcast"] = [self broadcastTypeToString:broadcast];
-	if (latitude && longitude) {
-		parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
-	}
-	if (accuracyLL) {
-		parameters[@"llAcc"] = accuracyLL.stringValue;
-	}
-	if (altitude) {
-		parameters[@"alt"] = altitude.stringValue;
-	}
-	if (accuracyAlt) {
-		parameters[@"altAcc"] = accuracyAlt.stringValue;
-	}
-	if (checkinID) {
-		parameters[@"checkinId"] = checkinID;
-	}
-	if (tipID) {
-		parameters[@"tipId"] = tipID;
-	}
-	if (venueID) {
-		parameters[@"venueId"] = venueID;
-	}
-	return [self uploadPhoto:@"photos/add"
+    if (latitude && longitude) {
+        parameters[@"ll"] = [NSString stringWithFormat:@"%@,%@",latitude,longitude];
+    }
+    if (accuracyLL) {
+        parameters[@"llAcc"] = accuracyLL.stringValue;
+    }
+    if (altitude) {
+        parameters[@"alt"] = altitude.stringValue;
+    }
+    if (accuracyAlt) {
+        parameters[@"altAcc"] = accuracyAlt.stringValue;
+    }
+    if (checkinID) {
+        parameters[@"checkinId"] = checkinID;
+    }
+    if (tipID) {
+        parameters[@"tipId"] = tipID;
+    }
+    if (venueID) {
+        parameters[@"venueId"] = venueID;
+    }
+    return [self uploadPhoto:@"photos/add"
               withParameters:parameters
                    withImage:photo
                     callback:callback];
@@ -1124,7 +1122,7 @@ static NSMutableDictionary *attributes;
 #pragma mark Settings
 
 + (NSOperation *)settingsGetAllCallback:(Foursquare2Callback)callback {
-	return [self sendGetRequestWithPath:@"settings/all" parameters:nil callback:callback];
+    return [self sendGetRequestWithPath:@"settings/all" parameters:nil callback:callback];
 }
 
 + (NSOperation *)settingsSet:(FoursquareSettingName)settingName
@@ -1142,19 +1140,19 @@ static NSMutableDictionary *attributes;
 #pragma mark Private methods
 
 + (NSString *)inentTypeToString:(FoursquareIntentType)broadcast {
-	switch (broadcast) {
-		case intentBrowse:
-			return @"browse";
-		case intentCheckin:
-			return @"checkin";
-		case intentGlobal:
-			return @"global";
-		case intentMatch:
-			return @"match";
-		default:
-			return @"";
-	}
-	
+    switch (broadcast) {
+        case intentBrowse:
+            return @"browse";
+        case intentCheckin:
+            return @"checkin";
+        case intentGlobal:
+            return @"global";
+        case intentMatch:
+            return @"match";
+        default:
+            return @"";
+    }
+    
 }
 
 + (NSString *)foursquareSettingNameToString:(FoursquareSettingName)settingName {
@@ -1193,27 +1191,27 @@ static NSMutableDictionary *attributes;
     if (broadcast & broadcastTwitter) {
         [result addObject:@"twitter"];
     }
-	return [result componentsJoinedByString:@","];
+    return [result componentsJoinedByString:@","];
 }
 
 + (NSString *)problemTypeToString:(FoursquareProblemType)problem {
-	switch (problem) {
-		case problemClosed:
-			return @"closed";
-		case problemDuplicate:
-			return @"duplicate";
-		case problemMislocated:
-			return @"mislocated";
+    switch (problem) {
+        case problemClosed:
+            return @"closed";
+        case problemDuplicate:
+            return @"duplicate";
+        case problemMislocated:
+            return @"mislocated";
         case problemDoesntExist:
             return @"doesnt_exist";
         case problemEventOver:
             return @"event_over";
         case problemInappropriate:
             return @"inappropriate";
-		default:
-			return @"";
-	}
-	
+        default:
+            return @"";
+    }
+    
 }
 
 + (NSString *)timeStampStringFromDate:(NSDate *)date {
@@ -1221,50 +1219,50 @@ static NSMutableDictionary *attributes;
 }
 
 + (NSString *)sortTypeToString:(FoursquareSortingType)type {
-	switch (type) {
-		case sortNearby:
-			return @"nearby";
-		case sortPopular:
-			return @"popular";
-		case sortRecent:
-			return @"recent";
+    switch (type) {
+        case sortNearby:
+            return @"nearby";
+        case sortPopular:
+            return @"popular";
+        case sortRecent:
+            return @"recent";
         case sortFriends:
             return @"friends";
-		default:
-			return @"";
-	}
+        default:
+            return @"";
+    }
 }
 
 + (NSString *)listGroupTypeToString:(FoursquareListGroupType)type {
-	switch (type) {
-		case FoursquareListGroupNone:
-			return @"";
-		case FoursquareListGroupCreated:
-			return @"created";
-		case FoursquareListGroupEdited:
-			return @"edited";
-		case FoursquareListGroupFollowed:
-			return @"followed";
-		case FoursquareListGroupFriends:
-			return @"friends";
-		case FoursquareListGroupSuggested:
-			return @"suggested";
-		default:
-			return @"";
-	}
+    switch (type) {
+        case FoursquareListGroupNone:
+            return @"";
+        case FoursquareListGroupCreated:
+            return @"created";
+        case FoursquareListGroupEdited:
+            return @"edited";
+        case FoursquareListGroupFollowed:
+            return @"followed";
+        case FoursquareListGroupFriends:
+            return @"friends";
+        case FoursquareListGroupSuggested:
+            return @"suggested";
+        default:
+            return @"";
+    }
 }
 
 
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback {
-	return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"GET" callback:callback];
+    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"GET" callback:callback];
 }
 
 + (NSOperation *)sendPostRequestWithPath:(NSString *)path
                               parameters:(NSDictionary *)parameters
                                 callback:(Foursquare2Callback)callback {
-	return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"POST" callback:callback];
+    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"POST" callback:callback];
 }
 
 + (NSURL *)constructURLWithPath:(NSString *)path
@@ -1275,41 +1273,41 @@ static NSMutableDictionary *attributes;
     NSDictionary *classAttributes = [self classAttributes];
     NSString *key = classAttributes[kFOURSQUARE_CLIET_ID];
     NSString *secret = classAttributes[kFOURSQUARE_OAUTH_SECRET];
-	[parametersString appendFormat:@"?client_id=%@",key];
+    [parametersString appendFormat:@"?client_id=%@",key];
     [parametersString appendFormat:@"&client_secret=%@",secret];
     [parametersString appendFormat:@"&v=%@",FS2_API_VERSION];
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleLanguageCode];
     [parametersString appendFormat:@"&locale=%@",countryCode];
     
-	NSString *accessToken  = [self classAttributes][kFOURSQUARE_ACCESS_TOKEN];
-	if ([accessToken length] > 0)
+    NSString *accessToken  = [self classAttributes][kFOURSQUARE_ACCESS_TOKEN];
+    if ([accessToken length] > 0)
         [parametersString appendFormat:@"&oauth_token=%@",accessToken];
-	
-	if(parameters) {
-		NSEnumerator *enumerator = [parameters keyEnumerator];
-		NSString *enumerationKey;
+    
+    if(parameters) {
+        NSEnumerator *enumerator = [parameters keyEnumerator];
+        NSString *enumerationKey;
         id value;
-		
-		while ((enumerationKey = (NSString *)[enumerator nextObject])) {
-			value = parameters[enumerationKey];
-			//DLog(@"value: " @"%@", value);
-			
-			NSString *urlEncodedValue;
+        
+        while ((enumerationKey = (NSString *)[enumerator nextObject])) {
+            value = parameters[enumerationKey];
+            //DLog(@"value: " @"%@", value);
+            
+            NSString *urlEncodedValue;
             if ([value isKindOfClass:[NSNumber class]]) {
                 urlEncodedValue = [value stringValue];
             } else  {
                 urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             }
-			
-			if(!urlEncodedValue) {
-				urlEncodedValue = @"";
-			}
-			[parametersString appendFormat:@"&%@=%@",enumerationKey,urlEncodedValue];
-		}
-	}
-	
-	return [NSURL URLWithString:parametersString];
+            
+            if(!urlEncodedValue) {
+                urlEncodedValue = @"";
+            }
+            [parametersString appendFormat:@"&%@=%@",enumerationKey,urlEncodedValue];
+        }
+    }
+    
+    return [NSURL URLWithString:parametersString];
 }
 
 
@@ -1354,7 +1352,7 @@ static NSMutableDictionary *attributes;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = HTTPMethod;
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
-                                                         callback:callback 
+                                                         callback:callback
                                                     callbackQueue:self.callbackQueue];
     [self.operationQueue addOperation:operation];
     return operation;
@@ -1388,33 +1386,33 @@ static NSMutableDictionary *attributes;
     NSURL *URL = [Foursquare2 constructURLWithPath:methodName parameters:parameters];
     
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-	NSArray *reps = [image representations];
-	NSData *data = [NSBitmapImageRep representationOfImageRepsInArray:reps
+    NSArray *reps = [image representations];
+    NSData *data = [NSBitmapImageRep representationOfImageRepsInArray:reps
                                                             usingType:NSJPEGFileType
                                                            properties:nil];
 #else
-	NSData *data = UIImageJPEGRepresentation(image,1.0);
+    NSData *data = UIImageJPEGRepresentation(image,1.0);
 #endif
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL] ;
     request.HTTPMethod = @"POST";
     
     
-	NSString *boundary = @"0xKhTmLbOuNdArY";
-	NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil];
-	[request addValue:contentType forHTTPHeaderField:@"Content-Type"];
-	
-	
-	NSMutableData *body = [NSMutableData data];
-	[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    NSString *boundary = @"0xKhTmLbOuNdArY";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil];
+    [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+    
+    
+    NSMutableData *body = [NSMutableData data];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     NSData *stringData = [@"Content-Disposition: form-data;\
                           name=\"userfile\";\
                           filename=\"photo.jpg\"\r\n"
                           dataUsingEncoding:NSUTF8StringEncoding];
-	[body appendData:stringData];
-	[body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-	[body appendData:data];
-	[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-	[request setHTTPBody:body];
+    [body appendData:stringData];
+    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:data];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:body];
     
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
                                                          callback:callback
@@ -1441,21 +1439,21 @@ static NSMutableDictionary *attributes;
     NSDictionary *classAttributes = [Foursquare2 classAttributes];
     NSString *key = classAttributes[kFOURSQUARE_CLIET_ID];
     NSString *callbackURL = classAttributes[kFOURSQUARE_CALLBACK_URL];
-	NSString *url = [NSString stringWithFormat:
+    NSString *url = [NSString stringWithFormat:
                      @"https://foursquare.com/oauth2/authenticate?client_id=%@&response_type=token&redirect_uri=%@",
                      key,callbackURL];
-	FSWebLogin *loginViewControler = [[FSWebLogin alloc] initWithUrl:url andDelegate:self];
-	UINavigationController *navigationController = [[UINavigationController alloc]
+    FSWebLogin *loginViewControler = [[FSWebLogin alloc] initWithUrl:url andDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc]
                                                     initWithRootViewController:loginViewControler];
-	UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
     UIViewController *controller = [self topViewController:keyWindow.rootViewController];
-	[controller presentViewController:navigationController animated:YES completion:nil];
+    [controller presentViewController:navigationController animated:YES completion:nil];
 }
 
 
 + (void)authorizeWithCallback:(Foursquare2Callback)callback {
     NSAssert([Foursquare2 sharedInstance].authorizationCallback == nil, @"Resetting callback that has not been called");
-	[Foursquare2 sharedInstance].authorizationCallback = [callback copy];
+    [Foursquare2 sharedInstance].authorizationCallback = [callback copy];
     if ([[Foursquare2 sharedInstance] nativeAuthorization]) {
         return;
     }
