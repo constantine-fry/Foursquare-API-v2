@@ -403,6 +403,18 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
++ (NSOperation *)venueAddWithId:(NSString *)venueID
+                   toListWithId:(NSString *)listID
+                           text:(NSString *)text
+                       callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/additem", listID];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{@"venueId":venueID}];
+    if (text) {
+        params[@"text"] = text;
+    }
+    return [self sendPostRequestWithPath:path parameters:params callback:callback];
+}
+
 #pragma mark -
 #pragma mark Venues
 
