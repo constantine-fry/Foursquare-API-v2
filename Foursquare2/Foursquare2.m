@@ -407,6 +407,7 @@ static NSMutableDictionary *attributes;
                    toListWithId:(NSString *)listID
                            text:(NSString *)text
                        callback:(Foursquare2Callback)callback {
+    NSAssert(venueID, @"Must pass in a non-nil venueID");
     NSString *path = [NSString stringWithFormat:@"/lists/%@/additem", listID];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{@"venueId":venueID}];
     if (text) {
