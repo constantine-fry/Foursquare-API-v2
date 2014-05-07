@@ -427,7 +427,17 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
                       callback:(Foursquare2Callback)callback;
 
 
-
+/**
+ Add a venue to a list
+ @discussion returns in callback block a list item that was just added.
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ List item object that was created: https://developer.foursquare.com/docs/lists/additem
+ */
++ (NSOperation *)listAddVenueToListWithId:(NSString *)listID
+                   venueWithId:(NSString *)venueID
+                           text:(NSString *)text
+                       callback:(Foursquare2Callback)callback;
 
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 
