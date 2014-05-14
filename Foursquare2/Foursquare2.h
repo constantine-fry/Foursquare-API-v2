@@ -418,6 +418,17 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 #pragma mark ---------------------------- Lists -----------------------------------------------------------------------
 
 /**
+Add a new list given a set of params
+@discussion returns in callback block the list that was created
+https://developer.foursquare.com/docs/lists/add
+ */
++ (NSOperation *)listAddWithName:(NSString *)listName
+                     description:(NSString *)description
+                   collaborative:(BOOL)isCollaborative
+                         photoID:(NSString *)photoId
+                        callback:(Foursquare2Callback)callback;
+
+/**
  Get the venues on a list
  @param listID ID for the given list
  @returns array of "listitems"
@@ -425,7 +436,6 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  */
 + (NSOperation *)listGetDetail:(NSString *)listID
                       callback:(Foursquare2Callback)callback;
-
 
 /**
  Add a venue to a list

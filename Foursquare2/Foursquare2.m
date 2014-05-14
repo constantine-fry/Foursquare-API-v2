@@ -396,6 +396,27 @@ static NSMutableDictionary *attributes;
 
 #pragma mark -
 #pragma mark Lists
++ (NSOperation *)listAddWithName:(NSString *)listName
+                     description:(NSString *)description
+                   collaborative:(BOOL)isCollaborative
+                         photoID:(NSString *)photoId
+                        callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/add"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSAssert(listName, @"List must have a name");
+    [parameters setObject:listName forKey:@"name"];
+    
+    if (description) {
+        [parameters setObject:description forKey:@"description"];
+    }
+    if (isCollaborative) {
+        [parameters setObject:@(TRUE) forKey:@"collaborative"];
+    }
+    if (photoId) {
+        [parameters setObject:photoId forKey:@"photoId"];
+    }
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
 
 + (NSOperation *)listGetDetail:(NSString *)listID
                       callback:(Foursquare2Callback)callback {
