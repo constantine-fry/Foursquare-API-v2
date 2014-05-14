@@ -119,7 +119,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  Returns the dispatch queue in which request callbacks are called.
  */
 + (dispatch_queue_t)callbackQueue;
- 
+
 /**
  Setup Foursqare2 with clientId, secret and callbackURL.
  This parameters you can get on https://foursquare.com/developers/apps
@@ -161,7 +161,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  @param userID Valid user ID to get detail for. Pass "self" to get detail of the acting user.
- @returns The instance of NSOperation already inqueued in internal operation queue. 
+ @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field. User detail for user with userID:
  https://developer.foursquare.com/docs/responses/user
@@ -320,7 +320,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param userID Valid user ID to get mayorships for. Pass "self" to get mayorships of the acting user.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback "mayorships" field. 
+ @discussion returns in callback "mayorships" field.
  A count and items of objects which currently only contain compact venue objects:
  https://developer.foursquare.com/docs/responses/venue
  */
@@ -418,9 +418,9 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 #pragma mark ---------------------------- Lists -----------------------------------------------------------------------
 
 /**
- Add a new list given a set of params
- @discussion returns in callback block the list that was created
- https://developer.foursquare.com/docs/lists/add
+Add a new list given a set of params
+@discussion returns in callback block the list that was created
+https://developer.foursquare.com/docs/lists/add
  */
 + (NSOperation *)listAddWithName:(NSString *)listName
                      description:(NSString *)description
@@ -429,14 +429,13 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
                         callback:(Foursquare2Callback)callback;
 
 /**
-    Get the venues on a list
-    @param listID ID for the given list
-    @returns array of "listitems"
-    https://developer.foursquare.com/docs/responses/item.html
+ Get the venues on a list
+ @param listID ID for the given list
+ @returns array of "listitems"
+ https://developer.foursquare.com/docs/responses/item.html
  */
 + (NSOperation *)listGetDetail:(NSString *)listID
                       callback:(Foursquare2Callback)callback;
-
 
 /**
  Add a venue to a list
@@ -446,9 +445,9 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  List item object that was created: https://developer.foursquare.com/docs/lists/additem
  */
 + (NSOperation *)listAddVenueToListWithId:(NSString *)listID
-                   venueWithId:(NSString *)venueID
-                           text:(NSString *)text
-                       callback:(Foursquare2Callback)callback;
+                              venueWithId:(NSString *)venueID
+                                     text:(NSString *)text
+                                 callback:(Foursquare2Callback)callback;
 
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 
@@ -465,7 +464,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 
 /**
  Add new venue.
- @discussion returns in callback block "venue" field. 
+ @discussion returns in callback block "venue" field.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  Venue object that was created: https://developer.foursquare.com/docs/responses/venue
@@ -499,7 +498,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  included because they do not currently affect search results.
  @param query A search term to be applied against venue names.
  @param limit Number of results to return, up to 50.
- @discussion returns in callback block "venues" field. 
+ @discussion returns in callback block "venues" field.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  An array of compact venues:https://developer.foursquare.com/docs/responses/venue
@@ -516,7 +515,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 /**
  Returns a list of venues near the specified location, optionally matching a search term.
  
- @param location   A string naming a place in the world. 
+ @param location   A string naming a place in the world.
  If the near string is not geocodable, returns a failed_geocode error.
  @param query      A search term to be applied against venue names.
  @param limit      Number of results to return, up to 50.
@@ -545,7 +544,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  see https://github.com/Constantine-Fry/Foursquare-API-v2 Useful tips section for help.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "minivenues" field. 
+ @discussion returns in callback block "minivenues" field.
  An array of compact venues:https://developer.foursquare.com/docs/responses/venue
  */
 + (NSOperation *)venueSuggestCompletionByLatitude:(NSNumber *)latitude
@@ -572,7 +571,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param limit Number of results to return, up to 50.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "venues" field. 
+ @discussion returns in callback block "venues" field.
  An array of compact venues:https://developer.foursquare.com/docs/responses/venue
  */
 + (NSOperation *)venueSearchInBoundingQuadrangleS:(NSNumber *)s
@@ -650,7 +649,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param offset Used to page through results.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "tips" field. 
+ @discussion returns in callback block "tips" field.
  A count and items of tips: https://developer.foursquare.com/docs/responses/tip
  */
 + (NSOperation *)venueGetTips:(NSString *)venueID
@@ -894,7 +893,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param photoID required The ID of the photo to retrieve additional information for.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "photo" field. 
+ @discussion returns in callback block "photo" field.
  A complete photo object. https://developer.foursquare.com/docs/responses/photo
  */
 + (NSOperation *)photoGetDetail:(NSString *)photoID
@@ -908,7 +907,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
  @param checkinID the ID of a checkin owned by the user.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
- @discussion returns in callback block "photo" field. 
+ @discussion returns in callback block "photo" field.
  The photo that was just created. https://developer.foursquare.com/docs/responses/photo
  */
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
