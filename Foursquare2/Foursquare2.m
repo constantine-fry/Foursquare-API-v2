@@ -407,7 +407,7 @@ static NSMutableDictionary *attributes;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (name) {
-        [parameters setObject:description forKey:@"name"];
+        [parameters setObject:name forKey:@"name"];
     }
     if (description) {
         [parameters setObject:description forKey:@"description"];
