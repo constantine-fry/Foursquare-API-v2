@@ -418,6 +418,17 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 #pragma mark ---------------------------- Lists -----------------------------------------------------------------------
 
 /**
+ Update an list
+ @discussion returns a callback containing the list that is edited
+ https://developer.foursquare.com/docs/lists/update
+ */
++ (NSOperation *)listEditWithId:(NSString *)listId
+                           name:(NSString *)name
+                    description:(NSString *)description
+                  collaborative:(BOOL)collaborative
+                        photoId:(NSString *)photoId;
+
+/**
  Delete an item from a given list
  @discussion returns in callback a list containing the deleted item
  https://developer.foursquare.com/docs/lists/deleteitem

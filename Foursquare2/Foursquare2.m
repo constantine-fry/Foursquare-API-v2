@@ -396,6 +396,32 @@ static NSMutableDictionary *attributes;
 
 #pragma mark -
 #pragma mark Lists
+
++ (NSOperation *)listEditWithId:(NSString *)listId
+                           name:(NSString *)name
+                    description:(NSString *)description
+                  collaborative:(BOOL)isCollaborative
+                        photoId:(NSString *)photoId
+                       callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/%@/edit", listId];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    if (name) {
+        [parameters setObject:description forKey:@"name"];
+    }
+    if (description) {
+        [parameters setObject:description forKey:@"description"];
+    }
+    if (isCollaborative) {
+        [parameters setObject:@(TRUE) forKey:@"collaborative"];
+    }
+    if (photoId) {
+        [parameters setObject:photoId forKey:@"photoId"];
+    }
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
+
+
 + (NSOperation *)listDeleteItemWithId:(NSString *)itemId
                        fromListWithId:(NSString *)listId
                          callback:(Foursquare2Callback)callback {
@@ -411,7 +437,8 @@ static NSMutableDictionary *attributes;
                    collaborative:(BOOL)isCollaborative
                          photoID:(NSString *)photoId
                         callback:(Foursquare2Callback)callback {
-    NSString *path = [NSString stringWithFormat:@"lists/add"];
+
+    NSString *path = @"lists/add";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     NSAssert(listName, @"List must have a name");
     [parameters setObject:listName forKey:@"name"];
