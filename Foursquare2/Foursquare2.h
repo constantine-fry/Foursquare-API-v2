@@ -425,8 +425,9 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 + (NSOperation *)listEditWithId:(NSString *)listId
                            name:(NSString *)name
                     description:(NSString *)description
-                  collaborative:(BOOL)collaborative
-                        photoId:(NSString *)photoId;
+                  collaborative:(BOOL)isCollaborative
+                        photoId:(NSString *)photoId
+                       callback:(Foursquare2Callback)callback;
 
 /**
  Delete an item from a given list
