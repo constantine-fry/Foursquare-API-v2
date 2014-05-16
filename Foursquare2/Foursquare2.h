@@ -418,6 +418,15 @@ FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
 #pragma mark ---------------------------- Lists -----------------------------------------------------------------------
 
 /**
+ Delete an item from a given list
+ @discussion returns in callback a list containing the deleted item
+ https://developer.foursquare.com/docs/lists/deleteitem
+ */
++ (NSOperation *)listDeleteItemWithId:(NSString *)itemId
+                       fromListWithId:(NSString *)listId
+                             callback:(Foursquare2Callback)callback;
+
+/**
 Add a new list given a set of params
 @discussion returns in callback block the list that was created
 https://developer.foursquare.com/docs/lists/add

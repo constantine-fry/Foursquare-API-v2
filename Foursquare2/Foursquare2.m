@@ -396,6 +396,16 @@ static NSMutableDictionary *attributes;
 
 #pragma mark -
 #pragma mark Lists
++ (NSOperation *)listDeleteItemWithId:(NSString *)itemId
+                       fromListWithId:(NSString *)listId
+                         callback:(Foursquare2Callback)callback {
+    NSAssert(listId, @"ListId for deletion must not be nil");
+    NSAssert(itemId, @"itemId for deletion must not be nil");
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/deleteitem", listId];
+    NSDictionary *parameters = @{@"itemId":itemId};
+    return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
+}
+
 + (NSOperation *)listAddWithName:(NSString *)listName
                      description:(NSString *)description
                    collaborative:(BOOL)isCollaborative
