@@ -12,7 +12,7 @@
 @implementation FSConverter
 
 - (NSArray *)convertToObjects:(NSArray *)venues {
-    NSMutableArray *objects = [NSMutableArray arrayWithCapacity:venues];
+    NSMutableArray *objects = [NSMutableArray arrayWithCapacity:venues.count];
     for (NSDictionary *v  in venues) {
         FSVenue *ann = [[FSVenue alloc]init];
         ann.name = v[@"name"];
