@@ -431,12 +431,12 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
  @discussion returns a callback containing the list that is edited
  https://developer.foursquare.com/docs/lists/update
  */
-+ (NSOperation *)listEditWithId:(NSString *)listId
-                           name:(NSString *)name
-                    description:(NSString *)description
-                  collaborative:(BOOL)isCollaborative
-                        photoId:(NSString *)photoId
-                       callback:(Foursquare2Callback)callback;
++ (NSOperation *)listUpdateWithId:(NSString *)listId
+                             name:(NSString *)name
+                      description:(NSString *)description
+                    collaborative:(BOOL)isCollaborative
+                          photoId:(NSString *)photoId
+                         callback:(Foursquare2Callback)callback;
 
 /**
  Delete an item from a given list

@@ -393,12 +393,12 @@ static NSMutableDictionary *attributes;
 #pragma mark -
 #pragma mark Lists
 
-+ (NSOperation *)listEditWithId:(NSString *)listId
-                           name:(NSString *)name
-                    description:(NSString *)description
-                  collaborative:(BOOL)isCollaborative
-                        photoId:(NSString *)photoId
-                       callback:(Foursquare2Callback)callback {
++ (NSOperation *)listUpdateWithId:(NSString *)listId
+                             name:(NSString *)name
+                      description:(NSString *)description
+                    collaborative:(BOOL)isCollaborative
+                          photoId:(NSString *)photoId
+                         callback:(Foursquare2Callback)callback {
     NSString *path = [NSString stringWithFormat:@"lists/%@/update", listId];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
