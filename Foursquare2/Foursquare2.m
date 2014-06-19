@@ -403,7 +403,7 @@ static NSMutableDictionary *attributes;
                   collaborative:(BOOL)isCollaborative
                         photoId:(NSString *)photoId
                        callback:(Foursquare2Callback)callback {
-    NSString *path = [NSString stringWithFormat:@"lists/%@/edit", listId];
+    NSString *path = [NSString stringWithFormat:@"lists/%@/update", listId];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     if (name) {
