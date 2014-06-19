@@ -86,11 +86,20 @@ typedef NS_OPTIONS(NSUInteger, FoursquareListGroupType) {
 
 typedef NS_ENUM(NSInteger, Foursquare2Error) {
     Foursquare2ErrorUnknown = -1,
-    Foursquare2ErrorCancelled
+    Foursquare2ErrorCancelled,
+    Foursquare2ErrorUnauthorized = 401
 };
 
 FOUNDATION_EXPORT NSString * const kFoursquare2ErrorDomain;
 FOUNDATION_EXPORT NSString * const kFoursquare2NativeAuthErrorDomain;
+
+/**
+ This notification is posted when access token has been removed
+ in case of Foursquare2ErrorUnauthorized error from server.
+ The notification is not posted if you call @c removeAccessToken  manually.
+ Will be posted on main thread.
+ */
+FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
 
 /**
  End points coverage.

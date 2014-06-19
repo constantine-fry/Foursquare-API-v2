@@ -26,7 +26,8 @@ static NSString const * kFOURSQUARE_CALLBACK_URL = @"FOURSQUARE_CALLBACK_URL";
 static NSString const * kFOURSQUARE_ACCESS_TOKEN = @"FOURSQUARE_ACCESS_TOKEN";
 
 NSString * const kFoursquare2NativeAuthErrorDomain = @"fs.native.auth";
-NSString * const kFoursquare2ErrorDomain = @"Foursquare2";
+NSString * const kFoursquare2ErrorDomain = @"kFoursquare2ErrorDomain";
+NSString * const kFoursquare2DidRemoveAccessTokenNotification = @"kFoursquare2DidRemoveAccessTokenNotification";
 
 @interface Foursquare2 () <FSWebLoginDelegate>
 
@@ -42,11 +43,6 @@ NSString * const kFoursquare2ErrorDomain = @"Foursquare2";
 + (NSOperation *)sendPostRequestWithPath:(NSString *)path
                               parameters:(NSDictionary *)parameters
                                 callback:(Foursquare2Callback)callback;
-
-+ (NSOperation *)sendRequestWithPath:(NSString *)path
-                          parameters:(NSDictionary *)parameters
-                          HTTPMethod:(NSString *)HTTPMethod
-                            callback:(Foursquare2Callback)callback;
 
 + (NSOperation *)uploadPhoto:(NSString *)methodName
               withParameters:(NSDictionary *)parameters
@@ -1311,13 +1307,19 @@ static NSMutableDictionary *attributes;
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback {
-    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"GET" callback:callback];
+    return  [[Foursquare2 sharedInstance] sendRequestWithPath:path
+                                                   parameters:parameters
+                                                   HTTPMethod:@"GET"
+                                                     callback:callback];
 }
 
 + (NSOperation *)sendPostRequestWithPath:(NSString *)path
                               parameters:(NSDictionary *)parameters
                                 callback:(Foursquare2Callback)callback {
-    return [self sendRequestWithPath:path parameters:parameters HTTPMethod:@"POST" callback:callback];
+    return  [[Foursquare2 sharedInstance] sendRequestWithPath:path
+                                                   parameters:parameters
+                                                   HTTPMethod:@"POST"
+                                                     callback:callback];
 }
 
 + (NSURL *)constructURLWithPath:(NSString *)path
@@ -1387,16 +1389,6 @@ static NSMutableDictionary *attributes;
     return self;
 }
 
-+ (NSOperation *)sendRequestWithPath:(NSString *)path
-                          parameters:(NSDictionary *)parameters
-                          HTTPMethod:(NSString *)HTTPMethod
-                            callback:(Foursquare2Callback)callback {
-    return [[Foursquare2 sharedInstance] sendRequestWithPath:path
-                                                  parameters:parameters
-                                                  HTTPMethod:HTTPMethod
-                                                    callback:callback];
-}
-
 - (NSOperation *)sendRequestWithPath:(NSString *)path
                           parameters:(NSDictionary *)parameters
                           HTTPMethod:(NSString *)HTTPMethod
@@ -1404,8 +1396,25 @@ static NSMutableDictionary *attributes;
     NSURL *URL = [Foursquare2 constructURLWithPath:path parameters:parameters];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = HTTPMethod;
+    Foursquare2Callback block = ^(BOOL success, id result) {
+        if ([result isKindOfClass:[NSError class]]) {
+            NSError *error = (NSError *)result;
+            BOOL notAuthorizedError = ([error.domain isEqualToString:kFoursquare2ErrorDomain]
+                                       && error.code == Foursquare2ErrorUnauthorized);
+            if (notAuthorizedError && [self.class isAuthorized]) {
+                [Foursquare2.class removeAccessToken];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+                    [center postNotificationName:kFoursquare2DidRemoveAccessTokenNotification object:self];
+                });
+            }
+        }
+        if (callback) {
+            callback(success, result);
+        }
+    };
     FSOperation *operation = [[FSOperation alloc] initWithRequest:request
-                                                         callback:callback
+                                                         callback:block
                                                     callbackQueue:self.callbackQueue];
     [self.operationQueue addOperation:operation];
     return operation;
