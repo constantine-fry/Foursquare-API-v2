@@ -44,7 +44,8 @@
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [Foursquare2 photoAdd:[UIImage imageNamed:@"testimage@2x.png"]
+    NSData *data = UIImageJPEGRepresentation([UIImage imageNamed:@"testimage@2x.png"], 1.0);
+    [Foursquare2 photoAdd:data
                 toCheckin:self.checkin
                  callback:^(BOOL success, id result) {
                      if (success) {

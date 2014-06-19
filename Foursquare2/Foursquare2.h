@@ -13,8 +13,6 @@
 
 #import "FSOperation.h"
 
-
-
 typedef NS_OPTIONS(NSUInteger, FoursquareSortingType) {
     sortRecent,
     sortNearby,
@@ -405,22 +403,16 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
                     forFriend:(NSString *)userID
                      callback:(Foursquare2Callback)callback;
 
-
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (NSOperation *)userUpdatePhoto:(NSImage *)image
-                        callback:(Foursquare2Callback)callback;
-#else
 /**
  Updates the user's profile photo.
- @param image Photo under 100KB.
+ @param imageData Photo under 100KB.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "user" field. The current user object.
  https://developer.foursquare.com/docs/responses/user
  */
-+ (NSOperation *)userUpdatePhoto:(UIImage *)image
++ (NSOperation *)userUpdatePhoto:(NSData *)imageData
                         callback:(Foursquare2Callback)callback;
-#endif
 
 #pragma mark -
 
@@ -933,18 +925,14 @@ https://developer.foursquare.com/docs/lists/add
 
 /**
  Allows users to add a new photo to a checkin.
- @param photo photo to upload.
+ @param photoData photo to upload.
  @param checkinID the ID of a checkin owned by the user.
  @returns The instance of NSOperation already inqueued in internal operation queue.
  Callback block will not be called, if you send cancel message to the operation.
  @discussion returns in callback block "photo" field.
  The photo that was just created. https://developer.foursquare.com/docs/responses/photo
  */
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (NSOperation *)photoAdd:(NSImage *)photo
-#else
-+ (NSOperation *)photoAdd:(UIImage *)photo
-#endif
++ (NSOperation *)photoAdd:(NSData *)photoData
                 toCheckin:(NSString *)checkinID
                  callback:(Foursquare2Callback)callback;
 
@@ -952,7 +940,7 @@ https://developer.foursquare.com/docs/lists/add
 
 /**
  Allows users to add a new photo to a checkin, tip or venue.
- @param photo photo to upload.
+ @param photoData photo to upload.
  @param checkinID the ID of a checkin owned by the user.
  @param tipID the ID of a tip owned by the user.
  @param broadcast whether to broadcast this photo.
@@ -961,11 +949,7 @@ https://developer.foursquare.com/docs/lists/add
  @discussion returns in callback block "photo" field.
  The photo that was just created. https://developer.foursquare.com/docs/responses/photo
  */
-#ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
-+ (NSOperation *)photoAddTo:(NSImage *)photo
-#else
-+ (NSOperation *)photoAddTo:(UIImage *)photo
-#endif
++ (NSOperation *)photoAddTo:(NSData *)photoData
                     checkin:(NSString *)checkinID
                         tip:(NSString *)tipID
                       venue:(NSString *)venueID
