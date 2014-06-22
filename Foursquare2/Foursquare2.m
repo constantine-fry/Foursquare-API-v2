@@ -441,10 +441,10 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
-+ (NSOperation *)listAddVenueToListWithId:(NSString *)listID
-                              venueWithId:(NSString *)venueID
-                                     text:(NSString *)text
-                                 callback:(Foursquare2Callback)callback {
++ (NSOperation *)listAddVenueWithId:(NSString *)venueID
+                             listId:(NSString *)listID
+                               text:(NSString *)text
+                           callback:(Foursquare2Callback)callback {
     NSAssert(venueID, @"Must pass in a non-nil venueID");
     NSString *path = [NSString stringWithFormat:@"/lists/%@/additem", listID];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{@"venueId":venueID}];

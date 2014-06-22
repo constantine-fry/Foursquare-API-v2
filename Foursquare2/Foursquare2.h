@@ -106,7 +106,7 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
  Checkins 6 from 7.
  Photos 1 from 1
  Settings 2 from 2.
- Lists 1 from 15.
+ Lists 5 from 15.
  
  40 covered endpoints.
  */
@@ -466,10 +466,10 @@ https://developer.foursquare.com/docs/lists/add
  Callback block will not be called, if you send cancel message to the operation.
  List item object that was created: https://developer.foursquare.com/docs/lists/additem
  */
-+ (NSOperation *)listAddVenueToListWithId:(NSString *)listID
-                              venueWithId:(NSString *)venueID
-                                     text:(NSString *)text
-                                 callback:(Foursquare2Callback)callback;
++ (NSOperation *)listAddVenueWithId:(NSString *)venueID
+                             listId:(NSString *)listID
+                               text:(NSString *)text
+                           callback:(Foursquare2Callback)callback;
 
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 

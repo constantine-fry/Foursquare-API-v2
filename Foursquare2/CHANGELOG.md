@@ -1,5 +1,14 @@
 # Foursquare2 Changelog
 
+__v1.4.6__
+
+* Add endpoint for adding venue to a list (listAddVenueWithId:)
+* Add new method to create a list (listAddWithName:)
+* Add ability to delete venue from list (listDeleteItemWithId:)
+* Add ability to update a list's properties (listUpdateWithId:)
+* Clean keychain in case of error 401
+* Use NSData instead of UIUmage for photo uploadingq
+
 __v1.4.5__
 
 * Add possibility to specify queue for callbacks.
