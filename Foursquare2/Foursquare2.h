@@ -431,6 +431,15 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
                          callback:(Foursquare2Callback)callback;
 
 /**
+ Delete a list
+ @discussion returns a callback indicating success or failure
+
+ Not documented on the foursquare developer site
+ */
++ (NSOperation *)listDeleteWithId:(NSString *)listId
+                         callback:(Foursquare2Callback)callback;
+
+/**
  Delete an item from a given list
  @discussion returns in callback a list containing the deleted item
  https://developer.foursquare.com/docs/lists/deleteitem

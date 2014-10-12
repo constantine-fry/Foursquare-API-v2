@@ -377,6 +377,13 @@ static NSMutableDictionary *attributes;
 #pragma mark -
 #pragma mark Lists
 
++ (NSOperation *)listDeleteWithId:(NSString *)listId
+                         callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"lists/%@/delete", listId];
+
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+}
+
 + (NSOperation *)listUpdateWithId:(NSString *)listId
                              name:(NSString *)name
                       description:(NSString *)description
@@ -400,7 +407,6 @@ static NSMutableDictionary *attributes;
     }
     return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
-
 
 + (NSOperation *)listDeleteItemWithId:(NSString *)itemId
                        fromListWithId:(NSString *)listId
