@@ -460,6 +460,14 @@ static NSMutableDictionary *attributes;
     return [self sendPostRequestWithPath:path parameters:parameters callback:callback];
 }
 
++ (NSOperation *)listSuggestVenuesForListWithId:(NSString *)listID
+                           callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/suggestvenues", listID];
+    return [self sendGetRequestWithPath:path parameters:nil callback:callback];
+}
+
+
+
 #pragma mark -
 #pragma mark Venues
 
