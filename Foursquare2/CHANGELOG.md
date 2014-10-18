@@ -1,5 +1,10 @@
 # Foursquare2 Changelog
 
+__v1.4.7__
+
+* Added delete list method call. (listDeleteWithId:)
+* Added suggested venues for list method. (listSuggestVenuesForListWithId:)
+
 __v1.4.6__
 
 * Add endpoint for adding venue to a list (listAddVenueWithId:)
