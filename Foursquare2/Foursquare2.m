@@ -466,7 +466,13 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:nil callback:callback];
 }
 
-
++ (NSOperation *)listFollowListWithId:(NSString *)listID
+                               follow:(BOOL)follow
+                             callback:(Foursquare2Callback)callback {
+    NSString *method = follow ? @"follow" : @"unfollow";
+    NSString *path = [NSString stringWithFormat:@"/lists/%@/%@", listID, method];
+    return [self sendPostRequestWithPath:path parameters:nil callback:callback];
+}
 
 #pragma mark -
 #pragma mark Venues

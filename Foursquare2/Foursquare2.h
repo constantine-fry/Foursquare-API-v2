@@ -490,6 +490,17 @@ https://developer.foursquare.com/docs/lists/add
 + (NSOperation *)listSuggestVenuesForListWithId:(NSString *)listID
                                        callback:(Foursquare2Callback)callback;
 
+/**
+ Adds the current user as a follower of this list
+ @discussion
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ https://developer.foursquare.com/docs/lists/suggestvenues
+ */
++ (NSOperation *)listFollowListWithId:(NSString *)listID
+                               follow:(BOOL)follow
+                             callback:(Foursquare2Callback)callback;
+
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 
 /**
