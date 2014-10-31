@@ -32,10 +32,33 @@
     self.title = @"Nearby";
     self.tableView.tableHeaderView = self.mapView;
     self.tableView.tableFooterView = self.footer;
+    
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.locationManager.delegate = self;
-    [self.locationManager startUpdatingLocation];
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined ) {
+            [self.locationManager requestWhenInUseAuthorization];
+        } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse ||
+                   [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
+            [self.locationManager startUpdatingLocation];
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No athorization"
+                                                                message:@"Please, enable access to your location"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Open Settings", nil];
+            [alertView show];
+        }
+    } else {
+        [self.locationManager startUpdatingLocation];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }
 }
 
 - (void)updateRightBarButtonStatus {
@@ -115,7 +138,14 @@
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error {
+    NSLog(@"Location manager did fail with error %@", error);
     [self.locationManager stopUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [manager startUpdatingLocation];
+    }
 }
 
 #pragma mark - Table view data source
