@@ -38,11 +38,14 @@
     self.locationManager.delegate = self;
     if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined ) {
+            // We never ask for authorization. Let's request it.
             [self.locationManager requestWhenInUseAuthorization];
         } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse ||
                    [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
+            // We have authorization. Let's update location.
             [self.locationManager startUpdatingLocation];
         } else {
+            // If we are here we have no pormissions.
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No athorization"
                                                                 message:@"Please, enable access to your location"
                                                                delegate:self
@@ -51,6 +54,7 @@
             [alertView show];
         }
     } else {
+        // This is iOS 7 case.
         [self.locationManager startUpdatingLocation];
     }
 }
