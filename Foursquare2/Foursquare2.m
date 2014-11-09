@@ -292,7 +292,7 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)multiUserGetLists:(NSArray *)userIDs
                           callback:(Foursquare2Callback)callback {
-    
+    NSAssert([userIDs count] >= 5, @"Multi does not work with more than 5 methods at a time");
     NSString *path = @"multi?requests=/users/";
     NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists,/users/"];
     path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists"];
