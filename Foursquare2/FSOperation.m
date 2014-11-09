@@ -36,7 +36,7 @@
     NSError *error;
     id result;
     
-    NSURLResponse *response;
+    NSHTTPURLResponse *response;
     
     if ([self isCancelled]) {
         return;
@@ -63,6 +63,15 @@
                 error = [NSError errorWithDomain:kFoursquare2ErrorDomain
                                             code:[result[@"meta"][@"code"] integerValue]
                                         userInfo:userInfo];
+            }
+            
+            if ([[response allHeaderFields] objectForKey:@"X-RateLimit-Limit"] && [[response allHeaderFields] objectForKey:@"X-RateLimit-Remaining"]) {
+                NSMutableDictionary *mutableResult = [result mutableCopy];
+                NSMutableDictionary *mutableMeta = [[result objectForKey:@"meta"] mutableCopy];
+                [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Limit"] forKey:@"RateLimit"];
+                [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Remaining"] forKey:@"RateLimit-Remaining"];
+                [mutableResult setObject:mutableMeta forKey:@"meta"];
+                result = mutableResult;
             }
         }
     }
