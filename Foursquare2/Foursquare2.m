@@ -290,6 +290,16 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
++ (NSOperation *)multiUserGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback {
+    
+    NSString *path = @"multi?requests=/users/";
+    NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists,/users/"];
+    path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists"];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+}
+
 + (NSOperation *)userGetLists:(NSString *)userID
                         group:(FoursquareListGroupType)groupType
                      latitude:(NSNumber *)latitude
