@@ -70,8 +70,8 @@
                 NSMutableDictionary *mutableMeta = [[result objectForKey:@"meta"] mutableCopy];
                 [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Limit"] forKey:@"RateLimit"];
                 [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Remaining"] forKey:@"RateLimit-Remaining"];
-                [mutableResult setObject:mutableMeta forKey:@"meta"];
-                result = mutableResult;
+                [mutableResult setObject:[NSDictionary dictionaryWithDictionary:mutableMeta] forKey:@"meta"];
+                result = [NSDictionary dictionaryWithDictionary:mutableResult];
             }
         }
     }
