@@ -36,7 +36,7 @@
     NSError *error;
     id result;
     
-    NSURLResponse *response;
+    NSHTTPURLResponse *response;
     
     if ([self isCancelled]) {
         return;
@@ -65,6 +65,15 @@
                                         userInfo:userInfo];
             } else { // NIL the error in the other case
                 error = nil;
+            }
+            
+            if ([[response allHeaderFields] objectForKey:@"X-RateLimit-Limit"] && [[response allHeaderFields] objectForKey:@"X-RateLimit-Remaining"]) {
+                NSMutableDictionary *mutableResult = [result mutableCopy];
+                NSMutableDictionary *mutableMeta = [[result objectForKey:@"meta"] mutableCopy];
+                [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Limit"] forKey:@"RateLimit"];
+                [mutableMeta setObject:[[response allHeaderFields] objectForKey:@"X-RateLimit-Remaining"] forKey:@"RateLimit-Remaining"];
+                [mutableResult setObject:[NSDictionary dictionaryWithDictionary:mutableMeta] forKey:@"meta"];
+                result = [NSDictionary dictionaryWithDictionary:mutableResult];
             }
         }
     }
