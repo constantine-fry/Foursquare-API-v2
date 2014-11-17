@@ -63,6 +63,8 @@
                 error = [NSError errorWithDomain:kFoursquare2ErrorDomain
                                             code:[result[@"meta"][@"code"] integerValue]
                                         userInfo:userInfo];
+            } else { // NIL the error in the other case
+                error = nil;
             }
         }
     }
