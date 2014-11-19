@@ -307,6 +307,20 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
                               before:(NSDate *)before
                           categoryID:(NSString *)categoryID
                             callback:(Foursquare2Callback)callback;
+
+/**
+ An array of users's lists.
+ @param userIDs Up to 5 valid user IDs to get lists for. Passing "self" as one of the userIDs should be valid
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ @discussion returns in callback "lists" field. If group is specified, contains a count and items of lists:
+ https://developer.foursquare.com/docs/responses/list https://developer.foursquare.com/docs/multi/multi
+ If FoursquareListGroupNone is specified, it contains a groups array containing elements.
+ */
+
++ (NSOperation *)multiUserGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback;
+
 /**
  A User's Lists.
  @param userID Valid user ID to get lists for. Pass "self" to get lists of the acting user.
