@@ -36,6 +36,9 @@ NSString * const kFoursquare2DidRemoveAccessTokenNotification = @"kFoursquare2Di
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic) dispatch_queue_t callbackQueue;
 
+/** The timeout interval for NSURLRequest. The default value is 60 sec. */
+@property(nonatomic,assign) NSTimeInterval timeoutInterval;
+
 + (NSOperation *)sendGetRequestWithPath:(NSString *)path
                              parameters:(NSDictionary *)parameters
                                callback:(Foursquare2Callback)callback;
@@ -59,6 +62,10 @@ static NSMutableDictionary *attributes;
 
 + (void)setCallbackQueue:(dispatch_queue_t)callbackQueue {
     [self sharedInstance].callbackQueue = callbackQueue;
+}
+
++ (void)setTimeoutInterval:(NSTimeInterval)timeoutInterval {
+    [self sharedInstance].timeoutInterval = timeoutInterval;
 }
 
 + (dispatch_queue_t)callbackQueue {
@@ -1391,6 +1398,7 @@ static NSMutableDictionary *attributes;
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.maxConcurrentOperationCount = 7;
         _callbackQueue = dispatch_get_main_queue();
+        _timeoutInterval = 60.0;
     }
     return self;
 }
@@ -1401,6 +1409,7 @@ static NSMutableDictionary *attributes;
                             callback:(Foursquare2Callback)callback {
     NSURL *URL = [Foursquare2 constructURLWithPath:path parameters:parameters];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.timeoutInterval = self.timeoutInterval;
     request.HTTPMethod = HTTPMethod;
     Foursquare2Callback block = ^(BOOL success, id result) {
         if ([result isKindOfClass:[NSError class]]) {
@@ -1431,7 +1440,8 @@ static NSMutableDictionary *attributes;
                withImageData:(NSData *)imageData
                     callback:(Foursquare2Callback)callback {
     NSURL *URL = [Foursquare2 constructURLWithPath:methodName parameters:parameters];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL] ;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    request.timeoutInterval = self.timeoutInterval;
     request.HTTPMethod = @"POST";
     
     NSString *boundary = @"0xKhTmLbOuNdArY";
