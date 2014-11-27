@@ -118,9 +118,15 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
 @interface Foursquare2 : NSObject
 
 /**
- Set the dispatch queue in which request callbacks are called (defaults to the main queue).
+ Sets the dispatch queue in which request callbacks are called (defaults to the main queue).
  */
 + (void)setCallbackQueue:(dispatch_queue_t)callbackQueue;
+
+/**
+ Sets timeout interval for all API requeusts, in seconds.
+ The default timeout interval is 60 sec.
+ */
++ (void)setTimeoutInterval:(NSTimeInterval)timeoutInterval;
 
 /**
  Returns the dispatch queue in which request callbacks are called.
