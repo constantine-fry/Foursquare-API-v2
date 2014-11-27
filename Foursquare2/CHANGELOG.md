@@ -1,5 +1,11 @@
 # Foursquare2 Changelog
 
+__v1.4.8__
+* Added follow/unfollow functionality.
+* Added `multi` for fetching up to 5 users at a time.
+* Passing rate limit information up to the client from the response
+* Added `setTimeoutInterval:` method to set timeout interval.
+
 __v1.4.7__
 
 * Added delete list method call. (listDeleteWithId:)
