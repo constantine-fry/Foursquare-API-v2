@@ -1360,8 +1360,7 @@ static NSMutableDictionary *attributes;
             if ([value isKindOfClass:[NSNumber class]]) {
                 urlEncodedValue = [value stringValue];
             } else  {
-                urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                urlEncodedValue = [urlEncodedValue stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+                urlEncodedValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)value, NULL, CFSTR(":/?#[]@!$&’()*+,;="), kCFStringEncodingUTF8));
             }
             
             if(!urlEncodedValue) {
