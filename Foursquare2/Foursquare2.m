@@ -299,7 +299,7 @@ static NSMutableDictionary *attributes;
 
 + (NSOperation *)multiUserGetLists:(NSArray *)userIDs
                           callback:(Foursquare2Callback)callback {
-    NSAssert([userIDs count] >= 5, @"Multi does not work with more than 5 methods at a time");
+    NSAssert([userIDs count] <= 5, @"Multi does not work with more than 5 methods at a time");
     NSString *path = @"multi?requests=/users/";
     NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists,/users/"];
     path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists"];
@@ -1367,7 +1367,7 @@ static NSMutableDictionary *attributes;
             if ([value isKindOfClass:[NSNumber class]]) {
                 urlEncodedValue = [value stringValue];
             } else  {
-                urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                urlEncodedValue = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)value, NULL, CFSTR(":/?#[]@!$&’()*+,;="), kCFStringEncodingUTF8));
             }
             
             if(!urlEncodedValue) {
@@ -1520,6 +1520,7 @@ static NSMutableDictionary *attributes;
     }
     dispatch_async([Foursquare2 sharedInstance].callbackQueue, ^{
         BOOL result = [Foursquare2 isAuthorized];
+        
         callback(result, error);
     });
     [Foursquare2 sharedInstance].authorizationCallback = nil;
