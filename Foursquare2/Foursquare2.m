@@ -1361,6 +1361,7 @@ static NSMutableDictionary *attributes;
                 urlEncodedValue = [value stringValue];
             } else  {
                 urlEncodedValue = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                urlEncodedValue = [urlEncodedValue stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
             }
             
             if(!urlEncodedValue) {
