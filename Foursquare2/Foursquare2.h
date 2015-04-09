@@ -264,6 +264,16 @@ FOUNDATION_EXPORT NSString * const kFoursquare2DidRemoveAccessTokenNotification;
                        callback:(Foursquare2Callback)callback;
 
 /**
+ This is an undocumented API. This returns the list of users that a given user is following
+ @param userID The user whose following list we are interested in
+ @param offset The offset at which to start
+ @returns a list of users and a count of total users said user is following
+ */
++ (NSOperation *)userGetFollowing:(NSString *)userID
+                        offset:(NSNumber *)offset
+                       callback:(Foursquare2Callback)callback;
+
+/**
  @param userID Valid user ID to get tips from. Pass "self" to get tips of the acting user.
  @param limit Number of result to return, up to 250.
  @param offset The number of results to skip. Used for paging.

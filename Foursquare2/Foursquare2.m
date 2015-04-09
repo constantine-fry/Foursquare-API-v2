@@ -228,6 +228,14 @@ static NSMutableDictionary *attributes;
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
++ (NSOperation *)userGetFollowing:(NSString *)userID
+                           offset:(NSNumber *)offset
+                         callback:(Foursquare2Callback)callback {
+    NSString *path = [NSString stringWithFormat:@"users/%@/following",userID];
+    NSMutableDictionary *parameters = [@{@"m" : @"foursquare"} mutableCopy];
+    return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+}
+
 + (NSOperation *)userGetTips:(NSString *)userID
                        limit:(NSNumber *)limit
                       offset:(NSNumber *)offset
@@ -301,9 +309,9 @@ static NSMutableDictionary *attributes;
                           callback:(Foursquare2Callback)callback {
     NSAssert([userIDs count] <= 5, @"Multi does not work with more than 5 methods at a time");
     NSString *path = @"multi?requests=/users/";
-    NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists,/users/"];
-    path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists"];
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSString *multiParameters = [userIDs componentsJoinedByString:@"/lists?group=created,/users/"];
+    path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists?group=created&"];
+    NSMutableDictionary *parameters = [@{} mutableCopy];
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
