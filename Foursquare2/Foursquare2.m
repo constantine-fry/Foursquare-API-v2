@@ -14,7 +14,7 @@
 
 //update this date to use up-to-date Foursquare API
 #ifndef FS2_API_VERSION
-#define FS2_API_VERSION (@"20140503")
+#define FS2_API_VERSION (@"20150503")
 #endif
 
 static NSString * kFOURSQUARE_BASE_URL = @"https://api.foursquare.com/v2/";
@@ -231,8 +231,8 @@ static NSMutableDictionary *attributes;
 + (NSOperation *)userGetFollowing:(NSString *)userID
                            offset:(NSNumber *)offset
                          callback:(Foursquare2Callback)callback {
-    NSString *path = [NSString stringWithFormat:@"users/%@/following",userID];
-    NSMutableDictionary *parameters = [@{@"m" : @"foursquare"} mutableCopy];
+    NSString *path = [NSString stringWithFormat:@"users/%@/friends",userID];
+    NSMutableDictionary *parameters = [@{/*@"m" : @"foursquare",*/ @"limit" : @(100), @"offset" : offset} mutableCopy];
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
 }
 
@@ -313,6 +313,17 @@ static NSMutableDictionary *attributes;
     path = [[path stringByAppendingString:multiParameters] stringByAppendingString:@"/lists?group=created&"];
     NSMutableDictionary *parameters = [@{} mutableCopy];
     return [self sendGetRequestWithPath:path parameters:parameters callback:callback];
+}
+
+//    NSString *path = [NSString stringWithFormat:@"lists/%@", listID];
+
++ (NSOperation *)multiListGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback {
+    NSAssert([userIDs count] <= 5, @"Multi does not work with more than 5 methods at a time");
+    NSString *path = @"multi?requests=/lists/";
+    NSString *multiParameters = [userIDs componentsJoinedByString:@",/lists/"];
+    path = [path stringByAppendingString:multiParameters];
+    return [self sendGetRequestWithPath:path parameters:@{} callback:callback];
 }
 
 + (NSOperation *)userGetLists:(NSString *)userID

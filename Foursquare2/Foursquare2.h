@@ -531,6 +531,17 @@ https://developer.foursquare.com/docs/lists/add
                                follow:(BOOL)follow
                              callback:(Foursquare2Callback)callback;
 
+/**
+ An array of users's lists.
+ @param listIDs Up to 5 valid list IDs to get details for.
+ @returns The instance of NSOperation already inqueued in internal operation queue.
+ Callback block will not be called, if you send cancel message to the operation.
+ @discussion returns in callback "lists" field.
+ https://developer.foursquare.com/docs/responses/list https://developer.foursquare.com/docs/multi/multi
+ */
++ (NSOperation *)multiListGetLists:(NSArray *)userIDs
+                          callback:(Foursquare2Callback)callback;
+
 #pragma mark ---------------------------- Venues -----------------------------------------------------------------------
 
 /**
