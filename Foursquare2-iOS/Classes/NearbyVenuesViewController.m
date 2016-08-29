@@ -46,7 +46,7 @@
             [self.locationManager startUpdatingLocation];
         } else {
             // If we are here we have no pormissions.
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No athorization"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No authorization"
                                                                 message:@"Please, enable access to your location"
                                                                delegate:self
                                                       cancelButtonTitle:@"Cancel"
