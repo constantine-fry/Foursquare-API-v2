@@ -1,6 +1,6 @@
-#Foursquare Objective-C API 2.0
+# Foursquare Objective-C API 2.0
 
-###Motivation
+### Motivation
 The main idea behind this library is to provide not abstract library with concrete methods to use.
 What do I mean by abstract library? Abstract library for me is API that provide for developers only several
 methods to construct request with path and parameters, but you need to read online documentation and
@@ -18,14 +18,14 @@ constract NSDictionary with parameters on your own. This library provide concret
 Don't be scary of NSOperation:). Almost all the time you don't need to use them. But it could be very helpfull
 if you want to have more control and cancel operations. Checkout SearchViewController.m as example.
 
-###Features
+### Features
 * Native authentication with Foursquare app and in-app web view authentication.
 * Storing access token into keychain.
 * Asynchronous requests with blocks.
 * Build-in image uploader for adding photos for checkin.
 
 
-###How To
+### How To
 
 IMPRORTANT: In case you already use this library and you want to switch on native login: you need to add new redirect URL in app settings on https://developer.foursquare.com and make sure you keep old redirect URL, otherwise current application on AppStore will not be able to open login page. For native login you must have redirect URL like this testapp123://foursquare. testapp123 is URL scheme of your application. It must be in plist(see steps below) and must be unique.
 
@@ -57,7 +57,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 
 
-###Useful tips
+### Useful tips
 1. How to get sw and ne from MKMapView?
 
         CGPoint swPoint = CGPointMake(mapView.bounds.origin.x, mapView.bounds.origin.y+ mapView.bounds.size.height);
@@ -79,7 +79,7 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 
 
 
-###Screnshots
+### Screnshots
 ![](https://raw.github.com/Constantine-Fry/Foursquare-API-v2/master/img/photo1.PNG)
 
 
@@ -89,6 +89,6 @@ CFBundleURLTypes -> CFBundleURLName -> CFBundleURLSchemes -> {app_id}
 I got blue pin [here](http://graphicclouds.com/map-pin-icons/).
 
 
-###Cocoapod
+### Cocoapod
 
 pod 'Foursquare-API-v2'
